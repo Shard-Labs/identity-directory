@@ -7,12 +7,23 @@ export default {
   name: "Avatar",
   props: {
     src: {
-      type: String,
+      type: String
     },
     alt: {
       type: String,
-      required: true,
-    },
+      required: true
+    }
   },
+  methods: {
+    shuffleColor() {
+      let colors = ["pink", "blue", "green"];
+      this.background = colors.pop(Math.floor(Math.random() * colors.length));
+    }
+  },
+  computed: {
+    imgSrc() {
+      return this.src ? this.src : this.shuffleColor();
+    }
+  }
 };
 </script>

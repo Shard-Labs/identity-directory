@@ -3,6 +3,7 @@
     <input
       :type="inputType"
       :name="name"
+      :id="id"
       :disabled="readOnly"
       :placeholder="placeholder"
       ref="input"
@@ -17,13 +18,13 @@
 export default {
   name: "InputField",
   props: {
-    v: { type: Object },
-    inputType: { type: String, required: true},
+    inputType: { type: String, required: true },
     placeholder: { type: String },
     value: { type: String },
     name: { type: String },
     id: { type: String },
-    label: { type: String }
+    label: { type: String },
+    readOnly: { type: Boolean }
   },
   methods: {
     handleInput(e) {
@@ -31,5 +32,5 @@ export default {
       this.$emit("update", value);
     }
   }
-}
+};
 </script>
