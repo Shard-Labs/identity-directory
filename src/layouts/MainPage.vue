@@ -2,7 +2,7 @@
   <div class="container section">
     <div class="columns">
       <div class="column is-4">
-        <sidebar />
+        <SideBar />
       </div>
       <div class="column is-8">
         <header class="flex justify-around">

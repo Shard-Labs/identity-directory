@@ -7,11 +7,11 @@
 </template>
 
 <script>
-import Button from "./Button.vue";
+
 
 export default {
   name: "DropdownItem",
-  components: { Button },
+  
   props: {
     data: {
      type: Array,

@@ -43,16 +43,19 @@
       </g>
     </svg>
   </dropdown>
+  <nav-bar></nav-bar>
 </template>
 
 <script>
 import Dropdown from "@/components/common/Dropdown";
 import DropdownItem from "../common/DropdownItem.vue";
+import NavBar from './NavBar.vue';
 export default {
   name: "Sidebar",
   components: {
     Dropdown,
-    DropdownItem
+    DropdownItem,
+    NavBar
   }
 };
 </script>
