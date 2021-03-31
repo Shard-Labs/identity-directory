@@ -35,8 +35,8 @@
 
 <script>
 import IdentityList from "@/components/navigation/IdentityList.vue";
-import Hero from "../components/navigation/Hero";
-import SideBar from "../components/navigation/SideBar";
+import Hero from "@/components/navigation/Hero";
+import SideBar from "@/components/navigation/SideBar";
 export default {
   name: "MainPage",
   components: {

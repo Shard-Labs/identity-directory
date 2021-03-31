@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-center">
-    <nav-link :exact="true">
+    <nav-link :exact="true" path="/identities">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <g data-name="Layer 2">
           <g data-name="grid">
@@ -11,10 +11,10 @@
         </g>
       </svg>
       <div class="sm:invisible md:text-base">
-        {{ $t("navigation.identities") }}
+        Identities
       </div>
     </nav-link>
-    <nav-link  :exact="true">
+    <nav-link :exact="true" path="/profile">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <g data-name="Layer 2">
           <g data-name="person">
@@ -25,7 +25,7 @@
         </g>
       </svg>
       <div class="sm:invisible md:text-base">
-        {{ $t("navigation.profile") }}
+        Profile
       </div>
     </nav-link>
     <dropdown></dropdown>
@@ -36,6 +36,6 @@
 import Dropdown from '../common/Dropdown.vue';
 import NavLink from "./NavLink.vue";
 export default {
-  components: { NavLink, Dropdown }
+  components: { Dropdown, NavLink }
 };
 </script>

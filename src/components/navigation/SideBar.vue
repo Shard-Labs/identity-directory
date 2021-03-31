@@ -21,7 +21,7 @@
     </div>
   </div>
   <dropdown>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <svg class="w-full" style="max-width: 50px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       <g data-name="Layer 2">
         <g data-name="link-2">
           <path
@@ -34,7 +34,7 @@
       </g>
     </svg>
     <dropdown-item></dropdown-item>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <svg class="w-full" style="max-width: 50px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       <g data-name="Layer 2">
         <path
           d="M12 16a1 1 0 01-.64-.23l-6-5a1 1 0 111.28-1.54L12 13.71l5.36-4.32a1 1 0 011.41.15 1 1 0 01-.14 1.46l-6 4.83A1 1 0 0112 16z"
@@ -43,7 +43,7 @@
       </g>
     </svg>
   </dropdown>
-  <nav-bar></nav-bar>
+  <nav-bar></nav-bar> 
 </template>
 
 <script>

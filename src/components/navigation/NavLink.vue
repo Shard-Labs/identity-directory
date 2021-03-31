@@ -1,13 +1,8 @@
 <template>
-  <router-link :to="path" v-slot="{ href, navigate, isActive, isExactActive }">
-    <a
-      class="flex flex-col justify-center items-center cursor-pointer outline-none p-1"
-      :clas="(exact ? isExactActive : isActive)"
-      :href="href"
-      @click="navigate"
-    >
+  <router-link :to="path" v-slot="{ navigate, isActive, isExactActive }">
+    <div class="flex flex-col justify-center items-center cursor-pointer outline-none p-1" :class="(exact ? isExactActive : isActive)" @click="navigate">
       <slot></slot>
-    </a>
+    </div>
   </router-link>
 </template>
 
@@ -20,3 +15,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+/* example of styling active links */
+  /* .router-link-active {
+    background-color: cyan;
+  } */
+</style>
