@@ -11,7 +11,7 @@ module.exports = {
     }),
     boxShadow: {
       gray: '0 15px 40px 0px rgba(28, 0, 207, 0.05)',
-      pink: '0 2px 4px 20px rgba(175, 0, 93, 0.27)'
+      pink: '0 4px 6px -1px rgba(175, 0, 93, 0.27), 0 2px 4px -1px rgba(175, 0, 93, 0.27)'
     },
     extend: {},
   },

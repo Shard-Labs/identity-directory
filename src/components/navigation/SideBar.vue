@@ -2,9 +2,8 @@
   <div class="flex flex-col justify-around items-start">
     <div class="flex justify-between">
       <svg
-        width="32"
-        height="32"
-        fill="none"
+        class="w-full"
+        style="max-width: 40px;"
         xmlns="http://www.w3.org/2000/svg"
       >
         <g clip-path="url(#clip0)">
@@ -17,45 +16,76 @@
           <clipPath id="clip0"><path fill="#fff" d="M0 0h32v32H0z" /></clipPath>
         </defs>
       </svg>
-      <h3>Polkaperson</h3>
+      <h3 class="font-black text-xl">Polkaperson</h3>
     </div>
-  </div>
-  <dropdown>
-    <svg class="w-full" style="max-width: 50px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <g data-name="Layer 2">
-        <g data-name="link-2">
+ <!--   <dropdown
+      id="chain"
+      :data="dropdownData"
+      :value="selectedChain"
+      :valueText="selectedChain || $[dropdownData.indexof(selectedChain)]"
+      @select="onSelect"
+      textClasses="py-2"
+      dropdownTabClasses="text-sm"
+      selectedTabClasses="text-sm font-semibold"
+    >
+      <svg
+        class="w-full"
+        style="max-width: 25px;"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        <g data-name="Layer 2">
+          <g data-name="link-2">
+            <path
+              d="M13.29 9.29l-4 4a1 1 0 000 1.42 1 1 0 001.42 0l4-4a1 1 0 00-1.42-1.42z"
+            />
+            <path
+              d="M12.28 17.4L11 18.67a4.2 4.2 0 01-5.58.4 4 4 0 01-.27-5.93l1.42-1.43a1 1 0 000-1.42 1 1 0 00-1.42 0l-1.27 1.28a6.15 6.15 0 00-.67 8.07 6.06 6.06 0 009.07.6l1.42-1.42a1 1 0 00-1.42-1.42zM19.66 3.22a6.18 6.18 0 00-8.13.68L10.45 5a1.09 1.09 0 00-.17 1.61 1 1 0 001.42 0L13 5.3a4.17 4.17 0 015.57-.4 4 4 0 01.27 5.95l-1.42 1.43a1 1 0 000 1.42 1 1 0 001.42 0l1.42-1.42a6.06 6.06 0 00-.6-9.06z"
+            />
+          </g>
+        </g>
+      </svg>
+
+      <svg
+        class="w-full"
+        style="max-width: 25px;"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        <g data-name="Layer 2">
           <path
-            d="M13.29 9.29l-4 4a1 1 0 000 1.42 1 1 0 001.42 0l4-4a1 1 0 00-1.42-1.42z"
-          />
-          <path
-            d="M12.28 17.4L11 18.67a4.2 4.2 0 01-5.58.4 4 4 0 01-.27-5.93l1.42-1.43a1 1 0 000-1.42 1 1 0 00-1.42 0l-1.27 1.28a6.15 6.15 0 00-.67 8.07 6.06 6.06 0 009.07.6l1.42-1.42a1 1 0 00-1.42-1.42zM19.66 3.22a6.18 6.18 0 00-8.13.68L10.45 5a1.09 1.09 0 00-.17 1.61 1 1 0 001.42 0L13 5.3a4.17 4.17 0 015.57-.4 4 4 0 01.27 5.95l-1.42 1.43a1 1 0 000 1.42 1 1 0 001.42 0l1.42-1.42a6.06 6.06 0 00-.6-9.06z"
+            d="M12 16a1 1 0 01-.64-.23l-6-5a1 1 0 111.28-1.54L12 13.71l5.36-4.32a1 1 0 011.41.15 1 1 0 01-.14 1.46l-6 4.83A1 1 0 0112 16z"
+            data-name="arrow-ios-downward"
           />
         </g>
-      </g>
-    </svg>
-    <dropdown-item></dropdown-item>
-    <svg class="w-full" style="max-width: 50px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <g data-name="Layer 2">
-        <path
-          d="M12 16a1 1 0 01-.64-.23l-6-5a1 1 0 111.28-1.54L12 13.71l5.36-4.32a1 1 0 011.41.15 1 1 0 01-.14 1.46l-6 4.83A1 1 0 0112 16z"
-          data-name="arrow-ios-downward"
-        />
-      </g>
-    </svg>
-  </dropdown>
-  <nav-bar></nav-bar> 
+      </svg>
+    </dropdown> -->
+    <nav-bar></nav-bar>
+  </div>
 </template>
 
 <script>
-import Dropdown from "@/components/common/Dropdown";
-import DropdownItem from "../common/DropdownItem.vue";
-import NavBar from './NavBar.vue';
+
+import NavBar from "./NavBar.vue";
 export default {
   name: "Sidebar",
   components: {
-    Dropdown,
-    DropdownItem,
+    
     NavBar
-  }
+  },
+  data() {
+    return {
+      chain: [{ title: "Polkadot" }, { title: "Kusama" }]
+    };
+  },
+  computed: {
+    selectedChain() {
+      return this.chain.title;
+    },
+    dropdownData() {
+      return this.chain.title;
+    }
+  },
+  methods: {}
 };
 </script>

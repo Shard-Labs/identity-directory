@@ -1,7 +1,7 @@
 <template>
-  <div class="flex justify-center">
-    <nav-link :exact="true" path="/identities">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <div class="flex flex-col justify-center">
+    <nav-link :exact="true" path="/">
+      <svg class="w-full" style="max-width: 25px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <g data-name="Layer 2">
           <g data-name="grid">
             <path
@@ -10,12 +10,12 @@
           </g>
         </g>
       </svg>
-      <div class="sm:invisible md:text-base">
+      <div class="text-base px-2">
         Identities
       </div>
     </nav-link>
     <nav-link :exact="true" path="/profile">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <svg class="w-full" style="max-width: 25px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <g data-name="Layer 2">
           <g data-name="person">
             <path

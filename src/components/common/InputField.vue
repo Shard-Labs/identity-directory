@@ -1,16 +1,21 @@
 <template>
   <component :is="type" :label="label">
-    <input
-      :type="inputType"
-      :name="name"
-      :id="id"
-      :disabled="readOnly"
-      :placeholder="placeholder"
-      ref="input"
-      class="flex-grow bg-transparent border-solid border-pink rounded-full py-3 px-6"
-      :value="value"
-      @input="handleInput($event)"
-    />
+    <div class="relative flex" :class="containerClasses">
+      <div :class="slotClasses">
+        <slot></slot>
+      </div>
+      <input
+        :type="inputType"
+        :name="name"
+        :id="id"
+        :disabled="readOnly"
+        :placeholder="placeholder"
+        ref="input"
+        :class="inputClasses"
+        :value="value"
+        @input="handleInput($event)"
+      />
+    </div>
   </component>
 </template>
 
@@ -23,8 +28,11 @@ export default {
     value: { type: String },
     name: { type: String },
     id: { type: String },
-    label: { type: String },
-    readOnly: { type: Boolean }
+    readOnly: { type: Boolean },
+    label: { type: String, required: false },
+    containerClasses: { type: String, default: "" },
+    inputClasses: { type: String, default: "" },
+    slotClasses: { type: String, default: "" }
   },
   methods: {
     handleInput(e) {

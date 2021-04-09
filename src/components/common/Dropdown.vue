@@ -2,23 +2,73 @@
   <div class="relative">
     <div
       class="flex justify between items-center outline-none"
+      :class="textClasses"
       role="button"
       @click="toggleDropdown"
     >
-      <div v-if="active"><slot /></div>
+      <v-clamp class="w-full" v-if="showText" autoresize :max-lines="1">
+        {{ valueText }}
+      </v-clamp>
       <slot></slot>
     </div>
-    <div class="absolute bg-gray flex justify-around rounded-full py-3 px-6">
-      <ul class="flex flex-col" v-show="isOpen">
-        <slot></slot>
-      </ul>
-    </div>
+    <ul
+      class="absolute bg-gray flex flex-col rounded-md mt-2 z-10"
+      :class="dropdownClasses"
+      v-show="isOpen"
+    >
+      <li
+        tabindex="-1"
+        v-for="(item, index) in data"
+        :key="item"
+        @click="select(item, index)"
+        class="outline-none"
+        :class="[isSelected(item) ? selectedTabClasses : dropdownTabClasses]"
+      >
+        <button type="button" class="w-full text-left font-semibold py-4 px-6">
+          <span>{{ text[index] }}</span>
+        </button>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 export default {
   name: "Dropdown",
+  props: {
+    data: {
+      type: Array,
+      required: false
+    },
+    value: {
+      type: String,
+      required: true,
+    },
+    valueText: {
+      type: String,
+      required: true,
+    },
+    text: {
+      type: String,
+      required: false
+    },
+    textClasses: {
+      type: String
+    },
+    dropdownClasses: {
+      type: String
+    },
+    dropdownTabClasses:{
+      type: String,
+    },
+    selectedTabClasses: {
+      type: String
+    },
+    showText: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       isOpen: false,
@@ -34,6 +84,13 @@ export default {
     closeDropdown() {
       this.isOpen = false;
     },
+    isSelected(value) {
+      return this.value === value;
+    },
+    select(value, index) {
+      this.closeDropdown();
+      this.$emit("select", { value, index });
+    }
   }
 };
 </script>
