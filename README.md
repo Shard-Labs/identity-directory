@@ -2,6 +2,9 @@
 
 ## Project setup
 ```
+working on 
+node v12.16.3
+npm v6.14.8
 npm install
 ```
 
