@@ -30,3 +30,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Figma design link 
+
+https://www.figma.com/file/Q8ueqnAQYtDQq4bVgwY1Uf/Identity-Directory-Design?node-id=0%3A1 
+
