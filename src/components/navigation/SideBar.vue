@@ -60,6 +60,7 @@
         </g>
       </svg>
     </dropdown> -->
+    <test-dropdown :data="chain" :value="chain[0].title" @select="getSelectedDropDownDataIndex"></test-dropdown>
     <nav-bar></nav-bar>
   </div>
 </template>
@@ -67,10 +68,11 @@
 <script>
 
 import NavBar from "./NavBar.vue";
+import TestDropdown from "../common/TestDropdown";
 export default {
   name: "Sidebar",
   components: {
-    
+    TestDropdown,
     NavBar
   },
   data() {
@@ -86,6 +88,11 @@ export default {
       return this.chain.title;
     }
   },
-  methods: {}
+  methods: {
+    getSelectedDropDownDataIndex(index) {
+      const selectedChainData = this.chain[index];
+      console.log(selectedChainData, "index");
+    }
+  }
 };
 </script>
