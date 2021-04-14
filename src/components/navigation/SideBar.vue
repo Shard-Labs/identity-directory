@@ -60,7 +60,7 @@
         </g>
       </svg>
     </dropdown> -->
-    <test-dropdown :data="chain" :value="chain[0].title" @select="getSelectedDropDownDataIndex"></test-dropdown>
+    <dropdown :data="chain" :value="chain[0].title" @select="getSelectedDropDownDataIndex"></dropdown>
     <nav-bar></nav-bar>
   </div>
 </template>
@@ -68,11 +68,11 @@
 <script>
 
 import NavBar from "./NavBar.vue";
-import TestDropdown from "../common/TestDropdown";
+import Dropdown from "../common/Dropdown";
 export default {
   name: "Sidebar",
   components: {
-    TestDropdown,
+    Dropdown,
     NavBar
   },
   data() {
