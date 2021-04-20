@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-center">
     <div class="flex justify-between">
-      <div class="absolute z-30 left-0 mt-2 resultDropdown" @click="isOpen = !isOpen">
+      <div class="absolute z-30 left-0 mt-2 resultDropdown" v-if="selectedValue" @click="isOpen = !isOpen">
         <svg
             class="w-full"
             style="max-width: 25px;"
@@ -45,7 +45,6 @@ export default {
     value: {
       type: String,
       required: true,
-      default: "Select Item"
     }
   },
   data() {
