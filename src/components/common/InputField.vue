@@ -1,5 +1,4 @@
 <template>
-  <component :is="type" :label="label">
     <div class="relative flex" :class="containerClasses">
       <div :class="slotClasses">
         <slot></slot>
@@ -16,7 +15,6 @@
         @input="handleInput($event)"
       />
     </div>
-  </component>
 </template>
 
 <script>
