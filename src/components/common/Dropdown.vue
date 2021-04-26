@@ -34,7 +34,7 @@
                 class="block text-purple-600 font-semibold px-4 py-2 | hover:text-white hover:bg-purple-500"
                 v-for="(chain, index) in data"
                 :key="index"
-                @click="closeDropDownAndEmmitData(index)"
+                @click="(event) => closeDropDownAndEmmitData(event, index)"
               >
                 <a href="#">{{ chain.title }}</a>
               </li>
@@ -77,7 +77,8 @@ export default {
     };
   },
   methods: {
-    closeDropDownAndEmmitData(index) {
+    closeDropDownAndEmmitData(event, index) {
+      event.stopPropagation();
       this.isOpen = false;
       this.selectedValue = this.data[index].title;
       this.$emit("select", index);
