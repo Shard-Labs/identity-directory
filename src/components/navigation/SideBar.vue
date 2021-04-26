@@ -1,9 +1,10 @@
 <template>
   <div class="flex flex-col justify-around items-start">
-    <div class="flex justify-between">
+    <div class="flex justify-between space-x-4 mb-6">
       <svg
-        class="w-full"
-        style="max-width: 40px;"
+        width="32"
+        height="32"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <g clip-path="url(#clip0)">
@@ -18,66 +19,47 @@
       </svg>
       <h3 class="font-black text-xl">Polkaperson</h3>
     </div>
- <!--   <dropdown
-      id="chain"
-      :data="dropdownData"
-      :value="selectedChain"
-      :valueText="selectedChain || $[dropdownData.indexof(selectedChain)]"
-      @select="onSelect"
-      textClasses="py-2"
-      dropdownTabClasses="text-sm"
-      selectedTabClasses="text-sm font-semibold"
-    >
-      <svg
-        class="w-full"
-        style="max-width: 25px;"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
-        <g data-name="Layer 2">
-          <g data-name="link-2">
-            <path
-              d="M13.29 9.29l-4 4a1 1 0 000 1.42 1 1 0 001.42 0l4-4a1 1 0 00-1.42-1.42z"
-            />
-            <path
-              d="M12.28 17.4L11 18.67a4.2 4.2 0 01-5.58.4 4 4 0 01-.27-5.93l1.42-1.43a1 1 0 000-1.42 1 1 0 00-1.42 0l-1.27 1.28a6.15 6.15 0 00-.67 8.07 6.06 6.06 0 009.07.6l1.42-1.42a1 1 0 00-1.42-1.42zM19.66 3.22a6.18 6.18 0 00-8.13.68L10.45 5a1.09 1.09 0 00-.17 1.61 1 1 0 001.42 0L13 5.3a4.17 4.17 0 015.57-.4 4 4 0 01.27 5.95l-1.42 1.43a1 1 0 000 1.42 1 1 0 001.42 0l1.42-1.42a6.06 6.06 0 00-.6-9.06z"
-            />
-          </g>
-        </g>
-      </svg>
 
-      <svg
-        class="w-full"
-        style="max-width: 25px;"
+    <!--   <dropdown
+      :data="chain"
+      :value="chain[0].title"
+      @select="getSelectedDropDownDataIndex"
+      ><svg
+        width="24"
+        height="24"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
       >
-        <g data-name="Layer 2">
-          <path
-            d="M12 16a1 1 0 01-.64-.23l-6-5a1 1 0 111.28-1.54L12 13.71l5.36-4.32a1 1 0 011.41.15 1 1 0 01-.14 1.46l-6 4.83A1 1 0 0112 16z"
-            data-name="arrow-ios-downward"
-          />
-        </g>
-      </svg>
-    </dropdown> -->
-    <dropdown :data="chain" :value="chain[0].title" @select="getSelectedDropDownDataIndex"></dropdown>
+        <path
+          d="M13.29 9.29l-4 4a1 1 0 000 1.42.998.998 0 001.42 0l4-4a1.004 1.004 0 10-1.42-1.42z"
+          fill="#C6C6CD"
+        />
+        <path
+          d="M12.28 17.4L11 18.67a4.2 4.2 0 01-5.58.4 4 4 0 01-.27-5.93l1.42-1.43a.999.999 0 000-1.42 1 1 0 00-1.42 0l-1.27 1.28a6.15 6.15 0 00-.67 8.07 6.06 6.06 0 009.07.6l1.42-1.42a1.004 1.004 0 10-1.42-1.42zM19.66 3.22a6.18 6.18 0 00-8.13.68L10.45 5a1.09 1.09 0 00-.17 1.61 1 1 0 001.42 0L13 5.3a4.17 4.17 0 015.57-.4 4 4 0 01.27 5.95l-1.42 1.43a1 1 0 000 1.42.998.998 0 001.42 0l1.42-1.42a6.06 6.06 0 00-.6-9.06z"
+          fill="#C6C6CD"
+        /></svg
+    ></dropdown> -->
+    <dropdown :data="chain" :value="chain[0].title" @select="getSelectedDropDownDataIndex" />
     <nav-bar></nav-bar>
   </div>
 </template>
 
 <script>
-
+import { ApiPromise, WsProvider } from "@polkadot/api";
 import NavBar from "./NavBar.vue";
 import Dropdown from "../common/Dropdown";
 export default {
   name: "Sidebar",
   components: {
+    NavBar,
     Dropdown,
-    NavBar
   },
   data() {
     return {
-      chain: [{ title: "Polkadot" }, { title: "Kusama" }]
+      chain: [
+        { title: "Polkadot", wsProvider: "wss://rpc.polkadot.io" },
+        { title: "Kusama", wsProvider: "wss://kusama-rpc.polkadot.io" }
+      ]
     };
   },
   computed: {
@@ -89,9 +71,17 @@ export default {
     }
   },
   methods: {
-    getSelectedDropDownDataIndex(index) {
+    async getSelectedDropDownDataIndex(index) {
       const selectedChainData = this.chain[index];
       console.log(selectedChainData, "index");
+
+      const provider = new WsProvider(selectedChainData.wsProvider);
+
+      const api = ApiPromise.create({ provider });
+
+      console.log((await api).genesisHash.toHex());
+
+      console.log(((await api).isConnected, "isconnected"));
     }
   }
 };
