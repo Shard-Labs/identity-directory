@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     shuffleColor() {
-      let colors = ["pink", "blue", "green"];
+      const colors = ["pink", "blue", "green"];
       this.background = colors.pop(Math.floor(Math.random() * colors.length));
     }
   },
