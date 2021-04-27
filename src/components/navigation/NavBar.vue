@@ -1,7 +1,12 @@
 <template>
   <div class="flex flex-col justify-center">
-    <nav-link :exact="true" path="/">
-      <svg class="w-full" style="max-width: 25px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <nav-link :exact="true" path="/" class="mb-8">
+      <svg
+        class="w-full"
+        style="max-width: 25px;"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
         <g data-name="Layer 2">
           <g data-name="grid">
             <path
@@ -14,8 +19,13 @@
         Identities
       </div>
     </nav-link>
-    <nav-link :exact="true" path="/profile">
-      <svg class="w-full" style="max-width: 25px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <nav-link :exact="true" path="/profile" class="mb-8">
+      <svg
+        class="w-full"
+        style="max-width: 25px;"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
         <g data-name="Layer 2">
           <g data-name="person">
             <path
@@ -28,14 +38,12 @@
         Profile
       </div>
     </nav-link>
-    <dropdown></dropdown>
   </div>
 </template>
 
 <script>
-import Dropdown from '../common/Dropdown.vue';
 import NavLink from "./NavLink.vue";
 export default {
-  components: { Dropdown, NavLink }
+  components: { NavLink }
 };
 </script>
