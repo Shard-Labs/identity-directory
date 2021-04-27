@@ -77,7 +77,7 @@ export default {
     };
   },
   methods: {
-    closeDropDownAndEmmitData(event, index) {
+    closeDropDownAndEmmitData(index) {
       event.stopPropagation();
       this.isOpen = false;
       this.selectedValue = this.data[index].title;

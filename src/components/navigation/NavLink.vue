@@ -17,8 +17,7 @@ export default {
 </script>
 
 <style scoped>
-/* example of styling active links */
-  /* .router-link-active {
-    background-color: cyan;
-  } */
+  .router-link-active {
+    background-color: "#e6007a";
+  } 
 </style>

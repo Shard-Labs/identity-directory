@@ -19,7 +19,7 @@
       </svg>
       <h3 class="font-black text-xl">Polkaperson</h3>
     </div>
-    <dropdown
+    <test-dropdown
       :data="chain"
       :value="chain[0].title"
       :valueText="selectedChainTitle"
@@ -32,13 +32,13 @@
 <script>
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import NavBar from "./NavBar.vue";
-import Dropdown from "../common/TestDropdown";
+import TestDropdown from '../common/TestDropdown.vue';
 
 export default {
   name: "Sidebar",
   components: {
     NavBar,
-    Dropdown
+    TestDropdown
   },
   data() {
     return {

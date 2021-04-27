@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import Avatar from "./Avatar";
+import Avatar from "../common/Avatar";
 import Card from '../common/Card.vue';
 export default {
   components: {
