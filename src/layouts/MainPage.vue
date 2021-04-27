@@ -30,7 +30,22 @@
           <span class="font-medium">Connect</span>
         </button>
       </header>
-      <Hero />
+      <div class="hero mt-6 p-10">
+        <h1 class="font-black text-3xl text-left p-8">
+          Search registered identities on Kusama or Polkadot network
+        </h1>
+
+        <input-field
+          :inputType="text"
+          :name="identity"
+          :id="identity"
+          placeholder="Search identities by name, address..."
+          containerClasses="flex-grow bg-transparent border-solid border-pink rounded-full py-3 px-6"
+          inputClasses="py-2 font-medium"
+          @input="handleInput(event)"
+        >
+        </input-field>
+      </div>
       <main class="mt-6">
         <h2 class="font-black my-4 text-left text-2xl">Identities</h2>
         <identity-list>
@@ -43,16 +58,22 @@
 
 <script>
 import IdentityList from "@/components/navigation/IdentityList.vue";
-import Hero from "@/components/navigation/Hero";
+import InputField from "../components/common/InputField";
 import SideBar from "@/components/navigation/SideBar";
 import Testing from "@/views/Testing.vue";
 export default {
   name: "MainPage",
   components: {
-    Hero,
     SideBar,
     IdentityList,
-    Testing
+    Testing,
+    InputField
   }
 };
 </script>
+<style>
+.hero {
+  background: url("../assets/images/hero.png"), #f8fafc;
+  box-shadow: 1px 4px 6px #c6c6cd;
+}
+</style>
