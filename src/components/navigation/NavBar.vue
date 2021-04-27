@@ -12,7 +12,7 @@
         My Identity
       </div>
     </nav-link>
-    <nav-link :exact="true" path="/profile" class="mb-8">
+    <nav-link :exact="true" path="/settings" class="mb-8">
       <Icon name="settings" iconClass="mr-4" />
       <div class="text-base font-bold">
         Settings
