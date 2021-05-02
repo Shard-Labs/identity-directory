@@ -173,6 +173,27 @@
       fill="white"
     />
   </svg>
+
+  <svg
+    class="inline-block"
+    :class="iconClass"
+    v-if="name === 'connect'"
+    width="24"
+    height="24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g clip-path="url(#clip0)" fill="#fff">
+      <path
+        d="M17 5h-2a1 1 0 100 2h1v12h-1a1 1 0 000 2h2a1 1 0 001-1V6a1 1 0 00-1-1zM9.8 8.4a1 1 0 00-1.6 1.2L10 12H2a1 1 0 000 2h8.09l-1.72 2.44A1 1 0 1010 17.6l2.82-4a1 1 0 000-1.18L9.8 8.4z"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0">
+        <rect width="24" height="24" rx="12" fill="#fff" />
+      </clipPath>
+    </defs>
+  </svg>
 </template>
 <script>
 export default {
