@@ -33,9 +33,10 @@
 </template>
 
 <script>
+import { defineComponent } from "vue";
 import Icon from "@/components/common/Icon.vue";
 
-export default {
+export default defineComponent({
   name: "Dropdown",
   components: {
     Icon
@@ -86,5 +87,5 @@ export default {
       this.$emit("select", index);
     }
   }
-};
+});
 </script>

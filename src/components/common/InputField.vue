@@ -21,8 +21,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "InputField",
   props: {
     inputType: { type: String, required: true },
@@ -42,7 +44,7 @@ export default {
       this.$emit("update", value);
     }
   }
-};
+});
 </script>
 <style>
 .SearchInputWithIcon {

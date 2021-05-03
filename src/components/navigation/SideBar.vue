@@ -17,12 +17,14 @@
 </template>
 
 <script>
+import { defineComponent } from "vue";
+
 import Icon from "@/components/common/Icon.vue";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import NavBar from "./NavBar.vue";
 import Dropdown from "../common/Dropdown.vue";
 
-export default {
+export default defineComponent({
   name: "Sidebar",
   components: {
     Icon,
@@ -59,5 +61,5 @@ export default {
       console.log((api.isConnected, "isconnected"));
     }
   }
-};
+});
 </script>

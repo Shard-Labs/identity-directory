@@ -19,9 +19,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
+
 import Avatar from "../common/Avatar.vue";
-export default {
+
+export default defineComponent({
   name: "ListItem",
   components: {
     Avatar
@@ -29,5 +32,5 @@ export default {
   props: {
     name: { type: String },
   }
-};
+});
 </script>

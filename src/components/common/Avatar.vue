@@ -18,11 +18,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import Icon from "@/components/common/Icon.vue";
 
-const colors = ["pink", "blue", "green"];
-export default {
+const colors: string[] = ["pink", "blue", "green"];
+export default defineComponent({
   name: "Avatar",
   components: {
     Icon
@@ -32,7 +33,7 @@ export default {
       type: String
     },
     name: {
-      type: [String]
+      type: String
     },
     innerClass: {
       type: [String, Array, Object]
@@ -42,25 +43,25 @@ export default {
     shuffleColor() {
       return colors[Math.floor(Math.random() * colors.length)];
     },
-    classCleanUp() {
+    classCleanUp(): string | string[] | object {
       const background = `bg-${this.shuffleColor}`;
 
       if (typeof this.innerClass === "string") {
-        return `${this.innerClass} ${background}`
+        return `${this.innerClass} ${background}`;
       }
-      if(Array.isArray(this.innerClass)) {
+      if (Array.isArray(this.innerClass)) {
         return [...this.innerClass, background];
       }
-      if(typeof this.innerClass === "object") {
+      if (typeof this.innerClass === "object") {
         return {
           ...this.innerClass,
-          [background]: true,
+          [background]: true
         };
       }
 
       return "";
     },
-    initials() {
+    initials(): string {
       if (this.name) {
         return this.name
           .split(" ")
@@ -70,5 +71,5 @@ export default {
       return "";
     }
   }
-};
+});
 </script>

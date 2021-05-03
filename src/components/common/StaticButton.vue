@@ -5,28 +5,30 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "StaticButton",
   props: {
     href: {
       type: String,
-      default: null,
+      default: null
     },
-  to: {
-    type: String,
-    default: null,
-  },
+    to: {
+      type: String,
+      default: null
+    }
   },
   computed: {
     type() {
-      if(this.href) {
+      if (this.href) {
         return "a";
       } else if (this.to) {
-        return "router-link"
+        return "router-link";
       } else {
         return "button";
       }
-    },
+    }
   }
-};
+});
 </script>

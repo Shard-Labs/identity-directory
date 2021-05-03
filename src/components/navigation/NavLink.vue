@@ -11,13 +11,15 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "NavLink",
   props: {
     path: { type: String },
     exact: { type: String }
   }
-};
+});
 </script>
 
 <style scoped>

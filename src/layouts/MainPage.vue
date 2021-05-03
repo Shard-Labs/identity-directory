@@ -54,19 +54,21 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
+
 import InputField from "../components/common/InputField.vue";
 import Identities from "@/components/Identities/index.vue";
 import SideBar from "@/components/navigation/SideBar.vue";
 
-export default {
+export default defineComponent({
   name: "MainPage",
   components: {
     SideBar,
     Identities,
     InputField
   }
-};
+});
 </script>
 <style>
 .hero {
