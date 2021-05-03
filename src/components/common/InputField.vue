@@ -39,8 +39,10 @@ export default defineComponent({
     slotClasses: { type: String, default: "" }
   },
   methods: {
-    handleInput(e) {
-      const value = e.target.value === "" ? null : e.target.value;
+    handleInput(e: Event) {
+      const target = e.target as HTMLInputElement;
+
+      const value = target.value === "" ? null : target.value;
       this.$emit("update", value);
     }
   }
