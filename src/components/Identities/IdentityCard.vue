@@ -1,6 +1,9 @@
 <template>
   <card class="pt-11 pb-10 flex flex-col items-center">
-    <Avatar :initials="extractInitials" />
+    <Avatar
+      :name="identity.attributes.identity_legal"
+      innerClass="md:w-24 md:h-24"
+    />
     <div class="mb-6">
       <h2 class="font-extrabold text-2xl">
         {{ identity.attributes.identity_legal || "No Name" }}
@@ -59,32 +62,23 @@ export default {
     }
   },
   computed: {
-    extractInitials() {
-      if (this.identity.attributes.identity_legal) {
-        return this.identity.attributes.identity_legal
-          .split(" ")
-          .map(n => n[0])
-          .join("");
-      }
-      return "";
-    },
     web() {
       return this.identity.attributes.identity_web;
     },
     twitter() {
-      const { identity_twitter: twitter } = this.identity.attributes
+      const { identity_twitter: twitter } = this.identity.attributes;
       if (twitter) {
         return `https://twitter.com/${twitter}`;
       }
       return null;
     },
     riot() {
-      const { identity_riot: riot } = this.identity.attributes
+      const { identity_riot: riot } = this.identity.attributes;
       if (riot) {
         return `https://matrix.to/#/${riot}`;
       }
       return null;
-    },
+    }
   }
 };
 </script>
