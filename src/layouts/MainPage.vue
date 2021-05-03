@@ -48,25 +48,22 @@
       </div>
       <main class="mt-6">
         <h2 class="font-black my-4 text-left text-2xl">Identities</h2>
-        <identity-list>
-          <testing />
-        </identity-list>
+        <Identities />
       </main>
     </div>
   </div>
 </template>
 
 <script>
-import IdentityList from "@/components/navigation/IdentityList.vue";
-import InputField from "../components/common/InputField";
-import SideBar from "@/components/navigation/SideBar";
-import Testing from "@/views/Testing.vue";
+import InputField from "../components/common/InputField.vue";
+import Identities from "@/components/Identities/index.vue";
+import SideBar from "@/components/navigation/SideBar.vue";
+
 export default {
   name: "MainPage",
   components: {
     SideBar,
-    IdentityList,
-    Testing,
+    Identities,
     InputField
   }
 };

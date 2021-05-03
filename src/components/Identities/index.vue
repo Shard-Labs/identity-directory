@@ -1,7 +1,9 @@
 <template>
-  <div class="grid grid-cols-3 grid-rows-2">
-    <identity-card v-for="card in cards" :identity="card" :key="card.id" />
-    <identity-list class="col-span-3" />
+  <div>
+    <div class="grid grid-cols-3 grid-rows-1 gap-9 mb-8">
+      <identity-card v-for="card in cards" :identity="card" :key="card.id" />
+    </div>
+    <identity-list class="col-span-3" :identities="items" />
   </div>
 </template>
 <script>
