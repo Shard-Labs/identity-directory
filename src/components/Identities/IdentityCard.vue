@@ -1,33 +1,39 @@
 <template>
-  <card class="pt-11 pb-10 w-1/3 flex flex-col items-center">
-    <Avatar />
+  <card class="pt-11 pb-10 flex flex-col items-center">
+    <Avatar :initials="extractInitials" />
     <div class="mb-6">
       <h2 class="font-extrabold text-2xl">
-        {{ identity.identity_legal }}
+        {{ identity.attributes.identity_legal || "No Name" }}
       </h2>
       <p class="text-xs">
-        {{ identity.identity_email }}
+        {{ identity.attributes.identity_email }}
       </p>
     </div>
-    <div class="flex justify-between align-center">
+    <div class="flex justify-around align-center w-full">
       <a
         target="_blank"
-        :href="identity.identity_web"
-        class="p-3 text-white rounded-full cursor-pointer bg-pink w-16 flex items-center justify-center mr-8"
+        :href="web"
+        class="p-3 text-white rounded-full cursor-pointer w-16 flex items-center justify-center block bg-pink"
+        :class="{ 'bg-gray-600': !web }"
+        :disabled="!web"
       >
         <Icon name="web" />
       </a>
       <a
         target="_blank"
-        :href="identity.identity_riot"
-        class="p-3 text-white rounded-full cursor-pointer bg-green w-16 flex items-center justify-center mr-8"
+        :href="riot"
+        class="p-3 text-white rounded-full cursor-pointer w-16 flex items-center justify-center block bg-green"
+        :class="{ 'bg-gray-600': !riot }"
+        :disabled="!riot"
       >
         <Icon name="element" />
       </a>
       <a
         target="_blank"
-        :href="identity.identity_twitter"
-        class="p-3 text-white rounded-full cursor-pointer bg-blue w-16 flex items-center justify-center mr-8"
+        :href="twitter"
+        class="p-3 text-white rounded-full cursor-pointer w-16 flex items-center justify-center block relative bg-blue"
+        :class="{ 'bg-gray-600': !twitter }"
+        :disabled="!twitter"
       >
         <Icon name="twitter" />
       </a>
@@ -51,6 +57,34 @@ export default {
       type: Object,
       required: true
     }
+  },
+  computed: {
+    extractInitials() {
+      if (this.identity.attributes.identity_legal) {
+        return this.identity.attributes.identity_legal
+          .split(" ")
+          .map(n => n[0])
+          .join("");
+      }
+      return "";
+    },
+    web() {
+      return this.identity.attributes.identity_web;
+    },
+    twitter() {
+      const { identity_twitter: twitter } = this.identity.attributes
+      if (twitter) {
+        return `https://twitter.com/${twitter}`;
+      }
+      return null;
+    },
+    riot() {
+      const { identity_riot: riot } = this.identity.attributes
+      if (riot) {
+        return `https://matrix.to/#/${riot}`;
+      }
+      return null;
+    },
   }
 };
 </script>
