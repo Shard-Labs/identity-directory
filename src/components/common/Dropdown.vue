@@ -1,7 +1,7 @@
 <template>
   <div class="relative outline-none" :tabindex="0" @blur="closeDropdown">
     <div
-      class="flex justify-around items-center outline-none w-full bg-gray rounded-md px-2 py-2 space-x-2"
+      class="flex justify-around items-center outline-none w-full bg-gray-50 rounded-md px-2 py-2 space-x-2"
       :class="{ textClasses: true, isOpenClass: isOpen }"
       role="button"
       @click="toggleDropdown"
@@ -11,7 +11,7 @@
       <Icon name="arrow-down" />
     </div>
     <ul
-      class="absolute bg-gray flex flex-col rounded-t-none rounded-b-md z-20 w-full"
+      class="absolute bg-gray-50 flex flex-col rounded-t-none rounded-b-md z-20 w-full"
       v-show="isOpen"
     >
       <li
