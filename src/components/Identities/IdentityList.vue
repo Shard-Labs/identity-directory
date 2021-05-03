@@ -17,7 +17,7 @@
               "No Info"
           }}
         </div>
-        <Badge label="Council" color="yellow" prefixIcon="bulb"/>
+        <Badge label="Council" color="yellow" prefixIcon="bulb" />
         <!-- <div>{{ identity.attributes.is_council_member ? "COUNCL" : "" }}</div> -->
       </div>
       <Icon name="arrow-right" />
