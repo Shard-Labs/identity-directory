@@ -7,22 +7,16 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { mapGetters } from 'vuex';
 import Alert from "./Alert";
 export default {
   name: "AlertContainer",
   components: {
     Alert
   },
-  setup() {
-    showAlert = ref(false);
-
-    const triggerAlert = () => {
-      showAlert.value = true;
-      setTimeout(() => (showAlert.value = false), 2000);
-    };
-    return { showAlert, triggerAlert };
-  }
+  computed: {
+    ...mapGetters ({ alerts })
+  },
 };
 </script>
 

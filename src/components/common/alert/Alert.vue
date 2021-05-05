@@ -12,12 +12,19 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
 export default {
   name: "Alert",
   props: {
     alert: {
       type: Object,
       required: true
+    },
+    methods: {
+      ...mapMutations({ hideAlert })
+    },
+    created() {
+      setTimeout(() => this.hideAlert(), this.alert.duration);
     }
   },
 };
