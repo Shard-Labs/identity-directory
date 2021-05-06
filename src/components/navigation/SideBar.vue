@@ -6,9 +6,9 @@
     </div>
     <Dropdown
       class="mb-8"
-      :data="chain"
+      :data="networkList"
       :value="chain[0].title"
-      :valueText="selectedChainTitle"
+      :valueText="network ? network.title : 'Select Network'"
       @select="getSelectedDropDownDataIndex"
       prefixIcon="chain"
     />
@@ -18,9 +18,10 @@
 
 <script>
 import { defineComponent } from "vue";
+import { mapActions, mapGetters } from "vuex";
+import { ActionTypes } from "@/store/actions";
 
 import Icon from "@/components/common/Icon.vue";
-import { ApiPromise, WsProvider } from "@polkadot/api";
 import NavBar from "./NavBar.vue";
 import Dropdown from "../common/Dropdown.vue";
 
@@ -41,6 +42,7 @@ export default defineComponent({
     };
   },
   computed: {
+    ...mapGetters(["network", "networkList"]),
     selectedChainTitle() {
       return this.selectedChain ? this.selectedChain.title : "Select Network";
     },
@@ -49,16 +51,9 @@ export default defineComponent({
     }
   },
   methods: {
+    ...mapActions({ selectNetwork: ActionTypes.SetNetwork }),
     async getSelectedDropDownDataIndex(index) {
-      this.selectedChain = { ...this.chain[index] };
-
-      const provider = new WsProvider(this.selectedChain.wsProvider);
-
-      const api = await ApiPromise.create({ provider });
-
-      console.log(api.genesisHash.toHex());
-
-      console.log((api.isConnected, "isconnected"));
+      this.selectNetwork({ ...this.networkList[index] });
     }
   }
 });

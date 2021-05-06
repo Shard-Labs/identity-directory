@@ -1,9 +1,11 @@
+import { ApiPromise, WsProvider } from "@polkadot/api";
+
 import { ActionContext, ActionTree } from "vuex";
 import { Mutations, MutationType } from "./mutations";
 import { Network, Notification, State } from "./state";
 
-function calcPaginationState(page: number, sizePerPage:number):string {
-  return `${(page-1) * sizePerPage + 1 }-${ page * sizePerPage }`
+function calcPaginationState(page: number, sizePerPage: number): string {
+  return `${(page - 1) * sizePerPage + 1}-${page * sizePerPage}`;
 }
 
 export enum ActionTypes {
@@ -47,7 +49,43 @@ export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.SetNetwork]({ commit }, network) {
     commit(MutationType.SetNetwork, network);
   },
-  async [ActionTypes.ConnectToNetwork]() {
+  async [ActionTypes.ConnectToNetwork]({ commit, state, dispatch }) {
+    const { network } = state;
+    try {
+      if (network) {
+        const provider = new WsProvider(network.wsProvider);
+        const api = await ApiPromise.create({ provider });
+        const { isConnected } = api;
+
+        if (isConnected) {
+          commit(MutationType.SetNetworkConnected, isConnected);
+          commit(MutationType.SetNetworkAPI, api);
+          dispatch(ActionTypes.SetNotification, {
+            show: true,
+            message: "Connected to Network/Node",
+            type: "success"
+          });
+        } else {
+          dispatch(ActionTypes.SetNotification, {
+            show: true,
+            message: "Unable To connect to Network/Node",
+            type: "danger"
+          });
+        }
+      } else {
+        dispatch(ActionTypes.SetNotification, {
+          show: true,
+          message: "Network Not Selected",
+          type: "danger"
+        });
+      }
+    } catch (ex) {
+      dispatch(ActionTypes.SetNotification, {
+        show: true,
+        message: "Unable To connect to Network/Node",
+        type: "danger"
+      });
+    }
     return true;
   },
   async [ActionTypes.SetNotification]({ commit }, notification) {

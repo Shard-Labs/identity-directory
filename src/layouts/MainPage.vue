@@ -60,6 +60,8 @@ import { defineComponent } from "vue";
 import InputField from "../components/common/InputField.vue";
 import Identities from "@/components/Identities/index.vue";
 import SideBar from "@/components/navigation/SideBar.vue";
+import { mapActions } from "vuex";
+import { ActionTypes } from "@/store/actions";
 
 export default defineComponent({
   name: "MainPage",
@@ -67,6 +69,9 @@ export default defineComponent({
     SideBar,
     Identities,
     InputField
+  },
+  methods: {
+    ...mapActions({ connect: ActionTypes.ConnectToNetwork })
   }
 });
 </script>
