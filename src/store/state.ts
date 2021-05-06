@@ -1,3 +1,5 @@
+import { ApiPromise } from "@polkadot/api";
+
 export type Identity = {
   id: string;
   type: string;
@@ -9,7 +11,7 @@ export type Network = {
   wsProvider: string;
   connected: boolean;
   url: string;
-  api: object;
+  api: ApiPromise | null;
 };
 
 export type Notification = {
@@ -26,6 +28,7 @@ export type Pagination = {
 export type State = {
   identity: Identity | null;
   identityList: Identity[] | [];
+  identityGridList: Identity[] | [];
   network: Network | null;
   networkList: Network[] | [];
   notification: Notification;
@@ -35,6 +38,7 @@ export type State = {
 export const state: State = {
   identity: null,
   identityList: [],
+  identityGridList: [],
   network: null,
   networkList: [
     {
@@ -42,14 +46,14 @@ export const state: State = {
       wsProvider: "wss://rpc.polkadot.io",
       connected: false,
       url: "",
-      api: {}
+      api: null
     },
     {
       title: "Kusama",
       wsProvider: "wss://kusama-rpc.polkadot.io",
       connected: false,
       url: "",
-      api: {}
+      api: null
     }
   ],
   notification: {

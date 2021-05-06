@@ -1,16 +1,23 @@
 <template>
   <div>
     <div class="grid grid-cols-3 grid-rows-1 gap-9 mb-8">
-      <identity-card v-for="card in cards" :identity="card" :key="card.id" />
+      <identity-card
+        v-for="card in identityGridList"
+        :identity="card"
+        :key="card.id"
+      />
     </div>
-    <identity-list class="col-span-3" :identities="items" />
+    <identity-list class="col-span-3" :identities="identityList" />
   </div>
 </template>
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
+import { mapGetters } from "vuex";
+
 import IdentityCard from "./IdentityCard.vue";
 import IdentityList from "./IdentityList.vue";
 
-export default {
+export default defineComponent({
   name: "Identities",
   components: {
     IdentityCard,
@@ -18,18 +25,13 @@ export default {
   },
   data() {
     return {
-      items: [],
+      items: []
     };
   },
   computed: {
-    cards() {
-      return this.items.slice(0, 3);
-    },
-    identities() {
-      return this.items.slice(3);
-    }
+    ...mapGetters(["identityList", "identityGridList"])
   }
-};
+});
 </script>
 
 IdentityCard

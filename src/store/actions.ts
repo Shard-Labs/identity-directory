@@ -1,8 +1,9 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
+import HTTPClient from "@/lib/HTTPClient";
 
 import { ActionContext, ActionTree } from "vuex";
 import { Mutations, MutationType } from "./mutations";
-import { Network, Notification, State } from "./state";
+import { Identity, Network, Notification, State } from "./state";
 
 function calcPaginationState(page: number, sizePerPage: number): string {
   return `${(page - 1) * sizePerPage + 1}-${page * sizePerPage}`;
@@ -10,6 +11,7 @@ function calcPaginationState(page: number, sizePerPage: number): string {
 
 export enum ActionTypes {
   GetIdentity = "GET_IDENTITY",
+  GetIdentityList = "GET_IDENTITY_LIST",
   SetNetwork = "SET_NETWORK",
   ConnectToNetwork = "CONNECT_TO_NETWORK",
   SetNotification = "SET_NOTIFICATION",
@@ -26,6 +28,7 @@ type ActionAugments = Omit<ActionContext<State, State>, "commit"> & {
 
 export type Actions = {
   [ActionTypes.GetIdentity](context: ActionAugments): void;
+  [ActionTypes.GetIdentityList](context: ActionAugments): void;
   [ActionTypes.SetNetwork](context: ActionAugments, network: Network): void;
   [ActionTypes.ConnectToNetwork](context: ActionAugments): Promise<boolean>;
   [ActionTypes.SetNotification](
@@ -46,6 +49,25 @@ export const actions: ActionTree<State, State> & Actions = {
       });
     }
   },
+  async [ActionTypes.GetIdentityList]({ commit, state }) {
+    if (state.network) {
+      const {
+        network: { url },
+        pagination: { page, sizePerPage }
+      } = state;
+      try {
+        const { data: list } = await HTTPClient.get(
+          `${url}&page[number]=${page}&page[size]=${sizePerPage + 3}`
+        );
+        const identityListGrid = list.slice(0, 3);
+        list.splice(0, 3);
+        commit(MutationType.SetIdentityList, list);
+        commit(MutationType.SetIdentityGridList, identityListGrid);
+      } catch (ex) {
+        console.error(ex);
+      }
+    }
+  },
   async [ActionTypes.SetNetwork]({ commit }, network) {
     commit(MutationType.SetNetwork, network);
   },
@@ -60,6 +82,7 @@ export const actions: ActionTree<State, State> & Actions = {
         if (isConnected) {
           commit(MutationType.SetNetworkConnected, isConnected);
           commit(MutationType.SetNetworkAPI, api);
+          dispatch(ActionTypes.GetIdentityList);
           dispatch(ActionTypes.SetNotification, {
             show: true,
             message: "Connected to Network/Node",

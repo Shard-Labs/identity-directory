@@ -4,6 +4,7 @@ import { State, Identity, Network, Notification, Pagination } from "./state";
 export type Getters = {
   identity(state: State): Identity | null;
   identityList(state: State): Identity[];
+  identityGridList(state: State): Identity[];
   network(state: State): Network | null;
   networkList(state: State): Network[];
   notification(state: State): Notification;
@@ -16,6 +17,9 @@ export const getters: GetterTree<State, State> & Getters = {
   },
   identityList(state) {
     return state.identityList;
+  },
+  identityGridList(state) {
+    return state.identityGridList;
   },
   network(state) {
     return state.network;
