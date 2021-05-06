@@ -7,7 +7,18 @@
         :key="card.id"
       />
     </div>
-    <identity-list class="col-span-3" :identities="identityList" />
+    <identity-list
+      v-if="identityList.length"
+      class="col-span-3"
+      :identities="identityList"
+    />
+    <p v-else-if="identityListLoading">
+      Loading...
+    </p>
+    <p v-else>
+      No Identies to Display
+    </p>
+
   </div>
 </template>
 <script lang="ts">
@@ -29,7 +40,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapGetters(["identityList", "identityGridList"])
+    ...mapGetters(["identityList", "identityGridList", "identityListLoading"])
   }
 });
 </script>

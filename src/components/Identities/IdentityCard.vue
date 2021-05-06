@@ -5,8 +5,12 @@
       innerClass="md:w-24 md:h-24"
     />
     <div class="mb-6">
-      <h2 class="font-extrabold text-2xl">
-        {{ identity.attributes.identity_legal || "No Name" }}
+      <h2 class="font-extrabold text-2xl ">
+        {{
+          identity.attributes.identity_legal ||
+            identity.attributes.identity_display ||
+            identity.attributes.address.slice(0, 8) + "..."
+        }}
       </h2>
       <p class="text-xs">
         {{ identity.attributes.identity_email }}

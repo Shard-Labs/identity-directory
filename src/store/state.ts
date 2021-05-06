@@ -27,6 +27,7 @@ export type Pagination = {
 };
 export type State = {
   identity: Identity | null;
+  identityListLoading: boolean;
   identityList: Identity[] | [];
   identityGridList: Identity[] | [];
   network: Network | null;
@@ -37,6 +38,7 @@ export type State = {
 
 export const state: State = {
   identity: null,
+  identityListLoading: false,
   identityList: [],
   identityGridList: [],
   network: null,

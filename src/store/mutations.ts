@@ -6,6 +6,7 @@ import { ApiPromise } from "@polkadot/api";
 export enum MutationType {
   SetIdentity = "SET_IDENTITY",
   SetIdentityList = "SET_IDENTITY_LIST",
+  SetIdentityListLoading = "SET_IDENTITY_LIST_LOADING",
   SetIdentityGridList = "SET_ISET_IDENTITY_GRID_LIST",
   SetNetwork = "SET_NETWORK",
   SetNetworkConnected = "SET_NETWORK_CONNECTED",
@@ -20,6 +21,7 @@ export enum MutationType {
 export type Mutations = {
   [MutationType.SetIdentity](state: State, identity: Identity): void;
   [MutationType.SetIdentityList](state: State, list: Identity[]): void;
+  [MutationType.SetIdentityListLoading](state: State, loading: boolean): void;
   [MutationType.SetIdentityGridList](state: State, list: Identity[]): void;
   [MutationType.SetNetwork](state: State, item: Network): void;
   [MutationType.SetNetworkConnected](state: State, connected: boolean): void;
@@ -36,6 +38,9 @@ export const mutations: MutationTree<State> & Mutations = {
   },
   [MutationType.SetIdentityList](state, list) {
     state.identityList = list;
+  },
+  [MutationType.SetIdentityListLoading](state, loading) {
+    state.identityListLoading = loading;
   },
   [MutationType.SetIdentityGridList](state, list) {
     state.identityGridList = list;

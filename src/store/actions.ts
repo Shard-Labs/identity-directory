@@ -51,6 +51,8 @@ export const actions: ActionTree<State, State> & Actions = {
   },
   async [ActionTypes.GetIdentityList]({ commit, state }) {
     if (state.network) {
+      commit(MutationType.SetIdentityList, []);
+      commit(MutationType.SetIdentityListLoading, true);
       const {
         network: { url },
         pagination: { page, sizePerPage }
@@ -61,8 +63,9 @@ export const actions: ActionTree<State, State> & Actions = {
         );
         const identityListGrid = list.slice(0, 3);
         list.splice(0, 3);
-        commit(MutationType.SetIdentityList, list);
+        commit(MutationType.SetIdentityListLoading, false);
         commit(MutationType.SetIdentityGridList, identityListGrid);
+        commit(MutationType.SetIdentityList, list);
       } catch (ex) {
         console.error(ex);
       }
@@ -114,16 +117,21 @@ export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.SetNotification]({ commit }, notification) {
     commit(MutationType.SetNotification, notification);
   },
-  async [ActionTypes.SetPaginationPage]({ commit, state }, page) {
+  async [ActionTypes.SetPaginationPage]({ commit, state, dispatch }, page) {
     const { sizePerPage } = state.pagination;
     const overview = calcPaginationState(page, sizePerPage);
     commit(MutationType.SetPaginationPage, page);
     commit(MutationType.SetPaginationState, overview);
+    dispatch(ActionTypes.GetIdentityList);
   },
-  async [ActionTypes.SetPaginationSize]({ commit, state }, sizePerPage) {
+  async [ActionTypes.SetPaginationSize](
+    { commit, state, dispatch },
+    sizePerPage
+  ) {
     const { page } = state.pagination;
     const overview = calcPaginationState(page, sizePerPage);
-    commit(MutationType.SetPaginationPage, page);
+    commit(MutationType.SetPaginationSize, sizePerPage);
     commit(MutationType.SetPaginationState, overview);
+    dispatch(ActionTypes.GetIdentityList);
   }
 };
