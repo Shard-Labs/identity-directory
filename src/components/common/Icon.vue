@@ -277,6 +277,72 @@
       fill="#E6007A"
     />
   </svg>
+  <svg
+    class="inline-block"
+    :class="iconClass"
+    v-if="name === 'basic-info'"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M4 8a1 1 0 100-2 1 1 0 000 2zM4 13a1 1 0 100-2 1 1 0 000 2zM4 18a1 1 0 100-2 1 1 0 000 2zM20.06 11H7.94a.94.94 0 00-.94.94v.12c0 .52.42.94.94.94h12.12c.52 0 .94-.42.94-.94v-.12a.94.94 0 00-.94-.94zM20.06 16H7.94a.94.94 0 00-.94.94v.12c0 .52.42.94.94.94h12.12c.52 0 .94-.42.94-.94v-.12a.94.94 0 00-.94-.94zM20.06 6H7.94a.94.94 0 00-.94.94v.12c0 .52.42.94.94.94h12.12c.52 0 .94-.42.94-.94v-.12a.94.94 0 00-.94-.94z"
+      fill="#1DA1F2"
+    />
+  </svg>
+  <svg
+    class="inline-block"
+    :class="iconClass"
+    v-if="name === 'governance'"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M21 6a3 3 0 00-3-3H6a3 3 0 00-2 5.22V18a3 3 0 003 3h10a3 3 0 003-3V8.22A3 3 0 0021 6zM6 5h12a1 1 0 110 2H6a1 1 0 010-2zm12 13a1 1 0 01-1 1H7a1 1 0 01-1-1V9h12v9z"
+      fill="#E6007A"
+    />
+    <path
+      d="M14.13 12H9.87a.87.87 0 00-.87.87v.26c0 .48.39.87.87.87h4.26c.48 0 .87-.39.87-.87v-.26a.87.87 0 00-.87-.87z"
+      fill="#E6007A"
+    />
+  </svg>
+  <svg
+    class="inline-block"
+    :class="iconClass"
+    v-if="name === 'treasury'"
+    width="16"
+    height="16"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g clip-path="url(#clip0)">
+      <path
+        d="M14.5 0h-11a.372.372 0 00-.312.169l-3.125 4.6a.375.375 0 00.021.444l8.625 10.65c.15.184.432.184.582 0l8.625-10.65a.375.375 0 00.021-.444l-3.121-4.6A.378.378 0 0014.5 0zm-.603 1.5l1.978 3h-2.137l-1.616-3h1.775zm-6.316 0h2.835l1.615 3H5.97l1.612-3zm-3.478 0h1.775l-1.615 3H2.125l1.978-3zM2.76 6h1.607L6.5 11 2.76 6zm3.216 0h6.05L9 13.603 5.975 6zm5.525 5l2.131-5h1.607L11.5 11z"
+        fill="#FFD232"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0">
+        <path fill="#fff" d="M0 0h18v16H0z" />
+      </clipPath>
+    </defs>
+  </svg>
+  <svg
+    class="inline-block"
+    :class="iconClass"
+    v-if="name === 'close'"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M13.41 12l4.3-4.29a1.004 1.004 0 10-1.42-1.42L12 10.59l-4.29-4.3a1.004 1.004 0 00-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 000 1.42.998.998 0 001.42 0l4.29-4.3 4.29 4.3a.999.999 0 001.42 0 1 1 0 000-1.42L13.41 12z"
+      fill="#302D43"
+    />
+  </svg>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
