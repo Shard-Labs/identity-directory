@@ -20,7 +20,7 @@
         <Badge
           v-if="identity.attributes.is_council_member"
           label="Council"
-          color="yellow"
+          color="yellow-1100"
           prefixIcon="bulb"
         />
       </div>

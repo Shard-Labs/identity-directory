@@ -13,6 +13,7 @@ export enum ActionTypes {
   GetIdentity = "GET_IDENTITY",
   GetIdentityList = "GET_IDENTITY_LIST",
   SetNetwork = "SET_NETWORK",
+  SetNetworkProvider = "SET_NETWORK_PROVIDER",
   ConnectToNetwork = "CONNECT_TO_NETWORK",
   SetNotification = "SET_NOTIFICATION",
   SetPaginationPage = "SET_PAGINATION_PAGE",
@@ -57,7 +58,11 @@ export const actions: ActionTree<State, State> & Actions = {
         network: { url },
         pagination: { page, sizePerPage }
       } = state;
+
       try {
+        if (!url) {
+          return;
+        }
         const { data: list } = await HTTPClient.get(
           `${url}&page[number]=${page}&page[size]=${sizePerPage + 3}`
         );
@@ -74,7 +79,13 @@ export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.SetNetwork]({ commit }, network) {
     commit(MutationType.SetNetwork, network);
   },
+  async [ActionTypes.SetNetworkProvider]({ commit }, provider) {
+    commit(MutationType.SetNetworkProvider, provider);
+  },
   async [ActionTypes.ConnectToNetwork]({ commit, state, dispatch }) {
+    commit(MutationType.SetIdentityList, []);
+    commit(MutationType.SetIdentityGridList, []);
+    dispatch(ActionTypes.SetPaginationPage, 1);
     const { network } = state;
     try {
       if (network) {
@@ -82,7 +93,15 @@ export const actions: ActionTree<State, State> & Actions = {
         const api = await ApiPromise.create({ provider });
         const { isConnected } = api;
         dispatch(ActionTypes.SetPaginationPage, 1);
-
+        if (isConnected && network.custom) {
+          commit(MutationType.SetIdentityListLoading, false);
+          dispatch(ActionTypes.SetNotification, {
+            show: true,
+            message: "Can't display Identities List on custom Node",
+            type: "warning"
+          });
+          return true;
+        }
         if (isConnected) {
           commit(MutationType.SetNetworkConnected, isConnected);
           commit(MutationType.SetNetworkAPI, api);
@@ -93,6 +112,7 @@ export const actions: ActionTree<State, State> & Actions = {
             type: "success"
           });
         } else {
+          commit(MutationType.SetIdentityListLoading, false);
           dispatch(ActionTypes.SetNotification, {
             show: true,
             message: "Unable To connect to Network/Node",
@@ -100,17 +120,18 @@ export const actions: ActionTree<State, State> & Actions = {
           });
         }
       } else {
+        commit(MutationType.SetIdentityListLoading, false);
         dispatch(ActionTypes.SetNotification, {
           show: true,
           message: "Network Not Selected",
-          type: "danger"
+          type: "error"
         });
       }
     } catch (ex) {
       dispatch(ActionTypes.SetNotification, {
         show: true,
         message: "Unable To connect to Network/Node",
-        type: "danger"
+        type: "error"
       });
     }
     return true;

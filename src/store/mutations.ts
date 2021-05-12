@@ -9,6 +9,7 @@ export enum MutationType {
   SetIdentityListLoading = "SET_IDENTITY_LIST_LOADING",
   SetIdentityGridList = "SET_ISET_IDENTITY_GRID_LIST",
   SetNetwork = "SET_NETWORK",
+  SetNetworkProvider = "SET_NETWORK_PROVIDER",
   SetNetworkConnected = "SET_NETWORK_CONNECTED",
   SetNetworkAPI = "SET_NETWORK_API",
   SetNetworkName = "SET_NETWORK_NAME",
@@ -24,6 +25,7 @@ export type Mutations = {
   [MutationType.SetIdentityListLoading](state: State, loading: boolean): void;
   [MutationType.SetIdentityGridList](state: State, list: Identity[]): void;
   [MutationType.SetNetwork](state: State, item: Network): void;
+  [MutationType.SetNetworkProvider](state: State, prodiver: string): void;
   [MutationType.SetNetworkConnected](state: State, connected: boolean): void;
   [MutationType.SetNetworkAPI](state: State, api: ApiPromise): void;
   [MutationType.SetNotification](state: State, item: Notification): void;
@@ -48,10 +50,17 @@ export const mutations: MutationTree<State> & Mutations = {
   [MutationType.SetNetwork](state, network) {
     state.network = network;
   },
+  [MutationType.SetNetworkProvider](state, provider) {
+    if (state.network) {
+      state.network.wsProvider = provider;
+    }
+  },
   [MutationType.SetNetworkConnected](state, connected) {
     if (state.network) {
       state.network.connected = connected;
-      state.network.url = `${Constants.explorerDomain}/${state.network.title.toLowerCase()}/account?filter[has_identity]=1`
+      state.network.url = `${
+        Constants.explorerDomain
+      }/${state.network.title.toLowerCase()}/account?filter[has_identity]=1`;
     }
   },
   [MutationType.SetNetworkAPI](state, api) {

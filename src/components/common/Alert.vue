@@ -8,7 +8,7 @@
         :class="{
           'bg-green': notification.type === 'success',
           'bg-red-500': notification.type === 'error',
-          'bg-yellow-200': notification.type === 'warning'
+          'bg-yellow-400': notification.type === 'warning'
         }"
       >
         <strong class="font-medium text-white text-base">{{

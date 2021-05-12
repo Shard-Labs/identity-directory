@@ -45,6 +45,7 @@
             containerClasses="flex-grow bg-transparent border-solid border-pink rounded-full py-3 px-6"
             inputClasses="py-2 font-medium"
             @input="handleInput(event)"
+            prefixIcon="search"
           >
           </input-field>
         </div>

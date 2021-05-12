@@ -12,6 +12,7 @@ export type Network = {
   connected: boolean;
   url: string;
   api: ApiPromise | null;
+  custom: boolean;
 };
 
 export type Notification = {
@@ -48,14 +49,24 @@ export const state: State = {
       wsProvider: "wss://rpc.polkadot.io",
       connected: false,
       url: "",
-      api: null
+      api: null,
+      custom: false
     },
     {
       title: "Kusama",
       wsProvider: "wss://kusama-rpc.polkadot.io",
       connected: false,
       url: "",
-      api: null
+      api: null,
+      custom: false
+    },
+    {
+      title: "Custom Node",
+      wsProvider: "",
+      connected: false,
+      url: "",
+      api: null,
+      custom: true
     }
   ],
   notification: {

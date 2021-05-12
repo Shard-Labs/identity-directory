@@ -3,8 +3,8 @@
     <div :class="slotClasses">
       <slot></slot>
     </div>
-    <span class="fa fa-search form-control-feedback">
-      <img src="../../assets/search.png" />
+    <span class="fa fa-search form-control-feedback mt-1" v-if="prefixIcon">
+      <Icon :name="prefixIcon" class="" />
     </span>
     <input
       :type="inputType"
@@ -16,7 +16,8 @@
       :class="inputClasses"
       :value="value"
       class="SearchInputWithIcon"
-      @input="handleInput($event)"
+      :style="{ 'text-indent': prefixIcon ? '40px' : '20px' }"
+      @change="handleChange($event)"
     />
   </div>
 </template>
@@ -24,8 +25,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
+import Icon from "@/components/common/Icon.vue";
+
 export default defineComponent({
   name: "InputField",
+  components: {
+    Icon
+  },
   props: {
     inputType: { type: String, required: true },
     placeholder: { type: String },
@@ -36,10 +42,11 @@ export default defineComponent({
     label: { type: String, required: false },
     containerClasses: { type: String, default: "" },
     inputClasses: { type: String, default: "" },
-    slotClasses: { type: String, default: "" }
+    slotClasses: { type: String, default: "" },
+    prefixIcon: { type: String }
   },
   methods: {
-    handleInput(e: Event) {
+    handleChange(e: Event) {
       const target = e.target as HTMLInputElement;
 
       const value = target.value === "" ? null : target.value;
@@ -54,7 +61,7 @@ export default defineComponent({
   border: 2px solid #e6007a;
   border-radius: 25px;
   color: #e6007a;
-  text-indent: 40px;
+  text-indent: 20px;
 }
 .SearchInputWithIcon:focus {
   outline: none;
