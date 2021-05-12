@@ -3,7 +3,7 @@ import HTTPClient from "@/lib/HTTPClient";
 
 import { ActionContext, ActionTree } from "vuex";
 import { Mutations, MutationType } from "./mutations";
-import { Identity, Network, Notification, State } from "./state";
+import { Network, Notification, State } from "./state";
 
 function calcPaginationState(page: number, sizePerPage: number): string {
   return `${(page - 1) * sizePerPage + 1}-${page * sizePerPage}`;
@@ -81,6 +81,7 @@ export const actions: ActionTree<State, State> & Actions = {
         const provider = new WsProvider(network.wsProvider);
         const api = await ApiPromise.create({ provider });
         const { isConnected } = api;
+        dispatch(ActionTypes.SetPaginationPage, 1);
 
         if (isConnected) {
           commit(MutationType.SetNetworkConnected, isConnected);
