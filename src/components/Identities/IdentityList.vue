@@ -4,6 +4,7 @@
       v-for="identity in identities"
       :key="identity.id"
       class="flex justify-between items-center mb-10"
+      @click="() => handleSelectIdentity(identity.attributes.address)"
     >
       <div class="flex items-center">
         <Avatar
@@ -102,7 +103,10 @@ export default {
     ...mapActions({
       handleChangePage: ActionTypes.SetPaginationPage,
       handleChangeSizePerPage: ActionTypes.SetPaginationSize
-    })
+    }),
+    handleSelectIdentity(address) {
+      this.$router.push({ name: "Identity", params: { address } });
+    }
   }
 };
 </script>

@@ -1,11 +1,25 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import MainPage from "../layouts/MainPage.vue";
+import MainLayout from "../layouts/MainPage.vue";
+import ListPage from "../views/ListPage.vue";
+import IdentityPage from "../views/IdentityPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
-    name: "MainPage",
-    component: MainPage
+    path: "",
+    name: "MainLayout",
+    component: MainLayout,
+    children: [
+      {
+        path: "",
+        name: "List",
+        component: ListPage
+      },
+      {
+        path: "/:address",
+        name: "Identity",
+        component: IdentityPage
+      }
+    ]
   },
   {
     path: "/about",

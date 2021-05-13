@@ -18,7 +18,6 @@
     <p v-else>
       No Identies to Display
     </p>
-
   </div>
 </template>
 <script lang="ts">
