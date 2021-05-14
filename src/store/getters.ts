@@ -1,12 +1,20 @@
 import { GetterTree } from "vuex";
-import { State, Identity, Network, Notification, Pagination } from "./state";
+import {
+  State,
+  Identity,
+  IdentityEl,
+  Network,
+  Notification,
+  Pagination
+} from "./state";
 
 export type Getters = {
   identity(state: State): Identity | null;
-  identityList(state: State): Identity[];
+  identityList(state: State): IdentityEl[];
   identityListLoading(state: State): boolean;
-  identityGridList(state: State): Identity[];
+  identityGridList(state: State): IdentityEl[];
   network(state: State): Network | null;
+  token(state: State): string | null;
   networkList(state: State): Network[];
   notification(state: State): Notification;
   pagination(state: State): Pagination;
@@ -27,6 +35,12 @@ export const getters: GetterTree<State, State> & Getters = {
   },
   network(state) {
     return state.network;
+  },
+  token(state) {
+    if (state.network) {
+      return state.network.token;
+    }
+    return null;
   },
   networkList(state) {
     return state.networkList;

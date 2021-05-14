@@ -1,5 +1,5 @@
 <template>
-  <card class="pt-11 pb-10 flex flex-col items-center">
+  <card class="pt-11 pb-10 flex flex-col items-center mt-6">
     <Avatar
       :name="identity.attributes.identity_legal"
       innerClass="md:w-24 md:h-24"

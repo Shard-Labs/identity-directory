@@ -1,9 +1,21 @@
 import { ApiPromise } from "@polkadot/api";
 
-export type Identity = {
+export type IdentityEl = {
   id: string;
   type: string;
   attribute: object;
+};
+
+export type Identity = {
+  id: string;
+  email: string;
+  name: string;
+  web: string;
+  twitter: string;
+  riot: string;
+  address: string;
+  balance: string;
+  token: string;
 };
 
 export type Network = {
@@ -13,6 +25,7 @@ export type Network = {
   url: string;
   api: ApiPromise | null;
   custom: boolean;
+  token: string;
 };
 
 export type Notification = {
@@ -29,8 +42,8 @@ export type Pagination = {
 export type State = {
   identity: Identity | null;
   identityListLoading: boolean;
-  identityList: Identity[] | [];
-  identityGridList: Identity[] | [];
+  identityList: IdentityEl[] | [];
+  identityGridList: IdentityEl[] | [];
   network: Network | null;
   networkList: Network[] | [];
   notification: Notification;
@@ -50,7 +63,8 @@ export const state: State = {
       connected: false,
       url: "",
       api: null,
-      custom: false
+      custom: false,
+      token: ""
     },
     {
       title: "Kusama",
@@ -58,7 +72,8 @@ export const state: State = {
       connected: false,
       url: "",
       api: null,
-      custom: false
+      custom: false,
+      token: ""
     },
     {
       title: "Custom Node",
@@ -66,7 +81,8 @@ export const state: State = {
       connected: false,
       url: "",
       api: null,
-      custom: true
+      custom: true,
+      token: ""
     }
   ],
   notification: {

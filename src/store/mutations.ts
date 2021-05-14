@@ -1,5 +1,5 @@
 import { MutationTree } from "vuex";
-import { State, Identity, Notification, Network } from "./state";
+import { State, Identity, IdentityEl, Notification, Network } from "./state";
 import { Constants } from "../lib/constants";
 import { ApiPromise } from "@polkadot/api";
 
@@ -9,6 +9,7 @@ export enum MutationType {
   SetIdentityListLoading = "SET_IDENTITY_LIST_LOADING",
   SetIdentityGridList = "SET_ISET_IDENTITY_GRID_LIST",
   SetNetwork = "SET_NETWORK",
+  SetToken = "SET_TOKEN",
   SetNetworkProvider = "SET_NETWORK_PROVIDER",
   SetNetworkConnected = "SET_NETWORK_CONNECTED",
   SetNetworkAPI = "SET_NETWORK_API",
@@ -21,10 +22,11 @@ export enum MutationType {
 
 export type Mutations = {
   [MutationType.SetIdentity](state: State, identity: Identity): void;
-  [MutationType.SetIdentityList](state: State, list: Identity[]): void;
+  [MutationType.SetIdentityList](state: State, list: IdentityEl[]): void;
   [MutationType.SetIdentityListLoading](state: State, loading: boolean): void;
-  [MutationType.SetIdentityGridList](state: State, list: Identity[]): void;
+  [MutationType.SetIdentityGridList](state: State, list: IdentityEl[]): void;
   [MutationType.SetNetwork](state: State, item: Network): void;
+  [MutationType.SetToken](state: State, token: string): void;
   [MutationType.SetNetworkProvider](state: State, prodiver: string): void;
   [MutationType.SetNetworkConnected](state: State, connected: boolean): void;
   [MutationType.SetNetworkAPI](state: State, api: ApiPromise): void;
@@ -49,6 +51,11 @@ export const mutations: MutationTree<State> & Mutations = {
   },
   [MutationType.SetNetwork](state, network) {
     state.network = network;
+  },
+  [MutationType.SetToken](state, token) {
+    if (state.network) {
+      state.network.token = token;
+    }
   },
   [MutationType.SetNetworkProvider](state, provider) {
     if (state.network) {
