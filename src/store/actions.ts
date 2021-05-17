@@ -11,6 +11,7 @@ function calcPaginationState(page: number, sizePerPage: number): string {
 
 export enum ActionTypes {
   GetIdentity = "GET_IDENTITY",
+  SearchIdentity = "SEARCH_IDENTITY",
   GetIdentityList = "GET_IDENTITY_LIST",
   SetNetwork = "SET_NETWORK",
   SetNetworkProvider = "SET_NETWORK_PROVIDER",
@@ -29,6 +30,10 @@ type ActionAugments = Omit<ActionContext<State, State>, "commit"> & {
 
 export type Actions = {
   [ActionTypes.GetIdentity](context: ActionAugments, address: string): void;
+  [ActionTypes.SearchIdentity](
+    context: ActionAugments,
+    address: string
+  ): Promise<boolean>;
   [ActionTypes.GetIdentityList](context: ActionAugments): void;
   [ActionTypes.SetNetwork](context: ActionAugments, network: Network): void;
   [ActionTypes.ConnectToNetwork](context: ActionAugments): Promise<boolean>;
@@ -44,7 +49,6 @@ export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.GetIdentity]({ commit, state }, address) {
     if (state.network) {
       const { api } = state.network;
-      console.log(address);
       const identity = await api?.derive.accounts.identity(address);
       /* @ts-ignore */
       identity.judgements = [];
@@ -54,6 +58,17 @@ export const actions: ActionTree<State, State> & Actions = {
         commit(MutationType.SetIdentity, identity);
       }
     }
+  },
+  async [ActionTypes.SearchIdentity]({state}, address) {
+    if (state.network) {
+      const { api } = state.network;
+      const identity = await api?.derive.accounts.identity(address);
+      if (identity) {
+        return true;
+      }
+      return false;
+    }
+    return false;
   },
   async [ActionTypes.GetIdentityList]({ commit, state, dispatch }) {
     const { network } = state;

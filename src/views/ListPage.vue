@@ -38,7 +38,7 @@
         placeholder="Search identities by address..."
         containerClasses="flex-grow bg-transparent border-solid border-pink rounded-full py-3 px-6"
         inputClasses="py-2 font-medium"
-        @input="handleInput(event)"
+        @update="handleSearch"
         prefixIcon="search"
       >
       </input-field>
@@ -52,6 +52,8 @@
 
 <script lagn="ts">
 import { defineComponent } from "vue";
+import { decodeAddress, encodeAddress } from "@polkadot/keyring";
+import { hexToU8a, isHex } from "@polkadot/util";
 import { mapActions, mapGetters } from "vuex";
 import { ActionTypes } from "@/store/actions";
 
@@ -65,7 +67,45 @@ export default defineComponent({
     InputField
   },
   methods: {
-    ...mapActions({ getIdentityList: ActionTypes.GetIdentityList })
+    ...mapActions({
+      getIdentityList: ActionTypes.GetIdentityList,
+      searchIdentity: ActionTypes.SearchIdentity,
+      setNotification: ActionTypes.SetNotification
+    }),
+    async handleSearch(address) {
+      const valid = this.validateAddress(address);
+      if (valid) {
+        const exists = await this.searchIdentity(address);
+        if (exists) {
+          const { network } = this.$route;
+          return this.$router.push({
+            name: "Identity",
+            params: { address, network }
+          });
+        }
+        return this.setNotification({
+          type: "error",
+          message: "Identity Not Found",
+          show: true
+        });
+      }
+      return this.setNotification({
+        type: "error",
+        message: "Invalid Address",
+        show: true
+      });
+    },
+    validateAddress(address) {
+      try {
+        encodeAddress(
+          isHex(address) ? hexToU8a(address) : decodeAddress(address)
+        );
+
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
   },
   computed: {
     ...mapGetters(["network", "identityList"]),
