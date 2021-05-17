@@ -15,7 +15,12 @@ const routes: Array<RouteRecordRaw> = [
         component: ListPage
       },
       {
-        path: "/:address",
+        path: "/:network",
+        name: "ListWithNetwork",
+        component: ListPage
+      },
+      {
+        path: "/:network/:address",
         name: "Identity",
         component: IdentityPage
       }

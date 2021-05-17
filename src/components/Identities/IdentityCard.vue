@@ -1,5 +1,8 @@
 <template>
-  <card class="pt-11 pb-10 flex flex-col items-center mt-6">
+  <card
+    class="pt-11 pb-10 flex flex-col items-center mt-6  cursor-pointer"
+    @click="goToIdentity"
+  >
     <Avatar
       :name="identity.attributes.identity_legal"
       innerClass="md:w-24 md:h-24"
@@ -16,11 +19,11 @@
         {{ identity.attributes.identity_email }}
       </p>
     </div>
-    <div class="flex justify-around align-center w-full">
+    <div class="flex justify-center align-center w-full">
       <a
         target="_blank"
         :href="web"
-        class="p-3 text-white rounded-full cursor-pointer w-16 flex items-center justify-center block bg-pink"
+        class="p-3 text-white rounded-full cursor-pointer w-16 h-16 flex items-center justify-center block bg-pink mr-5"
         :class="{ 'bg-gray-600': !web }"
         :disabled="!web"
       >
@@ -29,7 +32,7 @@
       <a
         target="_blank"
         :href="riot"
-        class="p-3 text-white rounded-full cursor-pointer w-16 flex items-center justify-center block bg-green"
+        class="p-3 text-white rounded-full cursor-pointer w-16 h-16 flex items-center justify-center block bg-green mr-5"
         :class="{ 'bg-gray-600': !riot }"
         :disabled="!riot"
       >
@@ -38,7 +41,7 @@
       <a
         target="_blank"
         :href="twitter"
-        class="p-3 text-white rounded-full cursor-pointer w-16 flex items-center justify-center block relative bg-blue"
+        class="p-3 text-white rounded-full cursor-pointer w-16 h-16 flex items-center justify-center block relative bg-blue mr-5"
         :class="{ 'bg-gray-600': !twitter }"
         :disabled="!twitter"
       >
@@ -82,6 +85,13 @@ export default {
         return `https://matrix.to/#/${riot}`;
       }
       return null;
+    }
+  },
+  methods: {
+    goToIdentity() {
+      const { address } = this.identity.attributes;
+      const { network } = this.$route.params;
+      this.$router.push({ name: "Identity", params: { address, network } });
     }
   }
 };

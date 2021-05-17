@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div v-if="loading">Loading</div>
+  <div v-else>
     <header class="flex flex-col justify-between ">
       <h1 class="font-black text-4xl text-left mb-8">Identity</h1>
       <IdentityCard class="mb-10" />
@@ -30,8 +31,16 @@ export default defineComponent({
     Treasury,
     Governance
   },
+  data() {
+    return {
+      loading: true
+    };
+  },
   computed: {
     ...mapGetters(["network"]),
+    api() {
+      return this.network && this.network.api;
+    },
     name() {
       if (!this.identity || (this.identity && !this.identity.attributes)) {
         return "No Info";
@@ -50,20 +59,28 @@ export default defineComponent({
     }
   },
   async created() {
-    if (!this.network?.api) {
-      this.$router.push({ name: "List" });
+    if (this.api) {
+      await this.fetchIdentity();
     }
-    this.loading = true;
-    const { address } = this.$route.params;
-    if (address) {
-      await this.getIdentity(address);
-      this.loading = false;
-    } else {
-      this.$router.push({ name: "List" });
+  },
+  watch: {
+    api() {
+      this.fetchIdentity();
     }
   },
   methods: {
-    ...mapActions({ getIdentity: ActionTypes.GetIdentity })
+    ...mapActions({ getIdentity: ActionTypes.GetIdentity }),
+    async fetchIdentity() {
+      const { address } = this.$route.params;
+      if (address) {
+        console.log('TEST!');
+        await this.getIdentity(address);
+        console.log('TEST!!');
+        this.loading = false;
+      } else {
+        this.$router.push({ name: "List" });
+      }
+    }
   }
 });
 </script>

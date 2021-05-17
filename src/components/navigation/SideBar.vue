@@ -7,7 +7,7 @@
     <Dropdown
       class="mb-8"
       :data="networkList"
-      :value="chain[0].title"
+      :value="networkList[0].title"
       :valueText="network ? network.title : 'Select Network'"
       @select="getSelectedDropDownDataIndex"
       prefixIcon="chain"
@@ -47,10 +47,6 @@ export default defineComponent({
   },
   data() {
     return {
-      chain: [
-        { title: "Polkadot", wsProvider: "wss://rpc.polkadot.io" },
-        { title: "Kusama", wsProvider: "wss://kusama-rpc.polkadot.io" }
-      ],
       selectedChain: null
     };
   },
@@ -69,13 +65,45 @@ export default defineComponent({
   methods: {
     ...mapActions({
       selectNetwork: ActionTypes.SetNetwork,
-      setNetworkProvider: ActionTypes.SetNetworkProvider
+      setNetworkProvider: ActionTypes.SetNetworkProvider,
+      setNotification: ActionTypes.SetNotification,
+      connect: ActionTypes.ConnectToNetwork
     }),
     async getSelectedDropDownDataIndex(index) {
       this.selectNetwork({ ...this.networkList[index] });
+      const { title } = this.networkList[index];
+      if (title !== "Custom Node") {
+        this.connect();
+      }
+      this.$router.push({
+        name: "ListWithNetwork",
+        params: { network: title.toLowerCase() }
+      });
     },
     handleInput(value) {
       this.setNetworkProvider(value);
+      this.connect();
+    }
+  },
+  created() {
+    const { network } = this.$route.params;
+    if (this.network && this.network.title.toLowerCase() === network) {
+      return;
+    }
+    if (network) {
+      const networkObject = this.networkList.find(
+        el => el.title.toLowerCase() === network
+      );
+      if (!networkObject) {
+        this.setNotification({
+          type: "error",
+          show: true,
+          message: "Unsuported Network"
+        });
+        return this.$router.push({ name: "List" });
+      }
+      this.selectNetwork(networkObject);
+      this.connect();
     }
   }
 });

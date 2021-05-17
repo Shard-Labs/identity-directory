@@ -1,4 +1,6 @@
 import { GetterTree } from "vuex";
+
+import { DeriveAccountRegistration } from "@polkadot/api-derive/types";
 import {
   State,
   Identity,
@@ -9,7 +11,7 @@ import {
 } from "./state";
 
 export type Getters = {
-  identity(state: State): Identity | null;
+  identity(state: State): Identity | DeriveAccountRegistration | null;
   identityList(state: State): IdentityEl[];
   identityListLoading(state: State): boolean;
   identityGridList(state: State): IdentityEl[];

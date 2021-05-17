@@ -1,4 +1,5 @@
 import { ApiPromise } from "@polkadot/api";
+import { DeriveAccountRegistration } from "@polkadot/api-derive/types";
 
 export type IdentityEl = {
   id: string;
@@ -15,7 +16,6 @@ export type Identity = {
   riot: string;
   address: string;
   balance: string;
-  token: string;
 };
 
 export type Network = {
@@ -40,7 +40,7 @@ export type Pagination = {
   state: string;
 };
 export type State = {
-  identity: Identity | null;
+  identity: DeriveAccountRegistration | Identity | null;
   identityListLoading: boolean;
   identityList: IdentityEl[] | [];
   identityGridList: IdentityEl[] | [];

@@ -3,7 +3,7 @@
     <li
       v-for="identity in identities"
       :key="identity.id"
-      class="flex justify-between items-center mb-10"
+      class="flex justify-between items-center mb-10 cursor-pointer"
       @click="() => handleSelectIdentity(identity.attributes.address)"
     >
       <div class="flex items-center">
@@ -105,7 +105,8 @@ export default {
       handleChangeSizePerPage: ActionTypes.SetPaginationSize
     }),
     handleSelectIdentity(address) {
-      this.$router.push({ name: "Identity", params: { address } });
+      const { network } = this.$route.params;
+      this.$router.push({ name: "Identity", params: { address, network } });
     }
   }
 };

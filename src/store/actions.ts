@@ -44,29 +44,31 @@ export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.GetIdentity]({ commit, state }, address) {
     if (state.network) {
       const { api } = state.network;
+      console.log(address);
       const identity = await api?.derive.accounts.identity(address);
       const balances = await api?.derive.balances.account(address);
-      // const votes = await api?.query.society.votes(address);
-
-      console.log(identity);
-      // console.log(votes);
-      console.log(balances);
-      console.log(balances?.freeBalance.toHuman());
-      console.log(balances?.frozenFee.toHuman());
-      console.log(balances?.reservedBalance.toHuman());
-      console.log(balances?.votingBalance.toHuman());
-      if (balances) {
-        /* @ts-ignore */
+      if (identity) {
+        console.log(identity);
         commit(MutationType.SetIdentity, identity);
       }
     }
   },
-  async [ActionTypes.GetIdentityList]({ commit, state }) {
-    if (state.network) {
+  async [ActionTypes.GetIdentityList]({ commit, state, dispatch }) {
+    const { network } = state;
+    if (network) {
+      if (network.custom) {
+        commit(MutationType.SetIdentityListLoading, false);
+        dispatch(ActionTypes.SetNotification, {
+          show: true,
+          message: "Can't display Identities List on custom Node",
+          type: "warning"
+        });
+        return true;
+      }
       commit(MutationType.SetIdentityList, []);
       commit(MutationType.SetIdentityListLoading, true);
+      const { url } = network;
       const {
-        network: { url },
         pagination: { page, sizePerPage }
       } = state;
 
@@ -94,8 +96,6 @@ export const actions: ActionTree<State, State> & Actions = {
     commit(MutationType.SetNetworkProvider, provider);
   },
   async [ActionTypes.ConnectToNetwork]({ commit, state, dispatch }) {
-    commit(MutationType.SetIdentityList, []);
-    commit(MutationType.SetIdentityGridList, []);
     dispatch(ActionTypes.SetPaginationPage, 1);
     const { network } = state;
     try {
@@ -103,27 +103,9 @@ export const actions: ActionTree<State, State> & Actions = {
         const provider = new WsProvider(network.wsProvider);
         const api = await ApiPromise.create({ provider });
         const { isConnected } = api;
-        if (isConnected && network.custom) {
-          commit(MutationType.SetIdentityListLoading, false);
-          dispatch(ActionTypes.SetNotification, {
-            show: true,
-            message: "Can't display Identities List on custom Node",
-            type: "warning"
-          });
-          return true;
-        }
         if (isConnected) {
           commit(MutationType.SetNetworkConnected, isConnected);
           commit(MutationType.SetNetworkAPI, api);
-          dispatch(ActionTypes.GetIdentityList);
-          const properties = (await api.rpc.system.properties()).toHuman();
-          console.log(properties);
-          /* @ts-ignore */
-          const { tokenSymbol } = properties;
-          if (Array.isArray(tokenSymbol) && tokenSymbol.length > 0) {
-            /* @ts-ignore */
-            commit(MutationType.SetToken, tokenSymbol.shift());
-          }
           dispatch(ActionTypes.SetNotification, {
             show: true,
             message: "Connected to Network/Node",

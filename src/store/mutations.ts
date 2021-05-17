@@ -2,6 +2,7 @@ import { MutationTree } from "vuex";
 import { State, Identity, IdentityEl, Notification, Network } from "./state";
 import { Constants } from "../lib/constants";
 import { ApiPromise } from "@polkadot/api";
+import { DeriveAccountRegistration } from "@polkadot/api-derive/types";
 
 export enum MutationType {
   SetIdentity = "SET_IDENTITY",
@@ -21,7 +22,10 @@ export enum MutationType {
 }
 
 export type Mutations = {
-  [MutationType.SetIdentity](state: State, identity: Identity): void;
+  [MutationType.SetIdentity](
+    state: State,
+    identity: Identity | DeriveAccountRegistration
+  ): void;
   [MutationType.SetIdentityList](state: State, list: IdentityEl[]): void;
   [MutationType.SetIdentityListLoading](state: State, loading: boolean): void;
   [MutationType.SetIdentityGridList](state: State, list: IdentityEl[]): void;

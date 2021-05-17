@@ -52,7 +52,7 @@
 
 <script lagn="ts">
 import { defineComponent } from "vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import { ActionTypes } from "@/store/actions";
 
 import InputField from "../components/common/InputField.vue";
@@ -65,7 +65,20 @@ export default defineComponent({
     InputField
   },
   methods: {
-    ...mapActions({ connect: ActionTypes.ConnectToNetwork })
+    ...mapActions({ getIdentityList: ActionTypes.GetIdentityList })
+  },
+  computed: {
+    ...mapGetters(["network"]),
+    api() {
+      return this.network?.api;
+    }
+  },
+  watch: {
+    api(val) {
+      if (val) {
+        this.getIdentityList();
+      }
+    }
   }
 });
 </script>
