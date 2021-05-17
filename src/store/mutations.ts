@@ -3,8 +3,10 @@ import { State, Identity, IdentityEl, Notification, Network } from "./state";
 import { Constants } from "../lib/constants";
 import { ApiPromise } from "@polkadot/api";
 import { DeriveAccountRegistration } from "@polkadot/api-derive/types";
+import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 
 export enum MutationType {
+  SetWallet = "SET_WALLET",
   SetIdentity = "SET_IDENTITY",
   SetIdentityList = "SET_IDENTITY_LIST",
   SetIdentityListLoading = "SET_IDENTITY_LIST_LOADING",
@@ -22,6 +24,7 @@ export enum MutationType {
 }
 
 export type Mutations = {
+  [MutationType.SetWallet](state: State, wallet: InjectedAccountWithMeta): void;
   [MutationType.SetIdentity](
     state: State,
     identity: Identity | DeriveAccountRegistration
@@ -41,6 +44,9 @@ export type Mutations = {
 };
 
 export const mutations: MutationTree<State> & Mutations = {
+  [MutationType.SetWallet](state, wallet) {
+    state.wallet = wallet;
+  },
   [MutationType.SetIdentity](state, identity) {
     state.identity = identity;
   },

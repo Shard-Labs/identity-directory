@@ -1,6 +1,8 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import HTTPClient from "@/lib/HTTPClient";
 
+import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
+
 import { ActionContext, ActionTree } from "vuex";
 import { Mutations, MutationType } from "./mutations";
 import { Network, Notification, State } from "./state";
@@ -10,6 +12,7 @@ function calcPaginationState(page: number, sizePerPage: number): string {
 }
 
 export enum ActionTypes {
+  SetWallet = "SET_WALLET",
   GetIdentity = "GET_IDENTITY",
   SearchIdentity = "SEARCH_IDENTITY",
   GetIdentityList = "GET_IDENTITY_LIST",
@@ -29,6 +32,10 @@ type ActionAugments = Omit<ActionContext<State, State>, "commit"> & {
 };
 
 export type Actions = {
+  [ActionTypes.SetWallet](
+    context: ActionAugments,
+    wallet: InjectedAccountWithMeta
+  ): void;
   [ActionTypes.GetIdentity](context: ActionAugments, address: string): void;
   [ActionTypes.SearchIdentity](
     context: ActionAugments,
@@ -46,6 +53,9 @@ export type Actions = {
 };
 
 export const actions: ActionTree<State, State> & Actions = {
+  async [ActionTypes.SetWallet]({ commit }, wallet) {
+    commit(MutationType.SetWallet, wallet);
+  },
   async [ActionTypes.GetIdentity]({ commit, state }, address) {
     if (state.network) {
       const { api } = state.network;
@@ -54,12 +64,11 @@ export const actions: ActionTree<State, State> & Actions = {
       identity.judgements = [];
       const balances = await api?.derive.balances.account(address);
       if (identity) {
-        console.log(identity);
         commit(MutationType.SetIdentity, identity);
       }
     }
   },
-  async [ActionTypes.SearchIdentity]({state}, address) {
+  async [ActionTypes.SearchIdentity]({ state }, address) {
     if (state.network) {
       const { api } = state.network;
       const identity = await api?.derive.accounts.identity(address);

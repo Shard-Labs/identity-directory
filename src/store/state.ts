@@ -1,5 +1,6 @@
 import { ApiPromise } from "@polkadot/api";
 import { DeriveAccountRegistration } from "@polkadot/api-derive/types";
+import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 
 export type IdentityEl = {
   id: string;
@@ -40,6 +41,7 @@ export type Pagination = {
   state: string;
 };
 export type State = {
+  wallet: InjectedAccountWithMeta | null;
   identity: DeriveAccountRegistration | Identity | null;
   identityListLoading: boolean;
   identityList: IdentityEl[] | [];
@@ -51,6 +53,7 @@ export type State = {
 };
 
 export const state: State = {
+  wallet: null,
   identity: null,
   identityListLoading: false,
   identityList: [],

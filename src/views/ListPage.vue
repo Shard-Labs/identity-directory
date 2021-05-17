@@ -1,9 +1,22 @@
 <template>
   <div>
+    <Modal :show="showModal" header="Account List" @close="handleCloseModal">
+      <ul class="pb-8  px-10">
+        <li
+          v-for="account in allAccounts"
+          :key="account.address"
+          class="cursor-pointer"
+          @click="() => selectWallet(account)"
+        >
+          <span class="font-bold">{{ account.meta.name }}</span> -
+          <span>{{ account.address }}</span>
+        </li>
+      </ul>
+    </Modal>
     <header class="flex justify-between">
       <h1 class="font-black text-4xl text-left">Identity directory</h1>
       <button
-        @click="connect"
+        @click="checkWallets"
         class="bg-pink text-white border-solid border-pink rounded-full py-2 px-4 shadow-pink flex justify-between space-x-2"
       >
         <svg
@@ -54,23 +67,34 @@
 import { defineComponent } from "vue";
 import { decodeAddress, encodeAddress } from "@polkadot/keyring";
 import { hexToU8a, isHex } from "@polkadot/util";
+import { web3Accounts, web3Enable } from "@polkadot/extension-dapp";
+
 import { mapActions, mapGetters } from "vuex";
 import { ActionTypes } from "@/store/actions";
 
 import InputField from "../components/common/InputField.vue";
 import Identities from "@/components/Identities/index.vue";
+import Modal from "@/components/common/Modal.vue";
 
 export default defineComponent({
   name: "ListPage",
   components: {
     Identities,
-    InputField
+    InputField,
+    Modal
+  },
+  data() {
+    return {
+      showModal: false,
+      allAccounts: []
+    };
   },
   methods: {
     ...mapActions({
       getIdentityList: ActionTypes.GetIdentityList,
       searchIdentity: ActionTypes.SearchIdentity,
-      setNotification: ActionTypes.SetNotification
+      setNotification: ActionTypes.SetNotification,
+      setWallet: ActionTypes.SetWallet
     }),
     async handleSearch(address) {
       const valid = this.validateAddress(address);
@@ -105,6 +129,34 @@ export default defineComponent({
       } catch (error) {
         return false;
       }
+    },
+    async checkWallets() {
+      const extensions = await web3Enable("Identity Directory");
+      if (extensions.length === 0) {
+        this.setNotification({
+          type: "warning",
+          message: "Extension not Installed!",
+          show: true
+        });
+      }
+      const allAccounts = await web3Accounts();
+      if (allAccounts.length) {
+        this.showModal = true;
+        this.allAccounts = allAccounts;
+      } else {
+        this.setNotification({
+          type: "warning",
+          message: "There are no Account to connect to!",
+          show: true
+        });
+      }
+    },
+    handleCloseModal() {
+      this.showModal = false;
+    },
+    async selectWallet(wallet) {
+      this.showModal = false;
+      this.setWallet(wallet);
     }
   },
   computed: {
