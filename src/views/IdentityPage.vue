@@ -73,9 +73,7 @@ export default defineComponent({
     async fetchIdentity() {
       const { address } = this.$route.params;
       if (address) {
-        console.log('TEST!');
         await this.getIdentity(address);
-        console.log('TEST!!');
         this.loading = false;
       } else {
         this.$router.push({ name: "List" });

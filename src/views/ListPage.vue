@@ -68,7 +68,7 @@ export default defineComponent({
     ...mapActions({ getIdentityList: ActionTypes.GetIdentityList })
   },
   computed: {
-    ...mapGetters(["network"]),
+    ...mapGetters(["network", "identityList"]),
     api() {
       return this.network?.api;
     }
@@ -78,6 +78,11 @@ export default defineComponent({
       if (val) {
         this.getIdentityList();
       }
+    }
+  },
+  created() {
+    if (this.api && !this.identityList.length) {
+      this.getIdentityList();
     }
   }
 });

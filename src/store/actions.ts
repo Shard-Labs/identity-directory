@@ -46,6 +46,8 @@ export const actions: ActionTree<State, State> & Actions = {
       const { api } = state.network;
       console.log(address);
       const identity = await api?.derive.accounts.identity(address);
+      /* @ts-ignore */
+      identity.judgements = [];
       const balances = await api?.derive.balances.account(address);
       if (identity) {
         console.log(identity);
