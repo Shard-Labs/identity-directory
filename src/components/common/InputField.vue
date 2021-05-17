@@ -18,6 +18,7 @@
       class="SearchInputWithIcon"
       :style="{ 'text-indent': prefixIcon ? '40px' : '20px' }"
       @change="handleChange($event)"
+      :step="inputStep"
     />
   </div>
 </template>
@@ -43,7 +44,8 @@ export default defineComponent({
     containerClasses: { type: String, default: "" },
     inputClasses: { type: String, default: "" },
     slotClasses: { type: String, default: "" },
-    prefixIcon: { type: String }
+    prefixIcon: { type: String },
+    inputStep: { type: Number }
   },
   methods: {
     handleChange(e: Event) {

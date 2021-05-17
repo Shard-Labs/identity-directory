@@ -1,11 +1,13 @@
 <template>
-  <div class="backdrop" v-if="show">
-    <div class="modal">
+  <div class="backdrop" v-if="show" @click="handleClose">
+    <div class="modal" @click="handleModalClick">
       <div
         class="flex justify-between p-5 text-black font-bold text-xl items-center"
       >
         {{ header }}
-        <Icon name="close" @click="handleClose"/>
+        <button @click="handleClose">
+          <Icon name="close" />
+        </button>
       </div>
       <slot></slot>
     </div>
@@ -29,6 +31,9 @@ export default {
   methods: {
     handleClose() {
       this.$emit("close");
+    },
+    handleModalClick(event) {
+      event.stopPropagation();
     }
   }
 };

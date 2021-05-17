@@ -1,4 +1,5 @@
 import { ApiPromise, WsProvider } from "@polkadot/api";
+import { web3FromSource } from "@polkadot/extension-dapp";
 import HTTPClient from "@/lib/HTTPClient";
 
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
@@ -21,7 +22,8 @@ export enum ActionTypes {
   ConnectToNetwork = "CONNECT_TO_NETWORK",
   SetNotification = "SET_NOTIFICATION",
   SetPaginationPage = "SET_PAGINATION_PAGE",
-  SetPaginationSize = "SET_PAGINATION_SIZE"
+  SetPaginationSize = "SET_PAGINATION_SIZE",
+  SendTokens = "SEND_TOKENS"
 }
 
 type ActionAugments = Omit<ActionContext<State, State>, "commit"> & {
@@ -50,6 +52,10 @@ export type Actions = {
   ): void;
   [ActionTypes.SetPaginationPage](context: ActionAugments, page: number): void;
   [ActionTypes.SetPaginationSize](context: ActionAugments, page: number): void;
+  [ActionTypes.SendTokens](
+    context: ActionAugments,
+    payload: { amount: number; address: string }
+  ): void;
 };
 
 export const actions: ActionTree<State, State> & Actions = {
@@ -181,5 +187,53 @@ export const actions: ActionTree<State, State> & Actions = {
     commit(MutationType.SetPaginationSize, sizePerPage);
     commit(MutationType.SetPaginationState, overview);
     dispatch(ActionTypes.GetIdentityList);
+  },
+  async [ActionTypes.SendTokens]({ state, dispatch }, { address, amount }) {
+    const { network, wallet } = state;
+    if (network && network.api) {
+      if (wallet) {
+        const transfer = network.api.tx.balances.transfer(address, amount);
+        const injector = await web3FromSource(wallet.meta.source);
+        transfer
+          .signAndSend(
+            wallet.address,
+            { signer: injector.signer },
+            ({ status }) => {
+              if (status.isInBlock) {
+                dispatch(ActionTypes.SetNotification, {
+                  type: "success",
+                  show: true,
+                  message: `Completed at block hash #${status.asInBlock.toString()}`
+                });
+              } else {
+                dispatch(ActionTypes.SetNotification, {
+                  type: "warning",
+                  show: true,
+                  message: `Current status: ${status.type}`
+                });
+              }
+            }
+          )
+          .catch(() => {
+            dispatch(ActionTypes.SetNotification, {
+              type: "error",
+              show: true,
+              message: "Transaction Failed"
+            });
+          });
+      } else {
+        dispatch(ActionTypes.SetNotification, {
+          type: "error",
+          show: true,
+          message: "Account Not Connected!"
+        });
+      }
+    } else {
+      dispatch(ActionTypes.SetNotification, {
+        type: "error",
+        show: true,
+        message: "Not Connected the Network"
+      });
+    }
   }
 };

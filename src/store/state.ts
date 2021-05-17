@@ -27,6 +27,7 @@ export type Network = {
   api: ApiPromise | null;
   custom: boolean;
   token: string;
+  minAmount: number;
 };
 
 export type Notification = {
@@ -67,7 +68,8 @@ export const state: State = {
       url: "",
       api: null,
       custom: false,
-      token: ""
+      token: "",
+      minAmount: 0.0000000001
     },
     {
       title: "Kusama",
@@ -76,7 +78,8 @@ export const state: State = {
       url: "",
       api: null,
       custom: false,
-      token: ""
+      token: "",
+      minAmount: 0.000000000001
     },
     {
       title: "Custom Node",
@@ -85,7 +88,8 @@ export const state: State = {
       url: "",
       api: null,
       custom: true,
-      token: ""
+      token: "",
+      minAmount: 0.000000000001
     }
   ],
   notification: {

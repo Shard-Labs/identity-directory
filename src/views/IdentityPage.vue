@@ -1,9 +1,29 @@
 <template>
   <div v-if="loading">Loading</div>
   <div v-else>
-    <header class="flex flex-col justify-between ">
+    <Modal :show="showModal" @close="handleCloseModal" header="Send Tokens">
+      <div class="pb-10 flex flex-col items-center">
+        <span class="text-lg">Amount</span>
+        <input-field
+          inputType="number"
+          :name="identity"
+          :id="identity"
+          containerClasses="w-full bg-transparent border-solid border-pink rounded-full py-3 px-6"
+          inputClasses="py-2 font-medium w-full"
+          @update="handleChangeAmount"
+          :step="network.minAmount"
+        />
+        <button
+          class="mt-4 mix-w-12 max-h-10 font-medium bg-pink text-white border-solid border-pink rounded-full py-2 px-4 shadow-pink flex justify-between space-x-2"
+          @click="handleSendTokens"
+        >
+          Send
+        </button>
+      </div>
+    </Modal>
+    <header class="flex flex-col justify-between">
       <h1 class="font-black text-4xl text-left mb-8">Identity</h1>
-      <IdentityCard class="mb-10" />
+      <IdentityCard class="mb-10" @sendToken="handleShowModal" />
       <div class="flex justify-between">
         <InfoCard class="w-1/3" />
         <Governance class="w-1/3" />
@@ -22,6 +42,8 @@ import IdentityCard from "@/components/Identity/Identity.vue";
 import InfoCard from "@/components/Identity/cards/InfoCard.vue";
 import Treasury from "@/components/Identity/cards/Treasury.vue";
 import Governance from "@/components/Identity/cards/Governance.vue";
+import Modal from "@/components/common/Modal";
+import InputField from "@/components/common/InputField.vue";
 
 export default defineComponent({
   name: "IdentitiPage",
@@ -29,11 +51,15 @@ export default defineComponent({
     IdentityCard,
     InfoCard,
     Treasury,
-    Governance
+    Governance,
+    Modal,
+    InputField
   },
   data() {
     return {
-      loading: true
+      loading: true,
+      showModal: false,
+      amount: 0
     };
   },
   computed: {
@@ -69,7 +95,10 @@ export default defineComponent({
     }
   },
   methods: {
-    ...mapActions({ getIdentity: ActionTypes.GetIdentity }),
+    ...mapActions({
+      getIdentity: ActionTypes.GetIdentity,
+      sendTokens: ActionTypes.SendTokens
+    }),
     async fetchIdentity() {
       const { address } = this.$route.params;
       if (address) {
@@ -78,6 +107,21 @@ export default defineComponent({
       } else {
         this.$router.push({ name: "List" });
       }
+    },
+    handleShowModal() {
+      this.showModal = true;
+    },
+    handleCloseModal() {
+      this.showModal = false;
+    },
+    handleChangeAmount(amount) {
+      this.amount = amount;
+    },
+    handleSendTokens() {
+      const { address } = this.$route.params;
+      const { amount } = this;
+      this.sendTokens({ amount, address });
+      this.amount = 0;
     }
   }
 });

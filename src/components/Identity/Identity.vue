@@ -65,6 +65,12 @@ export default {
       }
       return "No Info";
     }
+  },
+  methods: {
+    sendToken(){
+      console.log("TEST");
+      this.$emit("sendToken");
+    }
   }
 };
 </script>
