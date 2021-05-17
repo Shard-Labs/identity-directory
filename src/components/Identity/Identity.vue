@@ -61,8 +61,6 @@ export default {
     ...mapGetters(["identity"]),
     name() {
       if (this.identity) {
-        console.log(this.identity.legal);
-        console.log(this.identity.display);
         return this.identity.legal || this.identity.display;
       }
       return "No Info";

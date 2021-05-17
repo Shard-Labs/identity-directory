@@ -6,12 +6,12 @@
     </template>
     <template v-slot:body>
       <ul>
-        <li class="pt-2  text-left">
+        <li class="pt-2 pr-5 text-left">
           <span class="text-sm text-gray-400">Address</span>
           <br />
-          <span class="text-sm font-bold">
+          <p class="text-sm font-bold break-words w-full">
             {{ address }}
-          </span>
+          </p>
         </li>
         <li class="pt-2  text-left">
           <span class="text-sm text-gray-400">Balance</span>

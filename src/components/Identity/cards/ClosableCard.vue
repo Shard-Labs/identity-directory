@@ -1,15 +1,15 @@
 <template>
-  <card class="bg-white" v-show="isOpen">
-    <div class="h-full">
+  <card class="bg-white">
+    <div class="h-full w-full">
       <header class="flex justify-between items-center px-4 py-4 w-full">
         <div class="flex justify-between space-x-4  items-center">
           <slot name="header" class="text-left"></slot>
         </div>
-        <button class="bg-transparent h-full" @click="closeCard">
-          <Icon name="close" />
+        <button class="bg-transparent h-full w-8 outline-none" @click="closeCard">
+          <Icon :name="isOpen ? 'close' : 'arrow-right'"/>
         </button>
       </header>
-      <body class="px-4 py-4">
+      <body class="px-4 py-4" v-show="isOpen">
         <slot name="body"></slot>
       </body>
     </div>
@@ -34,7 +34,7 @@ export default defineComponent({
   },
   methods: {
     closeCard() {
-      this.isOpen = false;
+      this.isOpen = !this.isOpen;
     }
   }
 });
