@@ -130,6 +130,7 @@ export const actions: ActionTree<State, State> & Actions = {
         return true;
       }
       commit(MutationType.SetIdentityList, []);
+      commit(MutationType.SetIdentityGridList, []);
       commit(MutationType.SetIdentityListLoading, true);
       const { url } = network;
       const {
