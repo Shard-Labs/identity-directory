@@ -6,6 +6,9 @@
     <Avatar
       :name="identity.attributes.identity_legal"
       innerClass="md:w-24 md:h-24"
+      :email="
+        identity && identity.attributes && identity.attributes.identity_email
+      "
     />
     <div class="mb-6">
       <h2 class="font-extrabold text-2xl ">

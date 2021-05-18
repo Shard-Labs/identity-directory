@@ -10,6 +10,11 @@
         <Avatar
           :name="identity.attributes.identity_legal"
           innerClass="w-12 h-12 mr-5"
+          :email="
+            identity &&
+              identity.attributes &&
+              identity.attributes.identity_email
+          "
         />
         <div class="font-bold text-lg w-40 text-left">
           {{

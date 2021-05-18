@@ -19,7 +19,11 @@
       @click="checkWallets"
     >
       <span class="text-lg font-extrabold">{{ wallet.meta.name }}</span>
-      <Avatar :name="wallet.meta.name" innerClass="w-12 h-12 ml-4" />
+      <Avatar
+        :name="wallet.meta.name"
+        innerClass="w-12 h-12 ml-4"
+        :email="myIdentity && myIdentity.email"
+      />
     </div>
     <div v-else>
       <button
@@ -59,7 +63,7 @@ export default defineComponent({
     Modal
   },
   computed: {
-    ...mapGetters(["wallet"]),
+    ...mapGetters(["wallet", "myIdentity"])
   },
   methods: {
     ...mapActions({

@@ -17,6 +17,7 @@
     "@tailwindcss/postcss7-compat": "^2.1.0",
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.1",
+    "blueimp-md5": "^2.18.0",
     "core-js": "^3.10.2",
     "postcss": "^7.0.35",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.0",

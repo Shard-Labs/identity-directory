@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="flex mb-6 px-8 pt-12 rounded-lg">
-      <Avatar :name="identity && identity.legal" innerClass="md:w-24 md:h-24" />
+      <Avatar
+        :name="identity && identity.legal"
+        innerClass="md:w-24 md:h-24"
+        :email="identity && identity.email"
+      />
       <div class="text-left flex flex-col justify-center ml-5">
         <h2 class="font-extrabold text-2xl">
           {{ name }}
@@ -67,7 +71,7 @@ export default {
     }
   },
   methods: {
-    sendToken(){
+    sendToken() {
       this.$emit("sendToken");
     }
   }
