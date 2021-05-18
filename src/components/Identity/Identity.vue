@@ -5,6 +5,7 @@
         :name="identity && identity.legal"
         innerClass="md:w-24 md:h-24"
         :email="identity && identity.email"
+        :src="image"
       />
       <div class="text-left flex flex-col justify-center ml-5">
         <h2 class="font-extrabold text-2xl">
@@ -25,7 +26,7 @@
       <a
         target="_blank"
         :href="web"
-        class="mr-4 p-3 h-10 text-white rounded-full cursor-pointer w-10 flex items-center justify-center block bg-green"
+        class="mr-4 p-3 h-10 text-white rounded-full cursor-pointer w-10 flex items-center justify-center block bg-pink"
         :class="{ 'bg-gray-600': !web }"
         :disabled="!web"
       >
@@ -43,7 +44,7 @@
       <a
         target="_blank"
         :href="twitter"
-        class="mr-4 p-3 h-10 text-white rounded-full cursor-pointer w-10 flex items-center justify-center block bg-green"
+        class="mr-4 p-3 h-10 text-white rounded-full cursor-pointer w-10 flex items-center justify-center block bg-blue"
         :class="{ 'bg-gray-600': !twitter }"
         :disabled="!twitter"
       >
@@ -68,6 +69,26 @@ export default {
         return this.identity.legal || this.identity.display;
       }
       return "No Info";
+    },
+    image() {
+      return this.identity.image;
+    },
+    web() {
+      return this.identity.web;
+    },
+    twitter() {
+      const { twitter } = this.identity;
+      if (twitter) {
+        return `https://twitter.com/${twitter}`;
+      }
+      return null;
+    },
+    riot() {
+      const { riot } = this.identity;
+      if (riot) {
+        return `https://matrix.to/#/${riot}`;
+      }
+      return null;
     }
   },
   methods: {

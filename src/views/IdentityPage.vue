@@ -75,22 +75,6 @@ export default defineComponent({
     ...mapGetters(["network", "identityLoading", "identity"]),
     api() {
       return this.network && this.network.api;
-    },
-    name() {
-      if (!this.identity || (this.identity && !this.identity.attributes)) {
-        return "No Info";
-      }
-      return (
-        this.identity.attributes.identity_legal ||
-        this.identity.attributes.identity_display ||
-        "No Name Information"
-      );
-    },
-    image() {
-      if (!this.identity || !this.identity.attributes) {
-        return "No Info";
-      }
-      return this.identity.attributes.image || this.name;
     }
   },
   async created() {

@@ -19,7 +19,7 @@
           <span class="text-sm font-bold">
             {{ (identity && identity.balance) || 0 }}
           </span>
-          <span>{{ ` ${token}` }}</span>
+          <span class="text-sm">{{ ` ${token}` }}</span>
         </li>
         <li class="pt-2  text-left">
           <span class="text-sm text-gray-400">Full Name</span>
