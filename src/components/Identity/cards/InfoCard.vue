@@ -74,10 +74,23 @@
             </span>
           </a>
         </li>
-        <li class="pt-2  text-left">
-          <span class="text-sm text-gray-300">Registar verifications</span>
+        <li class="pt-2  text-left text-sm font-normal">
+          <span class=" text-gray-300">Registar verifications</span>
           <br />
-          <span class="text-sm font-bold"></span>
+          <div v-if="identity">
+            <p
+              v-for="(judgement, index) in identity.judgements"
+              :key="judgement + index"
+            >
+              <span class="text-sm font-bold">Registar {{ index + 1 }}</span>
+              determined this identity as
+              <span
+                class="text-sm font-bold text-red"
+                :class="judgementClass(judgement)"
+                >{{ judgement }}</span
+              >
+            </p>
+          </div>
         </li>
       </ul>
     </template>
@@ -103,8 +116,23 @@ export default defineComponent({
     }
   },
   watch: {
-    identity(val) {
+    [`identity.judgements`](val) {
       console.log(val);
+    }
+  },
+  methods: {
+    judgementClass(judgement: string) {
+      switch (judgement) {
+        case "KnownGood":
+        case "Reasonable":
+          return {
+            "text-green": true
+          };
+        default:
+          return {
+            "text-pink": true
+          };
+      }
     }
   }
 });

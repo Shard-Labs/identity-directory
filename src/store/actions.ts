@@ -89,19 +89,19 @@ export const actions: ActionTree<State, State> & Actions = {
         const { freeBalance, frozenMisc } = balances;
         /* @ts-ignore */
         identity.balance = new BigNumber(freeBalance.toHex())
-          .minus(frozenMisc.toHex())
-          .multipliedBy(state.network.minAmount)
-          .toFixed(2);
+        .minus(frozenMisc.toHex())
+        .multipliedBy(state.network.minAmount)
+        .toFixed(2);
       }
+      /* @ts-ignore */
+      const judgements = [];
       if (identity) {
-        const verification = identity.judgements[0][
-          identity.judgements[0].length - 1
-        ].toString();
-        /* @ts-ignore */
-        if (verification) {
+        identity.judgements.forEach(el => {
           /* @ts-ignore */
-          identity.judgements = verification;
-        }
+          judgements.push(...Object.keys(el[1].toHuman()));
+          /* @ts-ignore */
+          identity.judgements = judgements;
+        });
         commit(MutationType.SetIdentity, identity);
       }
     }

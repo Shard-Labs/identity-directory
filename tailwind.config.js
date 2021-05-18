@@ -7,7 +7,8 @@ module.exports = {
     colors: {
       ...colors,
       pink: "#e6007a",
-      gray: "#f8fafc"
+      gray: "#f8fafc",
+      green: "#0dbd8b"
     },
     backgroundColor: theme => ({
       ...theme("colors"),
