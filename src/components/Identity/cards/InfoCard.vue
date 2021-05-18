@@ -17,8 +17,9 @@
           <span class="text-sm text-gray-400">Balance</span>
           <br />
           <span class="text-sm font-bold">
-            {{ balance || 0 + " " + token }}</span
-          >
+            {{ (identity && identity.balance) || 0 }}
+          </span>
+          <span>{{ ` ${token}` }}</span>
         </li>
         <li class="pt-2  text-left">
           <span class="text-sm text-gray-400">Full Name</span>
@@ -76,7 +77,7 @@
         <li class="pt-2  text-left">
           <span class="text-sm text-gray-300">Registar verifications</span>
           <br />
-          <span class="text-sm font-bold"> lala </span>
+          <span class="text-sm font-bold"></span>
         </li>
       </ul>
     </template>
@@ -95,16 +96,15 @@ export default defineComponent({
     ClosableCard,
     Icon
   },
-  props: {
-    identity: {
-      type: Object,
-      required: true
-    }
-  },
   computed: {
     ...mapGetters(["identity", "network", "token"]),
     address(): string | string[] {
       return this.$route.params.address;
+    }
+  },
+  watch: {
+    identity(val) {
+      console.log(val);
     }
   }
 });

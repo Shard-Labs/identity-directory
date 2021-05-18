@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { web3FromSource } from "@polkadot/extension-dapp";
 import HTTPClient from "@/lib/HTTPClient";
@@ -69,6 +70,14 @@ export const actions: ActionTree<State, State> & Actions = {
       /* @ts-ignore */
       identity.judgements = [];
       const balances = await api?.derive.balances.account(address);
+      if (balances) {
+        const { freeBalance, frozenMisc } = balances;
+        /* @ts-ignore */
+        identity.balance = new BigNumber(freeBalance.toHex())
+          .minus(frozenMisc.toHex())
+          .multipliedBy(state.network.minAmount)
+          .toFixed(2);
+      }
       if (identity) {
         commit(MutationType.SetIdentity, identity);
       }
@@ -138,6 +147,17 @@ export const actions: ActionTree<State, State> & Actions = {
         if (isConnected) {
           commit(MutationType.SetNetworkConnected, isConnected);
           commit(MutationType.SetNetworkAPI, api);
+          const properties = (await api.rpc.system.properties()).toHuman();
+          const { tokenSymbol } = properties;
+          if (Array.isArray(tokenSymbol) && tokenSymbol.length > 0) {
+            /* @ts-ignore */
+            commit(MutationType.SetToken, tokenSymbol.shift());
+            if(tokenSymbol[0] === "DOT") {
+              commit(MutationType.SetNetworkMinAmount, 0.0000000001);
+            } else {
+              commit(MutationType.SetNetworkMinAmount, 0.000000000001);
+            }
+          }
           dispatch(ActionTypes.SetNotification, {
             show: true,
             message: "Connected to Network/Node",

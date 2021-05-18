@@ -68,7 +68,6 @@ export default {
   },
   methods: {
     sendToken(){
-      console.log("TEST");
       this.$emit("sendToken");
     }
   }
