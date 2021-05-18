@@ -7,6 +7,7 @@ import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 
 export enum MutationType {
   SetWallet = "SET_WALLET",
+  SetMyIdentity = "SET_MY_IDENTITY",
   SetIdentity = "SET_IDENTITY",
   SetIdentityList = "SET_IDENTITY_LIST",
   SetIdentityListLoading = "SET_IDENTITY_LIST_LOADING",
@@ -30,6 +31,10 @@ export type Mutations = {
     state: State,
     identity: Identity | DeriveAccountRegistration
   ): void;
+  [MutationType.SetMyIdentity](
+    state: State,
+    identity: Identity | DeriveAccountRegistration
+  ): void;
   [MutationType.SetIdentityList](state: State, list: IdentityEl[]): void;
   [MutationType.SetIdentityListLoading](state: State, loading: boolean): void;
   [MutationType.SetIdentityGridList](state: State, list: IdentityEl[]): void;
@@ -48,6 +53,9 @@ export type Mutations = {
 export const mutations: MutationTree<State> & Mutations = {
   [MutationType.SetWallet](state, wallet) {
     state.wallet = wallet;
+  },
+  [MutationType.SetMyIdentity](state, identity) {
+    state.myIdentity = identity;
   },
   [MutationType.SetIdentity](state, identity) {
     state.identity = identity;

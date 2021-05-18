@@ -60,15 +60,30 @@ export type Actions = {
 };
 
 export const actions: ActionTree<State, State> & Actions = {
-  async [ActionTypes.SetWallet]({ commit }, wallet) {
+  async [ActionTypes.SetWallet]({ state, commit }, wallet) {
     commit(MutationType.SetWallet, wallet);
+
+    const { address } = wallet;
+    if (state.network) {
+      const { api } = state.network;
+      const identity = await api?.derive.accounts.identity(address);
+      if (identity && Object.keys(identity).length > 1) {
+        const verification = identity.judgements[0][
+          identity.judgements[0].length - 1
+        ].toString();
+        /* @ts-ignore */
+        if (verification) {
+          /* @ts-ignore */
+          identity.judgements = verification;
+        }
+        commit(MutationType.SetMyIdentity, identity);
+      }
+    }
   },
   async [ActionTypes.GetIdentity]({ commit, state }, address) {
     if (state.network) {
       const { api } = state.network;
       const identity = await api?.derive.accounts.identity(address);
-      /* @ts-ignore */
-      identity.judgements = [];
       const balances = await api?.derive.balances.account(address);
       if (balances) {
         const { freeBalance, frozenMisc } = balances;
@@ -79,6 +94,14 @@ export const actions: ActionTree<State, State> & Actions = {
           .toFixed(2);
       }
       if (identity) {
+        const verification = identity.judgements[0][
+          identity.judgements[0].length - 1
+        ].toString();
+        /* @ts-ignore */
+        if (verification) {
+          /* @ts-ignore */
+          identity.judgements = verification;
+        }
         commit(MutationType.SetIdentity, identity);
       }
     }
@@ -152,10 +175,18 @@ export const actions: ActionTree<State, State> & Actions = {
           if (Array.isArray(tokenSymbol) && tokenSymbol.length > 0) {
             /* @ts-ignore */
             commit(MutationType.SetToken, tokenSymbol.shift());
-            if(tokenSymbol[0] === "DOT") {
+            if (tokenSymbol[0] === "DOT") {
               commit(MutationType.SetNetworkMinAmount, 0.0000000001);
             } else {
               commit(MutationType.SetNetworkMinAmount, 0.000000000001);
+            }
+          }
+          if (api && state.wallet) {
+            const { address } = state.wallet;
+            const identity = await api.derive.accounts.identity(address);
+            if (identity && Object.keys(identity).length > 1) {
+              identity.judgements = [];
+              commit(MutationType.SetMyIdentity, identity);
             }
           }
           dispatch(ActionTypes.SetNotification, {

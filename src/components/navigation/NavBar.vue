@@ -6,20 +6,43 @@
         Identity Directory
       </div>
     </nav-link>
+    <nav-link :exact="true" :path="path" class="mb-8" v-if="myIdentity">
+      <Avatar innerClass="w-12 h-12 mr-4" />
+      <div class="text-base font-bold">
+        My Identity
+      </div>
+    </nav-link>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapGetters } from "vuex";
 
 import NavLink from "./NavLink.vue";
 import Icon from "@/components/common/Icon.vue";
+import Avatar from "@/components/common/Avatar.vue";
 
 export default defineComponent({
   name: "NavBar",
   components: {
     NavLink,
-    Icon
+    Icon,
+    Avatar
+  },
+  computed: {
+    ...mapGetters(["myIdentity", "wallet", "network"]),
+    path() {
+      if (
+        this.network &&
+        this.wallet &&
+        this.network.titile !== "Custom Node"
+      ) {
+        /* @ts-ignore */
+        return `/${this.network.titile.toLowerCase()}/${this.wallet.address}`;
+      }
+      return `/`;
+    }
   }
 });
 </script>

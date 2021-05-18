@@ -43,6 +43,7 @@ export type Pagination = {
 };
 export type State = {
   wallet: InjectedAccountWithMeta | null;
+  myIdentity: DeriveAccountRegistration | Identity | null;
   identity: DeriveAccountRegistration | Identity | null;
   identityListLoading: boolean;
   identityList: IdentityEl[] | [];
@@ -55,6 +56,7 @@ export type State = {
 
 export const state: State = {
   wallet: null,
+  myIdentity: null,
   identity: null,
   identityListLoading: false,
   identityList: [],

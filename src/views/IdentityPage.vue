@@ -21,15 +21,18 @@
         </button>
       </div>
     </Modal>
-    <header class="flex flex-col justify-between">
+    <header class="flex justify-between">
       <h1 class="font-black text-4xl text-left mb-8">Identity</h1>
+      <Connect />
+    </header>
+    <main>
       <IdentityCard class="mb-10" @sendToken="handleShowModal" />
       <div class="flex justify-between">
         <InfoCard class="w-1/3" />
         <Governance class="w-1/3" />
         <Treasury class="w-1/3" />
       </div>
-    </header>
+    </main>
   </div>
 </template>
 
@@ -44,6 +47,7 @@ import Treasury from "@/components/Identity/cards/Treasury.vue";
 import Governance from "@/components/Identity/cards/Governance.vue";
 import Modal from "@/components/common/Modal";
 import InputField from "@/components/common/InputField.vue";
+import Connect from "@/components/connect/Connect.vue";
 
 export default defineComponent({
   name: "IdentitiPage",
@@ -53,6 +57,7 @@ export default defineComponent({
     Treasury,
     Governance,
     Modal,
+    Connect,
     InputField
   },
   data() {

@@ -1,6 +1,7 @@
 import { GetterTree } from "vuex";
 
 import { DeriveAccountRegistration } from "@polkadot/api-derive/types";
+import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import {
   State,
   Identity,
@@ -11,6 +12,8 @@ import {
 } from "./state";
 
 export type Getters = {
+  wallet(state: State): InjectedAccountWithMeta | null;
+  myIdentity(state: State): Identity | DeriveAccountRegistration | null;
   identity(state: State): Identity | DeriveAccountRegistration | null;
   identityList(state: State): IdentityEl[];
   identityListLoading(state: State): boolean;
@@ -23,6 +26,12 @@ export type Getters = {
 };
 
 export const getters: GetterTree<State, State> & Getters = {
+  wallet(state) {
+    return state.wallet;
+  },
+  myIdentity(state) {
+    return state.myIdentity;
+  },
   identity(state) {
     return state.identity;
   },

@@ -1,43 +1,8 @@
 <template>
   <div>
-    <Modal :show="showModal" header="Account List" @close="handleCloseModal">
-      <ul class="pb-8  px-10">
-        <li
-          v-for="account in allAccounts"
-          :key="account.address"
-          class="cursor-pointer"
-          @click="() => selectWallet(account)"
-        >
-          <span class="font-bold">{{ account.meta.name }}</span> -
-          <span>{{ account.address }}</span>
-        </li>
-      </ul>
-    </Modal>
     <header class="flex justify-between">
       <h1 class="font-black text-4xl text-left">Identity directory</h1>
-      <button
-        @click="checkWallets"
-        class="bg-pink text-white border-solid border-pink rounded-full py-2 px-4 shadow-pink flex justify-between space-x-2"
-      >
-        <svg
-          width="24"
-          height="24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g clip-path="url(#clip0)" fill="#fff">
-            <path
-              d="M17 5h-2a1 1 0 100 2h1v12h-1a1 1 0 000 2h2a1 1 0 001-1V6a1 1 0 00-1-1zM9.8 8.4a1 1 0 00-1.6 1.2L10 12H2a1 1 0 000 2h8.09l-1.72 2.44A1 1 0 1010 17.6l2.82-4a1 1 0 000-1.18L9.8 8.4z"
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0">
-              <rect width="24" height="24" rx="12" fill="#fff" />
-            </clipPath>
-          </defs>
-        </svg>
-        <span class="font-medium">Connect</span>
-      </button>
+      <Connect />
     </header>
     <div class="hero mt-6 p-10">
       <h1 class="font-black text-3xl text-left p-8">
@@ -74,27 +39,20 @@ import { ActionTypes } from "@/store/actions";
 
 import InputField from "../components/common/InputField.vue";
 import Identities from "@/components/Identities/index.vue";
-import Modal from "@/components/common/Modal.vue";
+import Connect from "@/components/connect/Connect.vue";
 
 export default defineComponent({
   name: "ListPage",
   components: {
     Identities,
     InputField,
-    Modal
-  },
-  data() {
-    return {
-      showModal: false,
-      allAccounts: []
-    };
+    Connect
   },
   methods: {
     ...mapActions({
       getIdentityList: ActionTypes.GetIdentityList,
       searchIdentity: ActionTypes.SearchIdentity,
       setNotification: ActionTypes.SetNotification,
-      setWallet: ActionTypes.SetWallet
     }),
     async handleSearch(address) {
       const valid = this.validateAddress(address);
@@ -129,34 +87,6 @@ export default defineComponent({
       } catch (error) {
         return false;
       }
-    },
-    async checkWallets() {
-      const extensions = await web3Enable("Identity Directory");
-      if (extensions.length === 0) {
-        this.setNotification({
-          type: "warning",
-          message: "Extension not Installed!",
-          show: true
-        });
-      }
-      const allAccounts = await web3Accounts();
-      if (allAccounts.length) {
-        this.showModal = true;
-        this.allAccounts = allAccounts;
-      } else {
-        this.setNotification({
-          type: "warning",
-          message: "There are no Account to connect to!",
-          show: true
-        });
-      }
-    },
-    handleCloseModal() {
-      this.showModal = false;
-    },
-    async selectWallet(wallet) {
-      this.showModal = false;
-      this.setWallet(wallet);
     }
   },
   computed: {
