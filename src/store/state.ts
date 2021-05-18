@@ -45,6 +45,7 @@ export type State = {
   wallet: InjectedAccountWithMeta | null;
   myIdentity: DeriveAccountRegistration | Identity | null;
   identity: DeriveAccountRegistration | Identity | null;
+  identityLoading: boolean;
   identityListLoading: boolean;
   identityList: IdentityEl[] | [];
   identityGridList: IdentityEl[] | [];
@@ -58,6 +59,7 @@ export const state: State = {
   wallet: null,
   myIdentity: null,
   identity: null,
+  identityLoading: false,
   identityListLoading: false,
   identityList: [],
   identityGridList: [],

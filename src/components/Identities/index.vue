@@ -1,23 +1,20 @@
 <template>
-  <div>
-    <div class="grid grid-cols-3 grid-rows-1 gap-9 mb-8">
-      <identity-card
-        v-for="card in identityGridList"
-        :identity="card"
-        :key="card.id"
+  <div class="relative">
+    <Loader v-if="identityListLoading" :show="identityListLoading" />
+    <div v-else>
+      <div class="grid grid-cols-3 grid-rows-1 gap-9 mb-8">
+        <identity-card
+          v-for="card in identityGridList"
+          :identity="card"
+          :key="card.id"
+        />
+      </div>
+      <identity-list
+        v-if="identityList.length"
+        class="col-span-3"
+        :identities="identityList"
       />
     </div>
-    <identity-list
-      v-if="identityList.length"
-      class="col-span-3"
-      :identities="identityList"
-    />
-    <p v-else-if="identityListLoading">
-      Loading...
-    </p>
-    <p v-else>
-      No Identies to Display
-    </p>
   </div>
 </template>
 <script lang="ts">
@@ -26,12 +23,14 @@ import { mapGetters } from "vuex";
 
 import IdentityCard from "./IdentityCard.vue";
 import IdentityList from "./IdentityList.vue";
+import Loader from "@/components/common/Loader.vue";
 
 export default defineComponent({
   name: "Identities",
   components: {
     IdentityCard,
-    IdentityList
+    IdentityList,
+    Loader
   },
   data() {
     return {
@@ -40,6 +39,11 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters(["identityList", "identityGridList", "identityListLoading"])
+  },
+  watch: {
+    identityListLoading(val) {
+      console.log(val);
+    }
   }
 });
 </script>

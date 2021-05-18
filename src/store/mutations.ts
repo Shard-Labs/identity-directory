@@ -10,6 +10,7 @@ export enum MutationType {
   SetMyIdentity = "SET_MY_IDENTITY",
   SetIdentity = "SET_IDENTITY",
   SetIdentityList = "SET_IDENTITY_LIST",
+  SetIdentityLoading = "SET_IDENTITY_LOADING",
   SetIdentityListLoading = "SET_IDENTITY_LIST_LOADING",
   SetIdentityGridList = "SET_ISET_IDENTITY_GRID_LIST",
   SetNetwork = "SET_NETWORK",
@@ -29,13 +30,14 @@ export type Mutations = {
   [MutationType.SetWallet](state: State, wallet: InjectedAccountWithMeta): void;
   [MutationType.SetIdentity](
     state: State,
-    identity: Identity | DeriveAccountRegistration
+    identity: Identity | DeriveAccountRegistration | null
   ): void;
   [MutationType.SetMyIdentity](
     state: State,
     identity: Identity | DeriveAccountRegistration
   ): void;
   [MutationType.SetIdentityList](state: State, list: IdentityEl[]): void;
+  [MutationType.SetIdentityLoading](state: State, loading: boolean): void;
   [MutationType.SetIdentityListLoading](state: State, loading: boolean): void;
   [MutationType.SetIdentityGridList](state: State, list: IdentityEl[]): void;
   [MutationType.SetNetwork](state: State, item: Network): void;
@@ -65,6 +67,9 @@ export const mutations: MutationTree<State> & Mutations = {
   },
   [MutationType.SetIdentityListLoading](state, loading) {
     state.identityListLoading = loading;
+  },
+  [MutationType.SetIdentityLoading](state, loading) {
+    state.identityLoading = loading;
   },
   [MutationType.SetIdentityGridList](state, list) {
     state.identityGridList = list;

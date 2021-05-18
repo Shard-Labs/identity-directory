@@ -15,6 +15,7 @@ export type Getters = {
   wallet(state: State): InjectedAccountWithMeta | null;
   myIdentity(state: State): Identity | DeriveAccountRegistration | null;
   identity(state: State): Identity | DeriveAccountRegistration | null;
+  identityLoading(state: State): boolean;
   identityList(state: State): IdentityEl[];
   identityListLoading(state: State): boolean;
   identityGridList(state: State): IdentityEl[];
@@ -34,6 +35,9 @@ export const getters: GetterTree<State, State> & Getters = {
   },
   identity(state) {
     return state.identity;
+  },
+  identityLoading(state) {
+    return state.identityLoading;
   },
   identityList(state) {
     return state.identityList;

@@ -1,6 +1,5 @@
 <template>
-  <div v-if="loading">Loading</div>
-  <div v-else>
+  <div>
     <Modal :show="showModal" @close="handleCloseModal" header="Send Tokens">
       <div class="pb-10 flex flex-col items-center">
         <span class="text-lg">Amount</span>
@@ -25,12 +24,15 @@
       <h1 class="font-black text-4xl text-left mb-8">Identity</h1>
       <Connect />
     </header>
-    <main>
-      <IdentityCard class="mb-10" @sendToken="handleShowModal" />
-      <div class="flex justify-between">
-        <InfoCard class="w-1/3" />
-        <Governance class="w-1/3" />
-        <Treasury class="w-1/3" />
+    <main class="relative">
+      <Loader :show="loading || identityLoading" />
+      <div v-if="identity && !identityLoading">
+        <IdentityCard class="mb-10" @sendToken="handleShowModal" />
+        <div class="flex justify-between">
+          <InfoCard class="w-1/3" />
+          <Governance class="w-1/3" />
+          <Treasury class="w-1/3" />
+        </div>
       </div>
     </main>
   </div>
@@ -47,6 +49,7 @@ import Treasury from "@/components/Identity/cards/Treasury.vue";
 import Governance from "@/components/Identity/cards/Governance.vue";
 import Modal from "@/components/common/Modal";
 import InputField from "@/components/common/InputField.vue";
+import Loader from "@/components/common/Loader.vue";
 import Connect from "@/components/connect/Connect.vue";
 
 export default defineComponent({
@@ -58,7 +61,8 @@ export default defineComponent({
     Governance,
     Modal,
     Connect,
-    InputField
+    InputField,
+    Loader
   },
   data() {
     return {
@@ -68,7 +72,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapGetters(["network"]),
+    ...mapGetters(["network", "identityLoading", "identity"]),
     api() {
       return this.network && this.network.api;
     },
@@ -90,6 +94,7 @@ export default defineComponent({
     }
   },
   async created() {
+    console.log(this.identity);
     if (this.api) {
       await this.fetchIdentity();
     }

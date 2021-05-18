@@ -82,6 +82,8 @@ export const actions: ActionTree<State, State> & Actions = {
   },
   async [ActionTypes.GetIdentity]({ commit, state }, address) {
     if (state.network) {
+      commit(MutationType.SetIdentity, null);
+      commit(MutationType.SetIdentityLoading, true);
       const { api } = state.network;
       const identity = await api?.derive.accounts.identity(address);
       const balances = await api?.derive.balances.account(address);
@@ -89,9 +91,9 @@ export const actions: ActionTree<State, State> & Actions = {
         const { freeBalance, frozenMisc } = balances;
         /* @ts-ignore */
         identity.balance = new BigNumber(freeBalance.toHex())
-        .minus(frozenMisc.toHex())
-        .multipliedBy(state.network.minAmount)
-        .toFixed(2);
+          .minus(frozenMisc.toHex())
+          .multipliedBy(state.network.minAmount)
+          .toFixed(2);
       }
       /* @ts-ignore */
       const judgements = [];
@@ -104,6 +106,7 @@ export const actions: ActionTree<State, State> & Actions = {
         });
         commit(MutationType.SetIdentity, identity);
       }
+      commit(MutationType.SetIdentityLoading, false);
     }
   },
   async [ActionTypes.SearchIdentity]({ state }, address) {
