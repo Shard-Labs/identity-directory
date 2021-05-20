@@ -24,8 +24,8 @@ services:
       dockerfile: docker/Dockerfile.indexer
     container_name: polkadot_indexer
     environment: 
-      - CHAIN_DATA_DB=/home/$USER/.local/share/polkadot
-      - DATABASE_URL=postgres:5432
+      - CHAIN_DATA_DB="/home/$USER/.local/share/polkadot"
+      - DATABASE_URL="postgres://sourcify:test@postgres/identity"
   # kusama_indexer:
   #   build:
   #     context: .
@@ -54,6 +54,8 @@ services:
       DOMAINS: 'identity.shardlabs.io -> http://identity_app:5000'
       STAGE: 'staging'
       FORCE_RENEW: 'false'
+    depends_on:
+      - client
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
