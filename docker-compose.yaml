@@ -27,8 +27,12 @@ services:
       context: .
       dockerfile: docker/Dockerfile.indexer
     container_name: polkadot_indexer
+    volumes:
+      - type: bind
+        source: /home/ubuntu/node_data/polkadot/
+        target: /root/.local/share/polkadot/
     environment: 
-      - CHAIN_DATA_DB="/home/$USER/.local/share/polkadot"
+      - CHAIN_DATA_DB="/root/.local/share/polkadot"
       - DATABASE_URL="postgres://sourcify:test@postgres/identity"
   # kusama_indexer:
   #   build:
