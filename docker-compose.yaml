@@ -14,6 +14,10 @@ services:
     ports: 
       - "9944:9944"
       - "9933:9933"
+    volumes:
+      - type: bind
+        source: /home/ubuntu/node_data/polkadot/
+        target: /polkadot
   # kusama_node:
   #   image: 
   #   container_name: kusama_node
