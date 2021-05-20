@@ -1,0 +1,8 @@
+FROM ubuntu:20.04
+
+WORKDIR /app
+
+RUN apt update && apt install -y wget && \
+ wget https://github.com/paritytech/substrate-archive/releases/download/v0.5.1/polkadot-archive && chmod +x polkadot-archive
+
+ENTRYPOINT [ "./polkadot-archive" ]
