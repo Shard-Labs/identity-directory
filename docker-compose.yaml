@@ -55,7 +55,7 @@ services:
       - '80:80'
       - '443:443'
     environment:
-      DOMAINS: 'identity.shardlabs.io -> http://identity_app:8080'
+      DOMAINS: 'identity.shardlabs.io -> http://identity_app:5000'
       STAGE: 'staging'
       FORCE_RENEW: 'false'
     depends_on:
