@@ -5,23 +5,22 @@ services:
       context: .
       dockerfile: docker/Dockerfile.client
     container_name: identity_app
-    ports:
-      - "5000:8080"
   polkadot_node:
     image: parity/polkadot:v0.8.24
     container_name: polkadot_node
     command: --name "polkadot archive node" --rpc-external --ws-external --pruning archive
-    ports: 
-      - "9944:9944"
-      - "9933:9933"
     volumes:
       - type: bind
         source: /home/ubuntu/node_data/polkadot/
         target: /polkadot
-  # kusama_node:
-  #   image: 
-  #   container_name: kusama_node
-  #   command: 
+  kusama_node:
+    image: parity/polkadot:v0.8.24
+    container_name: kusama_node
+    command: --name "kusama archive node" --chain kusama --rpc-external --ws-external --pruning archive
+    volumes:
+      - type: bind
+        source: /home/ubuntu/node_data/ksmcc3/
+        target: /polkadot/.local/share/polkadot/chains/ksmcc3
   polkadot_indexer:
     build:
       context: .
@@ -33,7 +32,9 @@ services:
         target: /root/.local/share/polkadot/
     environment: 
       - CHAIN_DATA_DB="/root/.local/share/polkadot"
-      - DATABASE_URL="postgres://sourcify:test@postgres/identity"
+      - DATABASE_URL="postgres://identity:test@postgres/identity"
+    depends_on:
+      - polkadot_postgres
   # kusama_indexer:
   #   build:
   #     context: .
@@ -45,7 +46,6 @@ services:
     env_file: .env
     ports:
       - "5432:5432"
-    # env_file: .env
   # kusama_postgres:
   #   image: postgres:13
   #   container_name: postgres
