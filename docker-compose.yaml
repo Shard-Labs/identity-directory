@@ -12,7 +12,7 @@ services:
     volumes:
       - type: bind
         source: /home/ubuntu/node_data/polkadot/
-        target: /polkadot
+        target: /polkadot/.local/share/polkadot/chains/polkadot
   kusama_node:
     image: parity/polkadot:v0.8.24
     container_name: kusama_node
