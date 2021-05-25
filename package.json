@@ -6,7 +6,13 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deps:start": "docker-compose           up -d --remove-orphans",
+    "deps:pause": "docker-compose           stop",
+    "deps:close": "docker-compose           down --remove-orphans",
+    "deps:purge": "npm -s run deps:close -- -v",
+    "deps:reset": "npm -s run deps:purge; npm -s run deps:start; sleep 4"
+    
   },
   "dependencies": {
     "@polkadot/api": "^4.6.2",

@@ -1,0 +1,7 @@
+[chain]
+
+data_path = "/root/.local/share/polkadot/db"
+
+[database]
+
+url = "postgres://postgres:miroslav@polkadot_postgres:5432/polkadot-archive"
