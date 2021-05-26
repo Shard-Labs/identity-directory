@@ -10,4 +10,4 @@ url = "postgres://postgres:miroslav@polkadot_postgres:5432/polkadot-archive"
 
 targets = '''wasm_tracing,pallet,frame,state'''
 
-folder = "root/.local/share/polkadot/wasm-tracing"
+#folder = "root/.local/share/polkadot/wasm-tracing"
