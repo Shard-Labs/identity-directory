@@ -43,13 +43,13 @@
       <div class="flex">
         <button
           class="text-white border-solid border-pink rounded-full py-2 px-2 shadow-pink flex justify-between space-x-2 inline-block bg-pink mr-2"
-          @click="() => handleChangePage(-1)"
+          @click="() => handleChangePageClicked(-1)"
         >
           <Icon name="prev" />
         </button>
         <button
           class="text-white border-solid border-pink rounded-full py-2 px-2  shadow-pink flex justify-between space-x-2 inline-block bg-pink"
-          @click="() => handleChangePage(1)"
+          @click="() => handleChangePageClicked(1)"
         >
           <Icon name="next" />
         </button>
@@ -96,13 +96,16 @@ export default {
     Badge
   },
   computed: {
-    ...mapGetters(["pagination"]),
+    ...mapGetters(["pagination"])
   },
   methods: {
     ...mapActions({
       handleChangePage: ActionTypes.SetPaginationPage,
       handleChangeSizePerPage: ActionTypes.SetPaginationSize
     }),
+    handleChangePageClicked(pageChanger) {
+      this.handleChangePage(this.pagination.page + pageChanger);
+    },
     handleSelectIdentity(address) {
       const { network } = this.$route.params;
       this.$router.push({ name: "Identity", params: { address, network } });

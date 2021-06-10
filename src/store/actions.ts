@@ -226,11 +226,10 @@ export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.SetNotification]({ commit }, notification) {
     commit(MutationType.SetNotification, notification);
   },
-  async [ActionTypes.SetPaginationPage]({ commit, state, dispatch }, pageChanger) {
-    const { sizePerPage, page } = state.pagination;
-    const newPage = page + pageChanger;
-    const overview = calcPaginationState(newPage, sizePerPage);
-    commit(MutationType.SetPaginationPage, newPage);
+  async [ActionTypes.SetPaginationPage]({ commit, state, dispatch }, page) {
+    const { sizePerPage } = state.pagination;
+    const overview = calcPaginationState(page, sizePerPage);
+    commit(MutationType.SetPaginationPage, page);
     commit(MutationType.SetPaginationState, overview);
     dispatch(ActionTypes.GetIdentityList);
   },
