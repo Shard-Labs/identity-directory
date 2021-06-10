@@ -42,18 +42,16 @@
       <p>Page:</p>
       <div class="flex">
         <button
-          v-for="i in pages"
-          class="text-white border-solid border-pink rounded-full py-2 px-4 shadow-pink flex justify-between space-x-2 inline-block"
-          :class="{
-            'bg-pink': i !== pagination.page,
-            'bg-white': i === pagination.page,
-            'text-pink': i === pagination.page
-          }"
-          :key="i"
-          @click="() => handleChangePage(i)"
-          :disabled="i === pagination.page"
+          class="text-white border-solid border-pink rounded-full py-2 px-2 shadow-pink flex justify-between space-x-2 inline-block bg-pink mr-2"
+          @click="() => handleChangePage(-1)"
         >
-          {{ i }}
+          <Icon name="prev" />
+        </button>
+        <button
+          class="text-white border-solid border-pink rounded-full py-2 px-2  shadow-pink flex justify-between space-x-2 inline-block bg-pink"
+          @click="() => handleChangePage(1)"
+        >
+          <Icon name="next" />
         </button>
       </div>
     </div>
@@ -62,7 +60,7 @@
       <div class="flex">
         <button
           v-for="i in [10, 15, 20, 25]"
-          class="text-white border-solid border-pink rounded-full py-2 px-4 shadow-pink flex justify-between space-x-2 inline-block"
+          class="text-white border-solid border-pink rounded-full py-2 px-4 shadow-pink flex justify-between space-x-2 inline-block mr-1"
           :key="i"
           @click="() => handleChangeSizePerPage(i)"
           :class="{
@@ -99,10 +97,6 @@ export default {
   },
   computed: {
     ...mapGetters(["pagination"]),
-    pages() {
-      const pages = [1, 2, 3, 4, 5];
-      return pages;
-    }
   },
   methods: {
     ...mapActions({

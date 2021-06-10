@@ -5,7 +5,8 @@
       <h2 class="font-medium text-lg">Governance</h2>
     </template>
     <template v-slot:body>
-      <ul>
+      Coming soon...
+      <!-- <ul>
         <li
           v-for="vote in votes"
           :key="vote.id"
@@ -24,7 +25,7 @@
             </span>
           </p>
         </li>
-      </ul>
+      </ul> -->
     </template>
   </closable-card>
 </template>

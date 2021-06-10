@@ -5,7 +5,8 @@
       <h2 class="font-medium text-lg">Treasury</h2>
     </template>
     <template v-slot:body>
-      <ul class="py-2">
+      Coming soon...
+      <!-- <ul class="py-2">
         <li
           v-for="proposal in proposals"
           :key="proposal.id"
@@ -22,7 +23,7 @@
             </span>
           </p>
         </li>
-      </ul>
+      </ul> -->
     </template>
   </closable-card>
 </template>
