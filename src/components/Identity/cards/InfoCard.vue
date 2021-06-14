@@ -115,11 +115,6 @@ export default defineComponent({
       return this.$route.params.address;
     }
   },
-  watch: {
-    [`identity.judgements`](val) {
-      console.log(val);
-    }
-  },
   methods: {
     judgementClass(judgement: string) {
       switch (judgement) {

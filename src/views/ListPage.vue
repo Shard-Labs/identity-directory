@@ -8,18 +8,19 @@
       <h1 class="font-black text-3xl text-left p-8">
         Search registered identities on Kusama or Polkadot network
       </h1>
-
-      <input-field
-        :inputType="text"
-        :name="identity"
-        :id="identity"
-        placeholder="Search identities by address..."
-        containerClasses="flex-grow bg-transparent border-solid border-pink rounded-full py-3 px-6"
-        inputClasses="py-2 font-medium"
-        @update="handleSearch"
-        prefixIcon="search"
-      >
-      </input-field>
+      <form @submit="handleSubmitSearch">
+        <input-field
+          :inputType="text"
+          :name="identity"
+          :id="identity"
+          placeholder="Search identities by address..."
+          containerClasses="flex-grow bg-transparent border-solid border-pink rounded-full py-3 px-6"
+          inputClasses="py-2 font-medium"
+          @update="handleSearch"
+          prefixIcon="search"
+        >
+        </input-field>
+      </form>
     </div>
     <main class="mt-6">
       <h2 class="font-black my-4 text-left text-2xl">Identities</h2>
@@ -43,6 +44,11 @@ import Connect from "@/components/connect/Connect.vue";
 
 export default defineComponent({
   name: "ListPage",
+  data() {
+    return {
+      address: ""
+    };
+  },
   components: {
     Identities,
     InputField,
@@ -54,12 +60,26 @@ export default defineComponent({
       searchIdentity: ActionTypes.SearchIdentity,
       setNotification: ActionTypes.SetNotification,
     }),
+    async handleSubmitSearch(event) {
+      event.preventDefault();
+      return this.handleSearch(this.address);
+    },
     async handleSearch(address) {
+      this.address = address;
+      if (!this.network) {
+        return this.setNotification({
+          type: "error",
+          message: "Please Select Network First",
+          show: true
+        });
+      }
       const valid = this.validateAddress(address);
       if (valid) {
         const exists = await this.searchIdentity(address);
         if (exists) {
-          const { network } = this.$route;
+          const {
+            params: { network }
+          } = this.$route;
           return this.$router.push({
             name: "Identity",
             params: { address, network }

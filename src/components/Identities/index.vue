@@ -39,11 +39,6 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters(["identityList", "identityGridList", "identityListLoading"])
-  },
-  watch: {
-    identityListLoading(val) {
-      console.log(val);
-    }
   }
 });
 </script>
