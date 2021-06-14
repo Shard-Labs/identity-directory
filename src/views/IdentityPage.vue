@@ -78,7 +78,6 @@ export default defineComponent({
     }
   },
   async created() {
-    console.log(this.identity);
     if (this.api) {
       await this.fetchIdentity();
     }
