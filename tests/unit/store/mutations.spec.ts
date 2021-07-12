@@ -1,5 +1,3 @@
-import { createStore } from "vuex";
-import { mount } from "@vue/test-utils";
 import { expect } from "chai";
 import { state as initailState, State } from "@/store/state";
 import { mutations, MutationType } from "@/store/mutations";

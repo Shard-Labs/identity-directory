@@ -1,4 +1,4 @@
-import { ApiPromise } from "@polkadot/api";
+import { ApiPromise, WsProvider } from "@polkadot/api";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import {
   Identity,
@@ -60,4 +60,5 @@ export const pagination: Pagination = {
   state: "test-state"
 };
 
-export const api = new ApiPromise();
+const wsProvider = new WsProvider(network.wsProvider);
+export const api = new ApiPromise({ provider: wsProvider });
