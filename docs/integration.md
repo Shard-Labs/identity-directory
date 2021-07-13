@@ -1,11 +1,8 @@
 # Identity Directory and Blockchain Node Integration
 
-The **blockchain** node is provided to the Identity Directory as a Docker image, also
-there is an option for a user to choose any other node through the application, including 
-Polkadot and Kusama offical websocets or a custom one.
+Identity Directory client app has an option to chose to which blockchain node it will connect. There are predefined options like Polkadot and Kusama offical websockets or a custom one where the user will type in the address of a node. There are also private ones that are running on AWS EC2 instances.
 
-Application uses library [polkadit.js](https://polkadot.js.org/docs/) to estublish these connections 
-and everything else needed as fetching user Identity, sending tokens, etc.
+Application uses library [polkadot.js](https://polkadot.js.org/docs/) to establish these connections and everything else needed as fetching user Identity, sending tokens, etc.
 
 
 # Identity Directory and Polakscan API Integration
