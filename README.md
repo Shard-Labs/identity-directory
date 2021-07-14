@@ -1,11 +1,15 @@
 # identity-directory
 
+## Documentation
+- [Integration](docs/integration.md)
+- [Infrastructure](docs/infrastructure.md)
+- [Feature List](docs/featureList.md)
 ## Project setup
 ```
 working on 
-node v12.16.3
-npm v6.14.8
-npm install
+node v14.7.0
+npm v7.16.0
+yarn v1.22.10
 ```
 
 ### Compiles and hot-reloads for development

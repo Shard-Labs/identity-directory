@@ -46,6 +46,10 @@ export type Actions = {
   ): Promise<boolean>;
   [ActionTypes.GetIdentityList](context: ActionAugments): void;
   [ActionTypes.SetNetwork](context: ActionAugments, network: Network): void;
+  [ActionTypes.SetNetworkProvider](
+    context: ActionAugments,
+    provider: string
+  ): void;
   [ActionTypes.ConnectToNetwork](context: ActionAugments): Promise<boolean>;
   [ActionTypes.SetNotification](
     context: ActionAugments,
@@ -66,7 +70,10 @@ export const actions: ActionTree<State, State> & Actions = {
     const { address } = wallet;
     if (state.network) {
       const { api } = state.network;
-      const identity = await api?.derive.accounts.identity(address);
+      let identity;
+      if (api) {
+        identity = await api.derive.accounts.identity(address);
+      }
       if (identity && Object.keys(identity).length > 1) {
         const verification = identity.judgements[0][
           identity.judgements[0].length - 1
@@ -85,8 +92,11 @@ export const actions: ActionTree<State, State> & Actions = {
       commit(MutationType.SetIdentity, null);
       commit(MutationType.SetIdentityLoading, true);
       const { api } = state.network;
-      const identity = await api?.derive.accounts.identity(address);
-      const balances = await api?.derive.balances.account(address);
+      let identity: any, balances: any;
+      if (api) {
+        identity = await api.derive.accounts.identity(address);
+        balances = await api.derive.balances.account(address);
+      }
       if (balances) {
         const { freeBalance, frozenMisc } = balances;
         /* @ts-ignore */
@@ -98,7 +108,7 @@ export const actions: ActionTree<State, State> & Actions = {
       /* @ts-ignore */
       const judgements = [];
       if (identity) {
-        identity.judgements.forEach(el => {
+        identity.judgements.forEach((el: any) => {
           /* @ts-ignore */
           judgements.push(...Object.keys(el[1].toHuman()));
           /* @ts-ignore */
@@ -112,7 +122,10 @@ export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.SearchIdentity]({ state }, address) {
     if (state.network) {
       const { api } = state.network;
-      const identity = await api?.derive.accounts.identity(address);
+      let identity: any;
+      if (api) {
+        identity = await api.derive.accounts.identity(address);
+      }
       if (identity) {
         return true;
       }
@@ -139,7 +152,6 @@ export const actions: ActionTree<State, State> & Actions = {
       const {
         pagination: { page, sizePerPage }
       } = state;
-
       try {
         if (!url) {
           return;
