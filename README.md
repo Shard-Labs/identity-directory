@@ -4,6 +4,7 @@
 - [Integration](docs/integration.md)
 - [Infrastructure](docs/infrastructure.md)
 - [Feature List](docs/featureList.md)
+- [Tutorial](docs/tutorial.md)
 ## Project setup
 ```
 working on 
