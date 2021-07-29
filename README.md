@@ -1,4 +1,4 @@
-# identity-directory
+# identity-hub
 
 ## Documentation
 - [Integration](docs/integration.md)

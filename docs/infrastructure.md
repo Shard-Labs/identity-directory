@@ -19,23 +19,23 @@ nvm alias default 14.7.0
 npm i -g yarn
 ```
 
-## Identity Directory setup
+## Identity Hub setup
 
 It is expected that the user has a key-pair registered with GitHub.com
 
 ```shell script
 
-git clone git@github.com:Shard-Labs/identity-directory.git
+git clone git@github.com:Shard-Labs/identity-hub.git
 
 ### Starting the dependency docker containers
 ```shell script
-cd identity-directory
+cd identity-hub
 npm -s run deps:start
 ```
 
-### Starting the Identity Directory 
+### Starting the Identity Hub
 
 ```shell script
-cd identity-directory
+cd identity-hub
 npm -s run serve
 ```

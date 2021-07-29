@@ -3,7 +3,7 @@
     <nav-link :exact="true" path="/" class="mb-8">
       <Icon name="identities" iconClass="mr-4" />
       <div class="text-base font-bold">
-        Identity Directory
+        Identity Hub
       </div>
     </nav-link>
     <nav-link :exact="true" :path="path" class="mb-8" v-if="myIdentity">

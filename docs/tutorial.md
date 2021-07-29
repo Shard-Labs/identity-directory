@@ -1,8 +1,8 @@
-# Identity Directory
+# Identity Hub
 
 ## Introduction
-Identity Directory is a aplication designed for finding identities, viewing them and sending tokens to them on Polkadot/Kusama blockchains.<br/>
-![Identity Directory](./assets/identity-directory.png)
+Identity Hub is a aplication designed for finding identities, viewing them and sending tokens to them on Polkadot/Kusama blockchains.<br/>
+![Identity Hub](./assets/identity-hub.png)
 
 ## Content
 - [Connecting to the network](#network)
