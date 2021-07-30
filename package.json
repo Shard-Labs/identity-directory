@@ -14,12 +14,12 @@
     "deps:reset": "npm -s run deps:purge; npm -s run deps:start; sleep 4"
   },
   "dependencies": {
-    "@polkadot/api": "^4.17.1",
-    "@polkadot/extension-dapp": "^0.38.8",
-    "@polkadot/keyring": "^6.11.1",
-    "@polkadot/util": "^6.11.1",
-    "@popperjs/core": "2.9.1",
-    "@tailwindcss/postcss7-compat": "^2.1.0",
+    "@polkadot/api": "^5.2.1",
+    "@polkadot/extension-dapp": "^0.39.1",
+    "@polkadot/keyring": "^7.0.3",
+    "@polkadot/util": "^7.0.3",
+    "@popperjs/core": "2.9.2",
+    "@tailwindcss/postcss7-compat": "npm:@tailwindcss/postcss7-compat@^2.1.0",
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.1",
     "blueimp-md5": "^2.18.0",
@@ -27,16 +27,17 @@
     "postcss": "^7.0.35",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.0",
     "v-click-outside": "^3.1.2",
-    "vue": "^3.0.11",
+    "vue": "3.0.11",
     "vue-class-component": "^8.0.0-0",
     "vue-router": "^4.0.6",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@types/blueimp-md5": "^2.18.0",
     "@types/chai": "^4.2.16",
-    "@types/mocha": "^5.2.4",
-    "@typescript-eslint/eslint-plugin": "^2.33.0",
-    "@typescript-eslint/parser": "^2.33.0",
+    "@types/mocha": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.5",
+    "@typescript-eslint/parser": "^4.28.5",
     "@vue/cli-plugin-babel": "^4.5.13",
     "@vue/cli-plugin-eslint": "^4.5.12",
     "@vue/cli-plugin-router": "^4.5.12",
@@ -44,16 +45,20 @@
     "@vue/cli-plugin-unit-mocha": "^4.5.13",
     "@vue/cli-plugin-vuex": "^4.5.12",
     "@vue/cli-service": "^4.5.12",
-    "@vue/compiler-sfc": "^3.0.11",
+    "@vue/compiler-sfc": "^3.1.5",
     "@vue/eslint-config-prettier": "^6.0.0",
-    "@vue/eslint-config-typescript": "^5.0.2",
-    "@vue/test-utils": "^2.0.0-rc.6",
+    "@vue/eslint-config-typescript": "^7.0.0",
+    "@vue/test-utils": "^1.2.2",
     "autoprefixer": "^9.8.6",
     "chai": "^4.3.4",
-    "eslint": "^6.7.2",
+    "eslint": "^7.31.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-vue": "^7.9.0",
-    "prettier": "^1.19.1",
-    "typescript": "~3.9.3"
+    "eslint-plugin-vue": "^7.14.0",
+    "prettier": "^2.3.2",
+    "typescript": "~4.3.5"
+  },
+  "peerDependencies": {
+    "@polkadot/util-crypto": "6.11.1",
+    "webpack": "^4.0.0"
   }
 }
