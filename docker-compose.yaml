@@ -13,8 +13,6 @@ services:
       - type: bind
         source: /home/ubuntu/node_data/polkadot/
         target: /polkadot/.local/share/polkadot/chains/polkadot
-    ports:
-      - "9944:9944"
       
   kusama_node:
     image: parity/polkadot:v0.9.8
@@ -24,8 +22,6 @@ services:
       - type: bind
         source: /home/ubuntu/node_data/ksmcc3/
         target: /polkadot/.local/share/polkadot/chains/ksmcc3
-    ports:
-      - "9945:9944"
     
   # polkadot_indexer:
   #   build:
@@ -69,7 +65,7 @@ services:
       - '80:80'
       - '443:443'
     environment:
-      DOMAINS: 'identityhub.xyz -> http://identity_app:5000'
+      DOMAINS: 'identityhub.xyz -> http://identity_app:5000, rpc.identityhub.xyz -> http://polkadot_node:9944, kusama-rpc.identityhub.xyz -> http://kusama_node:9944'
       STAGE: 'production'
       FORCE_RENEW: 'false'
     depends_on:

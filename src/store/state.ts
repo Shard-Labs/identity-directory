@@ -68,7 +68,7 @@ export const state: State = {
   networkList: [
     {
       title: "Polkadot",
-      wsProvider: "ws://3.65.205.113:9944",
+      wsProvider: "wss://rpc.identityhub.xyz",
       connected: false,
       url: "",
       api: null,
@@ -78,7 +78,7 @@ export const state: State = {
     },
     {
       title: "Kusama",
-      wsProvider: "ws://3.65.205.113:9945",
+      wsProvider: "wss://kusama-rpc.identityhub.xyz",
       connected: false,
       url: "",
       api: null,
