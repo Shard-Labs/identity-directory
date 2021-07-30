@@ -110,7 +110,7 @@ export default defineComponent({
     Icon
   },
   computed: {
-    ...mapGetters(["identity", "network", "token"]),
+    ...mapGetters(["identity", "network", "token", "judgement"]),
     address(): string | string[] {
       return this.$route.params.address;
     }

@@ -17,6 +17,7 @@ export type Identity = {
   riot: string;
   address: string;
   balance: string;
+  judgements?: string;
 };
 
 export type Network = {
