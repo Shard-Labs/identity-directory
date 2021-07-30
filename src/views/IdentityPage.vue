@@ -91,7 +91,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapGetters(["network", "identityLoading", "identity"]),
+    ...mapGetters(["network", "identityLoading", "identity", "wallet"]),
     api() {
       return this.network && this.network.api;
     }
@@ -109,7 +109,8 @@ export default defineComponent({
   methods: {
     ...mapActions({
       getIdentity: ActionTypes.GetIdentity,
-      sendTokens: ActionTypes.SendTokens
+      sendTokens: ActionTypes.SendTokens,
+      setNotification: ActionTypes.SetNotification
     }),
     async fetchIdentity() {
       const { address } = this.$route.params;
@@ -121,7 +122,15 @@ export default defineComponent({
       }
     },
     handleShowModal() {
-      this.showModal = true;
+      if (this.wallet) {
+        this.showModal = true;
+      } else {
+        this.setNotification({
+          type: "error",
+          show: true,
+          message: "Please connect your wallet before sending tokens"
+        });
+      }
     },
     handleCloseModal() {
       this.showModal = false;

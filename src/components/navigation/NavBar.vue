@@ -35,7 +35,7 @@ export default defineComponent({
         this.network.titile !== "Custom Node"
       ) {
         /* @ts-ignore */
-        return `/${this.network.titile.toLowerCase()}/${this.wallet.address}`;
+        return `/${this.network.title.toLowerCase()}/${this.wallet.address}`;
       }
       return `/`;
     }
