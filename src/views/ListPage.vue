@@ -1,7 +1,7 @@
 <template>
   <div>
     <header class="flex justify-between">
-      <h1 class="font-black text-4xl text-left">Identity directory</h1>
+      <h1 class="font-black text-4xl text-left">Identity hub</h1>
       <Connect />
     </header>
     <div class="hero mt-6 p-10">

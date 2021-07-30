@@ -70,7 +70,7 @@ export default defineComponent({
       setWallet: ActionTypes.SetWallet
     }),
     async checkWallets() {
-      const extensions = await web3Enable("Identity Directory");
+      const extensions = await web3Enable("Identity Hub");
       if (extensions.length === 0) {
         this.setNotification({
           type: "warning",
