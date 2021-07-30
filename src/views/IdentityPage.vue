@@ -1,7 +1,11 @@
 <template>
   <div>
     <Modal :show="showModal" @close="handleCloseModal" header="Send Tokens">
-      <div class="pb-10 flex flex-col items-center">
+      <form
+        @submit.prevent="handleSendTokens"
+        @keydown.enter.prevent="handleSendTokens"
+        class="pb-10 flex flex-col items-center"
+      >
         <span class="text-lg">Amount</span>
         <input-field
           inputType="number"
@@ -11,6 +15,7 @@
           inputClasses="py-2 font-medium w-full"
           @update="handleChangeAmount"
           :step="network.minAmount"
+          :min="0"
         />
         <button
           class="
@@ -29,11 +34,10 @@
             justify-between
             space-x-2
           "
-          @click="handleSendTokens"
         >
           Send
         </button>
-      </div>
+      </form>
     </Modal>
     <header class="flex justify-between">
       <h1 class="font-black text-4xl text-left mb-8">Identity</h1>

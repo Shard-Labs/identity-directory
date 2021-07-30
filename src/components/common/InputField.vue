@@ -19,6 +19,7 @@
       :style="{ 'text-indent': prefixIcon ? '40px' : '20px' }"
       @change="handleChange($event)"
       :step="inputStep"
+      :min="min"
     />
   </div>
 </template>
@@ -45,7 +46,8 @@ export default defineComponent({
     inputClasses: { type: String, default: "" },
     slotClasses: { type: String, default: "" },
     prefixIcon: { type: String },
-    inputStep: { type: Number }
+    inputStep: { type: Number },
+    min: { type: Number }
   },
   methods: {
     handleChange(e: Event) {
@@ -64,6 +66,7 @@ export default defineComponent({
   border-radius: 25px;
   color: #e6007a;
   text-indent: 20px;
+  padding-right: 10px;
 }
 .SearchInputWithIcon:focus {
   outline: none;
