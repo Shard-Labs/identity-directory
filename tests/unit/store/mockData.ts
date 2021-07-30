@@ -40,8 +40,7 @@ export const network: Network = {
   title: "Polkadot",
   wsProvider: "wss://rpc.polkadot.io",
   connected: false,
-  url:
-    "https://explorer-32.polkascan.io/api/v1/polkadot/account?filter[has_identity]=1",
+  url: "https://explorer-32.polkascan.io/api/v1/polkadot/account?filter[has_identity]=1",
   api: null,
   custom: false,
   token: "",

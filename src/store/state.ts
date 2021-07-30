@@ -5,7 +5,7 @@ import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 export type IdentityEl = {
   id: string;
   type: string;
-  attribute: object;
+  attribute: Record<string, unknown>;
 };
 
 export type Identity = {

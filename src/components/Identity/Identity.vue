@@ -19,14 +19,41 @@
     <div class="flex align-center items-center px-8">
       <button
         @click="sendToken"
-        class="mr-4 max-h-10 font-medium bg-pink text-white border-solid border-pink rounded-full py-2 px-4 shadow-pink flex justify-between space-x-2"
+        class="
+          mr-4
+          max-h-10
+          font-medium
+          bg-pink
+          text-white
+          border-solid border-pink
+          rounded-full
+          py-2
+          px-4
+          shadow-pink
+          flex
+          justify-between
+          space-x-2
+        "
       >
         Send Tokens
       </button>
       <a
         target="_blank"
         :href="web"
-        class="mr-4 p-3 h-10 text-white rounded-full cursor-pointer w-10 flex items-center justify-center block bg-pink"
+        class="
+          mr-4
+          p-3
+          h-10
+          text-white
+          rounded-full
+          cursor-pointer
+          w-10
+          flex
+          items-center
+          justify-center
+          block
+          bg-pink
+        "
         :class="{ 'bg-gray-600': !web }"
         :disabled="!web"
       >
@@ -35,7 +62,20 @@
       <a
         target="_blank"
         :href="riot"
-        class="mr-4 p-3 h-10 text-white rounded-full cursor-pointer w-10 flex items-center justify-center block bg-green"
+        class="
+          mr-4
+          p-3
+          h-10
+          text-white
+          rounded-full
+          cursor-pointer
+          w-10
+          flex
+          items-center
+          justify-center
+          block
+          bg-green
+        "
         :class="{ 'bg-gray-600': !riot }"
         :disabled="!riot"
       >
@@ -44,7 +84,20 @@
       <a
         target="_blank"
         :href="twitter"
-        class="mr-4 p-3 h-10 text-white rounded-full cursor-pointer w-10 flex items-center justify-center block bg-blue"
+        class="
+          mr-4
+          p-3
+          h-10
+          text-white
+          rounded-full
+          cursor-pointer
+          w-10
+          flex
+          items-center
+          justify-center
+          block
+          bg-blue
+        "
         :class="{ 'bg-gray-600': !twitter }"
         :disabled="!twitter"
       >

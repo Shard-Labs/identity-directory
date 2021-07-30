@@ -92,7 +92,7 @@ export default defineComponent({
     }
     if (network) {
       const networkObject = this.networkList.find(
-        el => el.title.toLowerCase() === network
+        (el) => el.title.toLowerCase() === network
       );
       if (!networkObject) {
         this.setNotification({

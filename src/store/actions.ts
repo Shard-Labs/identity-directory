@@ -75,9 +75,8 @@ export const actions: ActionTree<State, State> & Actions = {
         identity = await api.derive.accounts.identity(address);
       }
       if (identity && Object.keys(identity).length > 1) {
-        const verification = identity.judgements[0][
-          identity.judgements[0].length - 1
-        ].toString();
+        const verification =
+          identity.judgements[0][identity.judgements[0].length - 1].toString();
         /* @ts-ignore */
         if (verification) {
           /* @ts-ignore */

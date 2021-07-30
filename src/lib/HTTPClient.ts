@@ -1,13 +1,12 @@
 import axios, { AxiosResponse } from "axios";
-import { Identity } from "@/store/state";
 
 export default class HTTPClient {
-  static async responseFormatter(response: AxiosResponse){
+  static async responseFormatter(response: AxiosResponse) {
     const { data: { data, meta, errors } = {}, status, headers } = response;
     return { data, meta: { status, headers, ...meta, errors } };
   }
 
-  static async request(config: object) {
+  static async request(config: Record<string, unknown>) {
     try {
       return HTTPClient.responseFormatter(await axios.request(config));
     } catch (e) {
@@ -15,7 +14,7 @@ export default class HTTPClient {
     }
   }
 
-  static async get(url: string, config?: object) {
+  static async get(url: string, config?: Record<string, unknown>) {
     return HTTPClient.responseFormatter(
       await axios.get(url, {
         ...config,
@@ -28,19 +27,31 @@ export default class HTTPClient {
     );
   }
 
-  static async post(url: string, data: object, config?: object) {
+  static async post(
+    url: string,
+    data: Record<string, unknown>,
+    config?: Record<string, unknown>
+  ) {
     return HTTPClient.responseFormatter(await axios.post(url, data, config));
   }
 
-  static async patch(url: string, data: object, config?: object) {
+  static async patch(
+    url: string,
+    data: Record<string, unknown>,
+    config?: Record<string, unknown>
+  ) {
     return HTTPClient.responseFormatter(await axios.patch(url, data, config));
   }
 
-  static async put(url: string, data: object, config?: object) {
+  static async put(
+    url: string,
+    data: Record<string, unknown>,
+    config?: Record<string, unknown>
+  ) {
     return HTTPClient.responseFormatter(await axios.put(url, data, config));
   }
 
-  static async delete(url: string, config?: object) {
+  static async delete(url: string, config?: Record<string, unknown>) {
     return HTTPClient.responseFormatter(await axios.delete(url, config));
   }
 

@@ -10,7 +10,7 @@ module.exports = {
       gray: "#f8fafc",
       green: "#0dbd8b"
     },
-    backgroundColor: theme => ({
+    backgroundColor: (theme) => ({
       ...theme("colors"),
       ...colors,
       pink: "#e6007a",
@@ -18,18 +18,17 @@ module.exports = {
       green: "#0dbd8b",
       yellow: {
         ...colors.yellow,
-        "1100": "#FFDD1F"
+        1100: "#FFDD1F"
       },
       gray: {
         ...colors.gray,
-        "50": "#f8fafc",
-        "600": "#302D43B2"
+        50: "#f8fafc",
+        600: "#302D43B2"
       }
     }),
     boxShadow: {
       gray: "0 15px 40px 0px rgba(28, 0, 207, 0.05)",
-      pink:
-        "0 4px 6px -1px rgba(175, 0, 93, 0.27), 0 2px 4px -1px rgba(175, 0, 93, 0.27)"
+      pink: "0 4px 6px -1px rgba(175, 0, 93, 0.27), 0 2px 4px -1px rgba(175, 0, 93, 0.27)"
     },
     extend: {}
   },

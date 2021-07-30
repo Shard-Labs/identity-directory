@@ -13,7 +13,7 @@
             {{ address }}
           </p>
         </li>
-        <li class="pt-2  text-left">
+        <li class="pt-2 text-left">
           <span class="text-sm text-gray-400">Balance</span>
           <br />
           <span class="text-sm font-bold">
@@ -21,21 +21,21 @@
           </span>
           <span class="text-sm">{{ ` ${token}` }}</span>
         </li>
-        <li class="pt-2  text-left">
+        <li class="pt-2 text-left">
           <span class="text-sm text-gray-400">Full Name</span>
           <br />
           <span class="text-sm font-bold">
             {{ (identity && identity.legal) || "No Info" }}
           </span>
         </li>
-        <li class="pt-2  text-left">
+        <li class="pt-2 text-left">
           <span class="text-sm text-gray-400">Email address</span>
           <br />
           <span class="text-sm font-bold">
             {{ (identity && identity.email) || "No Info" }}
           </span>
         </li>
-        <li class="pt-2  text-left">
+        <li class="pt-2 text-left">
           <span class="text-sm text-gray-400">Website</span>
           <br />
           <a
@@ -48,7 +48,7 @@
             </span>
           </a>
         </li>
-        <li class="pt-2  text-left">
+        <li class="pt-2 text-left">
           <span class="text-sm text-gray-400">Element</span>
           <br />
           <a
@@ -61,7 +61,7 @@
             </span>
           </a>
         </li>
-        <li class="pt-2  text-left">
+        <li class="pt-2 text-left">
           <span class="text-sm text-gray-400">Twitter</span>
           <br />
           <a
@@ -74,8 +74,8 @@
             </span>
           </a>
         </li>
-        <li class="pt-2  text-left text-sm font-normal">
-          <span class=" text-gray-300">Registar verifications</span>
+        <li class="pt-2 text-left text-sm font-normal">
+          <span class="text-gray-300">Registar verifications</span>
           <br />
           <div v-if="identity">
             <p

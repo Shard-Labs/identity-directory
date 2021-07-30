@@ -33,7 +33,6 @@
 import { defineComponent } from "vue";
 import { decodeAddress, encodeAddress } from "@polkadot/keyring";
 import { hexToU8a, isHex } from "@polkadot/util";
-import { web3Accounts, web3Enable } from "@polkadot/extension-dapp";
 
 import { mapActions, mapGetters } from "vuex";
 import { ActionTypes } from "@/store/actions";
@@ -58,7 +57,7 @@ export default defineComponent({
     ...mapActions({
       getIdentityList: ActionTypes.GetIdentityList,
       searchIdentity: ActionTypes.SearchIdentity,
-      setNotification: ActionTypes.SetNotification,
+      setNotification: ActionTypes.SetNotification
     }),
     async handleSubmitSearch(event) {
       event.preventDefault();
