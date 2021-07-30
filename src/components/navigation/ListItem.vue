@@ -30,7 +30,7 @@ export default defineComponent({
     Avatar
   },
   props: {
-    name: { type: String },
+    name: { type: String }
   }
 });
 </script>

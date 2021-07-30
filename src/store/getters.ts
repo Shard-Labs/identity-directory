@@ -36,6 +36,17 @@ export const getters: GetterTree<State, State> & Getters = {
   identity(state) {
     return state.identity;
   },
+  judgement({ identity }) {
+    if (identity && identity.judgements && identity.judgements.length) {
+      const verification =
+        identity.judgements[0][identity.judgements[0].length - 1].toString();
+      if (verification) {
+        identity.judgements = verification;
+      }
+      return verification;
+    }
+    return null;
+  },
   identityLoading(state) {
     return state.identityLoading;
   },

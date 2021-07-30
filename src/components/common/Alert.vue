@@ -3,7 +3,18 @@
     <transition name="alert">
       <div
         v-if="notification.show"
-        class="flex items-center justify-between rounded-lg shadow-md px-6 mx-auto mt-2 h-12 bg-opacity-70"
+        class="
+          flex
+          items-center
+          justify-between
+          rounded-lg
+          shadow-md
+          px-6
+          mx-auto
+          mt-2
+          h-12
+          bg-opacity-70
+        "
         @click="hideAlert"
         :class="{
           'bg-green': notification.type === 'success',

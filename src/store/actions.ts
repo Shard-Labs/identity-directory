@@ -70,19 +70,16 @@ export const actions: ActionTree<State, State> & Actions = {
     const { address } = wallet;
     if (state.network) {
       const { api } = state.network;
-      let identity;
+      let identity: any;
       if (api) {
         identity = await api.derive.accounts.identity(address);
       }
-      if (identity && Object.keys(identity).length > 1) {
-        const verification = identity.judgements[0][
-          identity.judgements[0].length - 1
-        ].toString();
-        /* @ts-ignore */
-        if (verification) {
-          /* @ts-ignore */
-          identity.judgements = verification;
-        }
+      const judgements: any[] = [];
+      if (identity) {
+        identity.judgements.forEach((el: any) => {
+          judgements.push(...Object.keys(el[1].toHuman()));
+          identity.judgements = judgements;
+        });
         commit(MutationType.SetMyIdentity, identity);
       }
     }
@@ -99,19 +96,15 @@ export const actions: ActionTree<State, State> & Actions = {
       }
       if (balances) {
         const { freeBalance, frozenMisc } = balances;
-        /* @ts-ignore */
         identity.balance = new BigNumber(freeBalance.toHex())
           .minus(frozenMisc.toHex())
           .multipliedBy(state.network.minAmount)
           .toFixed(2);
       }
-      /* @ts-ignore */
-      const judgements = [];
+      const judgements: any[] = [];
       if (identity) {
         identity.judgements.forEach((el: any) => {
-          /* @ts-ignore */
           judgements.push(...Object.keys(el[1].toHuman()));
-          /* @ts-ignore */
           identity.judgements = judgements;
         });
         commit(MutationType.SetIdentity, identity);
@@ -188,9 +181,8 @@ export const actions: ActionTree<State, State> & Actions = {
           commit(MutationType.SetNetworkAPI, api);
           const properties = (await api.rpc.system.properties()).toHuman();
           const { tokenSymbol } = properties;
-          if (Array.isArray(tokenSymbol) && tokenSymbol.length > 0) {
-            /* @ts-ignore */
-            commit(MutationType.SetToken, tokenSymbol.shift());
+          if (tokenSymbol && Array.isArray(tokenSymbol) && tokenSymbol.length > 0) {
+            commit(MutationType.SetToken, tokenSymbol.shift() as string);
             if (tokenSymbol[0] === "DOT") {
               commit(MutationType.SetNetworkMinAmount, 0.0000000001);
             } else {

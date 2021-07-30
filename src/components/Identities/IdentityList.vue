@@ -12,15 +12,15 @@
           innerClass="w-12 h-12 mr-5"
           :email="
             identity &&
-              identity.attributes &&
-              identity.attributes.identity_email
+            identity.attributes &&
+            identity.attributes.identity_email
           "
         />
         <div class="font-bold text-lg w-40 text-left">
           {{
             identity.attributes.identity_legal ||
-              identity.attributes.identity_display ||
-              identity.attributes.address.slice(0, 8) + "..."
+            identity.attributes.identity_display ||
+            identity.attributes.address.slice(0, 8) + "..."
           }}
         </div>
         <Badge
@@ -42,13 +42,38 @@
       <p>Page:</p>
       <div class="flex">
         <button
-          class="text-white border-solid border-pink rounded-full py-2 px-2 shadow-pink flex justify-between space-x-2 inline-block bg-pink mr-2"
+          class="
+            text-white
+            border-solid border-pink
+            rounded-full
+            py-2
+            px-2
+            shadow-pink
+            flex
+            justify-between
+            space-x-2
+            inline-block
+            bg-pink
+            mr-2
+          "
           @click="() => handleChangePageClicked(-1)"
         >
           <Icon name="prev" />
         </button>
         <button
-          class="text-white border-solid border-pink rounded-full py-2 px-2  shadow-pink flex justify-between space-x-2 inline-block bg-pink"
+          class="
+            text-white
+            border-solid border-pink
+            rounded-full
+            py-2
+            px-2
+            shadow-pink
+            flex
+            justify-between
+            space-x-2
+            inline-block
+            bg-pink
+          "
           @click="() => handleChangePageClicked(1)"
         >
           <Icon name="next" />
@@ -60,7 +85,19 @@
       <div class="flex">
         <button
           v-for="i in [10, 15, 20, 25]"
-          class="text-white border-solid border-pink rounded-full py-2 px-4 shadow-pink flex justify-between space-x-2 inline-block mr-1"
+          class="
+            text-white
+            border-solid border-pink
+            rounded-full
+            py-2
+            px-4
+            shadow-pink
+            flex
+            justify-between
+            space-x-2
+            inline-block
+            mr-1
+          "
           :key="i"
           @click="() => handleChangeSizePerPage(i)"
           :class="{

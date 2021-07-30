@@ -13,11 +13,11 @@ type expectedInvokers = {
 export const testAction = (
   action: Action,
   actionPayload: any,
-  state: null | object,
+  state: null | Record<string, unknown>,
   expectedMutations: expectedInvokers[],
   expectedActions: expectedInvokers[],
   done: (err?: any) => void
-) => {
+): void => {
   let countMutations = 0;
   let countActions = 0;
   const commit = (type: string, payload: any) => {

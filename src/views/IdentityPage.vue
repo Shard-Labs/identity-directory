@@ -1,7 +1,11 @@
 <template>
   <div>
     <Modal :show="showModal" @close="handleCloseModal" header="Send Tokens">
-      <div class="pb-10 flex flex-col items-center">
+      <form
+        @submit.prevent="handleSendTokens"
+        @keydown.enter.prevent="handleSendTokens"
+        class="pb-10 flex flex-col items-center"
+      >
         <span class="text-lg">Amount</span>
         <input-field
           inputType="number"
@@ -11,14 +15,29 @@
           inputClasses="py-2 font-medium w-full"
           @update="handleChangeAmount"
           :step="network.minAmount"
+          :min="0"
         />
         <button
-          class="mt-4 mix-w-12 max-h-10 font-medium bg-pink text-white border-solid border-pink rounded-full py-2 px-4 shadow-pink flex justify-between space-x-2"
-          @click="handleSendTokens"
+          class="
+            mt-4
+            mix-w-12
+            max-h-10
+            font-medium
+            bg-pink
+            text-white
+            border-solid border-pink
+            rounded-full
+            py-2
+            px-4
+            shadow-pink
+            flex
+            justify-between
+            space-x-2
+          "
         >
           Send
         </button>
-      </div>
+      </form>
     </Modal>
     <header class="flex justify-between">
       <h1 class="font-black text-4xl text-left mb-8">Identity</h1>
