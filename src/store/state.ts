@@ -5,7 +5,7 @@ import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 export type IdentityEl = {
   id: string;
   type: string;
-  attribute: object;
+  attribute: Record<string, unknown>;
 };
 
 export type Identity = {
@@ -17,6 +17,7 @@ export type Identity = {
   riot: string;
   address: string;
   balance: string;
+  judgements?: string;
 };
 
 export type Network = {

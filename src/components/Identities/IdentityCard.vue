@@ -1,6 +1,6 @@
 <template>
   <card
-    class="pt-11 pb-10 flex flex-col items-center mt-6  cursor-pointer"
+    class="pt-11 pb-10 flex flex-col items-center mt-6 cursor-pointer"
     @click="goToIdentity"
   >
     <Avatar
@@ -11,11 +11,11 @@
       "
     />
     <div class="mb-6">
-      <h2 class="font-extrabold text-2xl ">
+      <h2 class="font-extrabold text-2xl">
         {{
           identity.attributes.identity_legal ||
-            identity.attributes.identity_display ||
-            identity.attributes.address.slice(0, 8) + "..."
+          identity.attributes.identity_display ||
+          identity.attributes.address.slice(0, 8) + "..."
         }}
       </h2>
       <p class="text-xs">
@@ -26,7 +26,20 @@
       <a
         target="_blank"
         :href="web"
-        class="p-3 text-white rounded-full cursor-pointer w-16 h-16 flex items-center justify-center block bg-pink mr-5"
+        class="
+          p-3
+          text-white
+          rounded-full
+          cursor-pointer
+          w-16
+          h-16
+          flex
+          items-center
+          justify-center
+          block
+          bg-pink
+          mr-5
+        "
         :class="{ 'bg-gray-600': !web }"
         :disabled="!web"
       >
@@ -35,7 +48,20 @@
       <a
         target="_blank"
         :href="riot"
-        class="p-3 text-white rounded-full cursor-pointer w-16 h-16 flex items-center justify-center block bg-green mr-5"
+        class="
+          p-3
+          text-white
+          rounded-full
+          cursor-pointer
+          w-16
+          h-16
+          flex
+          items-center
+          justify-center
+          block
+          bg-green
+          mr-5
+        "
         :class="{ 'bg-gray-600': !riot }"
         :disabled="!riot"
       >
@@ -44,7 +70,21 @@
       <a
         target="_blank"
         :href="twitter"
-        class="p-3 text-white rounded-full cursor-pointer w-16 h-16 flex items-center justify-center block relative bg-blue mr-5"
+        class="
+          p-3
+          text-white
+          rounded-full
+          cursor-pointer
+          w-16
+          h-16
+          flex
+          items-center
+          justify-center
+          block
+          relative
+          bg-blue
+          mr-5
+        "
         :class="{ 'bg-gray-600': !twitter }"
         :disabled="!twitter"
       >

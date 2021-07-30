@@ -21,7 +21,6 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from "axios";
-/* @ts-ignore */
 import hash from "blueimp-md5";
 import Icon from "@/components/common/Icon.vue";
 
@@ -59,7 +58,7 @@ export default defineComponent({
     shuffleColor() {
       return colors[Math.floor(Math.random() * colors.length)];
     },
-    classCleanUp(): string | string[] | object {
+    classCleanUp(): string | string[] | Record<string, unknown> {
       const background = `bg-${this.shuffleColor}`;
 
       if (typeof this.innerClass === "string") {
@@ -81,7 +80,7 @@ export default defineComponent({
       if (this.name) {
         return this.name
           .split(" ")
-          .map(n => n[0])
+          .map((n) => n[0])
           .join("");
       }
       return "";
@@ -89,18 +88,22 @@ export default defineComponent({
   },
   methods: {
     async isItGravatarDefault() {
-      const image = await axios.get(
-        `https://www.gravatar.com/avatar/${hash(this.email)}`,
-        {
-          responseType: "arraybuffer"
+      if (this.email) {
+        const image = await axios.get(
+          `https://www.gravatar.com/avatar/${hash(this.email)}`,
+          {
+            responseType: "arraybuffer"
+          }
+        );
+        const imageBase64 = Buffer.from(image.data, "binary").toString(
+          "base64"
+        );
+        if (
+          imageBase64 !== GRAVATAR_DEFAULT_1 &&
+          imageBase64 !== GRAVATAR_DEFAULT_2
+        ) {
+          this.gravatar = `https://www.gravatar.com/avatar/${hash(this.email)}`;
         }
-      );
-      const imageBase64 = Buffer.from(image.data, "binary").toString("base64");
-      if (
-        imageBase64 !== GRAVATAR_DEFAULT_1 &&
-        imageBase64 !== GRAVATAR_DEFAULT_2
-      ) {
-        this.gravatar = `https://www.gravatar.com/avatar/${hash(this.email)}`;
       }
     }
   },

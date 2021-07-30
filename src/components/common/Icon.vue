@@ -308,7 +308,7 @@
   </svg>
 
   <svg
-    class="inline-block "
+    class="inline-block"
     :class="iconClass"
     v-if="name === 'basic-info'"
     width="24"

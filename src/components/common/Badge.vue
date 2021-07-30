@@ -1,7 +1,16 @@
 <template>
   <div
     :class="bgColor"
-    class="w-20 h-6 text-xs text-white font-bold rounded-full flex items-center justify-center"
+    class="
+      w-20
+      h-6
+      text-xs text-white
+      font-bold
+      rounded-full
+      flex
+      items-center
+      justify-center
+    "
   >
     <Icon v-if="prefixIcon" :name="prefixIcon" iconClass="mr-1" />
     <p>{{ label }}</p>

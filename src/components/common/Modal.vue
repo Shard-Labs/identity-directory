@@ -2,7 +2,15 @@
   <div class="backdrop" v-if="show" @click="handleClose">
     <div class="modal" @click="handleModalClick">
       <div
-        class="flex justify-between p-5 text-black font-bold text-xl items-center"
+        class="
+          flex
+          justify-between
+          p-5
+          text-black
+          font-bold
+          text-xl
+          items-center
+        "
       >
         {{ header }}
         <button @click="handleClose">

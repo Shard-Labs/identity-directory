@@ -1,7 +1,7 @@
 <template>
   <div>
     <Modal :show="showModal" header="Account List" @close="handleCloseModal">
-      <ul class="pb-8  px-10">
+      <ul class="pb-8 px-10">
         <li
           v-for="account in allAccounts"
           :key="account.address"
@@ -28,7 +28,18 @@
     <div v-else>
       <button
         @click="checkWallets"
-        class="bg-pink text-white border-solid border-pink rounded-full py-2 px-4 shadow-pink flex justify-between space-x-2"
+        class="
+          bg-pink
+          text-white
+          border-solid border-pink
+          rounded-full
+          py-2
+          px-4
+          shadow-pink
+          flex
+          justify-between
+          space-x-2
+        "
       >
         <Icon name="connect" />
         <span class="font-medium">Connect</span>

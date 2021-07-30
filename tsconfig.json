@@ -15,7 +15,8 @@
     "types": [
       "webpack-env",
       "mocha",
-      "chai"
+      "chai",
+      "blueimp-md5"
     ],
     "paths": {
       "@/*": [

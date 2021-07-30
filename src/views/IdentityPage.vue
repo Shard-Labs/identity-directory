@@ -13,7 +13,22 @@
           :step="network.minAmount"
         />
         <button
-          class="mt-4 mix-w-12 max-h-10 font-medium bg-pink text-white border-solid border-pink rounded-full py-2 px-4 shadow-pink flex justify-between space-x-2"
+          class="
+            mt-4
+            mix-w-12
+            max-h-10
+            font-medium
+            bg-pink
+            text-white
+            border-solid border-pink
+            rounded-full
+            py-2
+            px-4
+            shadow-pink
+            flex
+            justify-between
+            space-x-2
+          "
           @click="handleSendTokens"
         >
           Send

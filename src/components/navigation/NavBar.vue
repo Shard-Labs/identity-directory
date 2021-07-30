@@ -2,15 +2,11 @@
   <div class="flex flex-col justify-center">
     <nav-link :exact="true" path="/" class="mb-8">
       <Icon name="identities" iconClass="mr-4" />
-      <div class="text-base font-bold">
-        Identity Hub
-      </div>
+      <div class="text-base font-bold">Identity Hub</div>
     </nav-link>
     <nav-link :exact="true" :path="path" class="mb-8" v-if="myIdentity">
       <Avatar innerClass="w-12 h-12 mr-4" />
-      <div class="text-base font-bold">
-        My Identity
-      </div>
+      <div class="text-base font-bold">My Identity</div>
     </nav-link>
   </div>
 </template>

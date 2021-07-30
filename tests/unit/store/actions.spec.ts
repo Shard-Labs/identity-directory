@@ -6,9 +6,8 @@ import { actions } from "@/store/actions";
 import { MutationType } from "@/store/mutations";
 import { wallet, network, notification, pagination } from "./mockData";
 
-
 describe("Actions", () => {
-  it("should set a wallet", done => {
+  it("should set a wallet", (done) => {
     const payload = wallet;
     const state = {};
     const expectedMutations = [{ type: MutationType.SetWallet, payload }];
@@ -21,7 +20,7 @@ describe("Actions", () => {
       done
     );
   });
-  it("should set a network", done => {
+  it("should set a network", (done) => {
     const payload = network;
     const state = {};
     const expectedMutations = [{ type: MutationType.SetNetwork, payload }];
@@ -34,7 +33,7 @@ describe("Actions", () => {
       done
     );
   });
-  it("should set a network provider", done => {
+  it("should set a network provider", (done) => {
     const payload = network.wsProvider;
     const state = {};
     const expectedMutations = [
@@ -49,7 +48,7 @@ describe("Actions", () => {
       done
     );
   });
-  it("should connect to a network", done => {
+  it("should connect to a network", (done) => {
     const expectedMutations = [
       {
         type: MutationType.SetNetworkConnected,
@@ -91,7 +90,7 @@ describe("Actions", () => {
       done
     );
   });
-  it("should set notification", done => {
+  it("should set notification", (done) => {
     const expectedMutations = [
       {
         type: MutationType.SetNotification,
@@ -107,7 +106,7 @@ describe("Actions", () => {
       done
     );
   });
-  it("should set pagination page", done => {
+  it("should set pagination page", (done) => {
     const expectedMutations = [
       {
         type: MutationType.SetPaginationPage,
@@ -137,7 +136,7 @@ describe("Actions", () => {
       done
     );
   });
-  it("should set pagination size", done => {
+  it("should set pagination size", (done) => {
     const expectedMutations = [
       {
         type: MutationType.SetPaginationSize,
