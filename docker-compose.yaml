@@ -13,6 +13,9 @@ services:
       - type: bind
         source: /home/ubuntu/node_data/polkadot/
         target: /polkadot/.local/share/polkadot/chains/polkadot
+    ports:
+      - "9944:9944"
+      
   kusama_node:
     image: parity/polkadot:v0.9.8
     container_name: kusama_node
@@ -21,6 +24,9 @@ services:
       - type: bind
         source: /home/ubuntu/node_data/ksmcc3/
         target: /polkadot/.local/share/polkadot/chains/ksmcc3
+    ports:
+      - "9945:9944"
+    
   # polkadot_indexer:
   #   build:
   #     context: .
