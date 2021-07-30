@@ -8,7 +8,7 @@ services:
   polkadot_node:
     image: parity/polkadot:v0.9.8
     container_name: polkadot_node
-    command: --name "polkadot archive node" --rpc-external --ws-external --pruning archive
+    command: --name "polkadot archive node" --rpc-external --rpc-cors all --ws-external --pruning archive
     volumes:
       - type: bind
         source: /home/ubuntu/node_data/polkadot/
@@ -19,7 +19,7 @@ services:
   kusama_node:
     image: parity/polkadot:v0.9.8
     container_name: kusama_node
-    command: --name "kusama archive node" --chain kusama --rpc-external --ws-external --pruning archive
+    command: --name "kusama archive node" --chain kusama --rpc-external --rpc-cors all --ws-external --pruning archive
     volumes:
       - type: bind
         source: /home/ubuntu/node_data/ksmcc3/
