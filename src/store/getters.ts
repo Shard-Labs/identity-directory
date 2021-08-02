@@ -12,6 +12,7 @@ import {
 } from "./state";
 
 export type Getters = {
+  polkadotNetwork(state: State): Network | undefined;
   wallet(state: State): InjectedAccountWithMeta | null;
   myIdentity(state: State): Identity | DeriveAccountRegistration | null;
   identity(state: State): Identity | DeriveAccountRegistration | null;
@@ -29,6 +30,9 @@ export type Getters = {
 export const getters: GetterTree<State, State> & Getters = {
   wallet(state) {
     return state.wallet;
+  },
+  polkadotNetwork(state) {
+    return state.networkList.find((el) => el.title === "Polkadot");
   },
   myIdentity(state) {
     return state.myIdentity;
