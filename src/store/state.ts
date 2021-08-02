@@ -28,7 +28,8 @@ export type Network = {
   api: ApiPromise | null;
   custom: boolean;
   token: string;
-  minAmount: number;
+  minAmount: string;
+  decimals: number;
 };
 
 export type Notification = {
@@ -74,7 +75,8 @@ export const state: State = {
       api: null,
       custom: false,
       token: "",
-      minAmount: 0.0000000001
+      minAmount: "0.0000000001",
+      decimals: 10
     },
     {
       title: "Kusama",
@@ -84,7 +86,8 @@ export const state: State = {
       api: null,
       custom: false,
       token: "",
-      minAmount: 0.000000000001
+      minAmount: "0.000000000001",
+      decimals: 12
     },
     {
       title: "Custom Node",
@@ -94,7 +97,8 @@ export const state: State = {
       api: null,
       custom: true,
       token: "",
-      minAmount: 0.000000000001
+      minAmount: "0.000000000001",
+      decimals: 10
     }
   ],
   notification: {

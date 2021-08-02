@@ -18,9 +18,13 @@
       class="SearchInputWithIcon"
       :style="{ 'text-indent': prefixIcon ? '40px' : '20px' }"
       @change="handleChange($event)"
+      @input="handleInput($event)"
       :step="inputStep"
       :min="min"
     />
+    <span class="form-control-feedback mt-1 right-16" v-if="postfixText">
+      {{ postfixText }}
+    </span>
   </div>
 </template>
 
@@ -46,8 +50,10 @@ export default defineComponent({
     inputClasses: { type: String, default: "" },
     slotClasses: { type: String, default: "" },
     prefixIcon: { type: String },
+    postfixText: { type: String },
     inputStep: { type: Number },
-    min: { type: Number }
+    min: { type: Number },
+    decimals: { type: Number }
   },
   methods: {
     handleChange(e: Event) {
@@ -55,6 +61,17 @@ export default defineComponent({
 
       const value = target.value === "" ? null : target.value;
       this.$emit("update", value);
+    },
+    handleInput(e: Event) {
+      const target = e.target as HTMLInputElement;
+      if (this.inputType === "number" && this.decimals) {
+        if (target && target.value) { 
+          /* @ts-ignore */
+          e.target.value = Number(target.value).toFixed(this.decimals);
+        }
+      }
+      const value = target.value === "" ? null : target.value;
+      this.$emit("input", value);
     }
   }
 });

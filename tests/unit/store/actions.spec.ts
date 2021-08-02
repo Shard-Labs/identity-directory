@@ -66,7 +66,11 @@ describe("Actions", () => {
       },
       {
         type: MutationType.SetNetworkMinAmount,
-        payload: 0.000000000001
+        payload: "0.0000000001"
+      },
+      {
+        type: MutationType.SetNetworkDecimals,
+        payload: 10
       }
     ];
     const expectedActions = [
@@ -89,7 +93,7 @@ describe("Actions", () => {
       expectedActions,
       done
     );
-  });
+  }).timeout(5000);
   it("should set notification", (done) => {
     const expectedMutations = [
       {

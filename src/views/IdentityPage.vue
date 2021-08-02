@@ -13,9 +13,11 @@
           :id="identity"
           containerClasses="w-full bg-transparent border-solid border-pink rounded-full py-3 px-6"
           inputClasses="py-2 font-medium w-full"
-          @update="handleChangeAmount"
-          :step="network.minAmount"
+          @input="handleInputAmount"
+          :inputStep="network.minAmount"
+          :decimals="network.decimals"
           :min="0"
+          :postfixText="network.token"
         />
         <button
           class="
@@ -87,7 +89,7 @@ export default defineComponent({
     return {
       loading: true,
       showModal: false,
-      amount: 0
+      amount: "0"
     };
   },
   computed: {
@@ -136,6 +138,9 @@ export default defineComponent({
       this.showModal = false;
     },
     handleChangeAmount(amount) {
+      this.amount = Number(amount).toFixed(10);
+    },
+    handleInputAmount(amount) {
       this.amount = amount;
     },
     handleSendTokens() {
