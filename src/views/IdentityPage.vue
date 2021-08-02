@@ -106,6 +106,11 @@ export default defineComponent({
   watch: {
     api() {
       this.fetchIdentity();
+    },
+    $route(to, from) {
+      if (to.params.address !== from.params.address) {
+        this.fetchIdentity();
+      }
     }
   },
   methods: {
