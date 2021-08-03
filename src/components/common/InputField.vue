@@ -84,6 +84,7 @@ export default defineComponent({
           /* @ts-ignore */
           e.target.value = 0;
         }
+        /* @ts-ignore */
         e.target.value = valueNumber;
       }
       if (this.inputType === "number" && this.decimals) {

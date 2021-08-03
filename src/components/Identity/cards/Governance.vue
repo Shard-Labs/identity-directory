@@ -1,5 +1,5 @@
 <template>
-  <closable-card>
+  <closable-card :closed="closed">
     <template v-slot:header>
       <Icon name="governance" />
       <h2 class="font-medium text-lg">Governance</h2>
@@ -38,6 +38,11 @@ import Icon from "@/components/common/Icon.vue";
 
 export default defineComponent({
   name: "GovernanceCard",
+  props: {
+    closed: {
+      type: Boolean
+    }
+  },
   components: {
     ClosableCard,
     Icon

@@ -50,8 +50,8 @@
         <IdentityCard class="mb-10" @sendToken="handleShowModal" />
         <div class="flex justify-between">
           <InfoCard class="w-1/3" />
-          <Governance class="w-1/3" />
-          <Treasury class="w-1/3" />
+          <Governance class="w-1/3" :closed="true" />
+          <Treasury class="w-1/3" :closed="true" />
         </div>
       </div>
     </main>

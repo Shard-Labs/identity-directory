@@ -1,5 +1,5 @@
 <template>
-  <closable-card>
+  <closable-card :closed="closed">
     <template v-slot:header>
       <Icon name="treasury" />
       <h2 class="font-medium text-lg">Treasury</h2>
@@ -38,6 +38,11 @@ export default defineComponent({
   components: {
     ClosableCard,
     Icon
+  },
+  props: {
+    closed: {
+      type: Boolean
+    }
   },
   data() {
     return {

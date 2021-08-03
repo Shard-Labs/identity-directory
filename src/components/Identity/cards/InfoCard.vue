@@ -1,5 +1,5 @@
 <template>
-  <closable-card>
+  <closable-card :closed="closed">
     <template v-slot:header>
       <Icon name="basic-info" />
       <h2 class="font-medium text-lg">Basic info</h2>
@@ -156,6 +156,11 @@ export default defineComponent({
   components: {
     ClosableCard,
     Icon
+  },
+  props: {
+    closed: {
+      type: Boolean
+    }
   },
   computed: {
     ...mapGetters(["identity", "network", "token", "judgement"]),
