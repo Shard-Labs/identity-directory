@@ -14,10 +14,52 @@
           </p>
         </li>
         <li class="pt-2 text-left">
+          <span class="text-sm text-gray-400">Parent Account</span>
+          <br />
+          <a v-if="identity && identity.parent" @click="goToParent">
+            <span class="text-sm font-bold cursor-pointer">
+              {{ identity.displayParent || identity.parent.toHuman() }}
+            </span>
+          </a>
+          <span v-else class="text-sm font-bold break-words">No Parent</span>
+        </li>
+        <li class="pt-2 text-left">
           <span class="text-sm text-gray-400">Balance</span>
           <br />
           <span class="text-sm font-bold">
             {{ (identity && identity.balance) || 0 }}
+          </span>
+          <span class="text-sm">{{ ` ${token}` }}</span>
+        </li>
+        <li class="pt-2 text-left">
+          <span class="text-sm text-gray-400">Free Balance</span>
+          <br />
+          <span class="text-sm font-bold">
+            {{ (identity && identity.freeBalance) || 0 }}
+          </span>
+          <span class="text-sm">{{ ` ${token}` }}</span>
+        </li>
+        <li class="pt-2 text-left">
+          <span class="text-sm text-gray-400">Reserved Balance</span>
+          <br />
+          <span class="text-sm font-bold">
+            {{ (identity && identity.reservedBalance) || 0 }}
+          </span>
+          <span class="text-sm">{{ ` ${token}` }}</span>
+        </li>
+        <li class="pt-2 text-left">
+          <span class="text-sm text-gray-400">Locked Balance</span>
+          <br />
+          <span class="text-sm font-bold">
+            {{ (identity && identity.lockedBalance) || 0 }}
+          </span>
+          <span class="text-sm">{{ ` ${token}` }}</span>
+        </li>
+        <li class="pt-2 text-left">
+          <span class="text-sm text-gray-400">Available Balance</span>
+          <br />
+          <span class="text-sm font-bold">
+            {{ (identity && identity.availableBalance) || 0 }}
           </span>
           <span class="text-sm">{{ ` ${token}` }}</span>
         </li>
@@ -27,16 +69,6 @@
           <span class="text-sm font-bold">
             {{ (identity && identity.legal) || "No Info" }}
           </span>
-        </li>
-        <li class="pt-2 text-left">
-          <span class="text-sm text-gray-400">Parent</span>
-          <br />
-          <a v-if="identity && identity.parent" @click="goToParent">
-            <span class="text-sm font-bold cursor-pointer">
-              {{ identity.displayParent || identity.parent.toHuman() }}
-            </span>
-          </a>
-          <span v-else class="text-sm font-bold break-words">No Parent</span>
         </li>
         <li class="pt-2 text-left">
           <span class="text-sm text-gray-400">Email address</span>

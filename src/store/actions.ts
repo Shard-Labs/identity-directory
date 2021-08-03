@@ -97,12 +97,25 @@ export const actions: ActionTree<State, State> & Actions = {
         decimals = new BigNumber(decimals).toNumber();
       }
       if (balances) {
-        const { freeBalance, reservedBalance } = balances;
+        const { freeBalance, reservedBalance, frozenMisc } = balances;
         const base = new BigNumber(10).pow(decimals);
         identity.balance = new BigNumber(freeBalance.toHex())
           .plus(reservedBalance.toHex())
           .div(base)
-          .toFixed(decimals);
+          .toFixed(2);
+        identity.freeBalance = new BigNumber(freeBalance.toHex())
+          .div(base)
+          .toFixed(2);
+        identity.availableBalance = new BigNumber(freeBalance.toHex())
+          .minus(frozenMisc.toHex())
+          .multipliedBy(state.network.minAmount)
+          .toFixed(2);
+        identity.reservedBalance = new BigNumber(reservedBalance.toHex())
+          .div(base)
+          .toFixed(2);
+        identity.lockedBalance = new BigNumber(frozenMisc.toHex())
+          .div(base)
+          .toFixed(2);
       }
       const judgements: any[] = [];
       if (identity) {
