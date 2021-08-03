@@ -35,6 +35,11 @@ import Icon from "@/components/common/Icon.vue";
 
 export default defineComponent({
   name: "InputField",
+  data() {
+    return {
+      oldValue: ""
+    };
+  },
   components: {
     Icon
   },
@@ -64,13 +69,33 @@ export default defineComponent({
     },
     handleInput(e: Event) {
       const target = e.target as HTMLInputElement;
+
+      if (this.inputStep) {
+        const valueNumber = Number(target.value);
+        const decimalCheck =
+          target.value.split(".")[1] && this.decimals
+            ? target.value.split(".")[1].length > this.decimals
+            : false;
+        if ((this.inputStep > valueNumber && valueNumber > 0) || decimalCheck) {
+          /* @ts-ignore */
+          e.target.value = this.oldValue || this.inputStep;
+        }
+        if (this.inputStep && isNaN(valueNumber)) {
+          /* @ts-ignore */
+          e.target.value = 0;
+        }
+        e.target.value = valueNumber;
+      }
       if (this.inputType === "number" && this.decimals) {
-        if (target && target.value) { 
+        if (target && target.value) {
           /* @ts-ignore */
           e.target.value = Number(target.value).toFixed(this.decimals);
         }
       }
       const value = target.value === "" ? null : target.value;
+      if (value) {
+        this.oldValue = value;
+      }
       this.$emit("input", value);
     }
   }

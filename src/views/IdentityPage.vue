@@ -8,7 +8,7 @@
       >
         <span class="text-lg">Amount</span>
         <input-field
-          inputType="number"
+          inputType="text"
           :name="identity"
           :id="identity"
           containerClasses="w-full bg-transparent border-solid border-pink rounded-full py-3 px-6"
@@ -16,7 +16,6 @@
           @input="handleInputAmount"
           :inputStep="network.minAmount"
           :decimals="network.decimals"
-          :min="0"
           :postfixText="network.token"
         />
         <button
