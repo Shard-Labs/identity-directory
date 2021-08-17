@@ -50,8 +50,6 @@
         <IdentityCard class="mb-10" @sendToken="handleShowModal" />
         <div class="flex justify-between">
           <InfoCard class="w-1/3" />
-          <Governance class="w-1/3" :closed="true" />
-          <Treasury class="w-1/3" :closed="true" />
         </div>
       </div>
     </main>
@@ -65,8 +63,6 @@ import { ActionTypes } from "@/store/actions";
 
 import IdentityCard from "@/components/Identity/Identity.vue";
 import InfoCard from "@/components/Identity/cards/InfoCard.vue";
-import Treasury from "@/components/Identity/cards/Treasury.vue";
-import Governance from "@/components/Identity/cards/Governance.vue";
 import Modal from "@/components/common/Modal";
 import InputField from "@/components/common/InputField.vue";
 import Loader from "@/components/common/Loader.vue";
@@ -77,8 +73,6 @@ export default defineComponent({
   components: {
     IdentityCard,
     InfoCard,
-    Treasury,
-    Governance,
     Modal,
     Connect,
     InputField,
