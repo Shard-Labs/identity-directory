@@ -44,7 +44,8 @@ export const network: Network = {
   api: null,
   custom: false,
   token: "",
-  minAmount: 0.0000000001
+  minAmount: "0.0000000001",
+  decimals: 10
 };
 
 export const notification: Notification = {

@@ -1,9 +1,5 @@
 <template>
   <div class="flex flex-col justify-around items-start w-full">
-    <div class="flex justify-between space-x-4 mb-8">
-      <Icon name="logo" />
-      <h3 class="font-black text-xl">Polkaperson</h3>
-    </div>
     <Dropdown
       class="mb-8"
       :data="networkList"
@@ -32,7 +28,6 @@ import { defineComponent } from "vue";
 import { mapActions, mapGetters } from "vuex";
 import { ActionTypes } from "@/store/actions";
 
-import Icon from "@/components/common/Icon.vue";
 import NavBar from "./NavBar.vue";
 import Dropdown from "../common/Dropdown.vue";
 import InputField from "../common/InputField.vue";
@@ -40,7 +35,6 @@ import InputField from "../common/InputField.vue";
 export default defineComponent({
   name: "Sidebar",
   components: {
-    Icon,
     NavBar,
     InputField,
     Dropdown
@@ -51,7 +45,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapGetters(["network", "networkList"]),
+    ...mapGetters(["network", "networkList", "polkadotNetwork"]),
     selectedChainTitle() {
       return this.selectedChain ? this.selectedChain.title : "Select Network";
     },
@@ -87,6 +81,14 @@ export default defineComponent({
   },
   created() {
     const { network } = this.$route.params;
+    if (!network) {
+      this.selectNetwork(this.polkadotNetwork);
+      this.connect();
+      this.$router.push({
+        name: "ListWithNetwork",
+        params: { network: this.polkadotNetwork.title.toLowerCase() }
+      });
+    }
     if (this.network && this.network.title.toLowerCase() === network) {
       return;
     }

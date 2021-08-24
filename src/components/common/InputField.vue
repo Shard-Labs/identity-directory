@@ -18,9 +18,13 @@
       class="SearchInputWithIcon"
       :style="{ 'text-indent': prefixIcon ? '40px' : '20px' }"
       @change="handleChange($event)"
+      @input="handleInput($event)"
       :step="inputStep"
       :min="min"
     />
+    <span class="form-control-feedback mt-1 right-16" v-if="postfixText">
+      {{ postfixText }}
+    </span>
   </div>
 </template>
 
@@ -31,6 +35,11 @@ import Icon from "@/components/common/Icon.vue";
 
 export default defineComponent({
   name: "InputField",
+  data() {
+    return {
+      oldValue: ""
+    };
+  },
   components: {
     Icon
   },
@@ -46,8 +55,10 @@ export default defineComponent({
     inputClasses: { type: String, default: "" },
     slotClasses: { type: String, default: "" },
     prefixIcon: { type: String },
+    postfixText: { type: String },
     inputStep: { type: Number },
-    min: { type: Number }
+    min: { type: Number },
+    decimals: { type: Number }
   },
   methods: {
     handleChange(e: Event) {
@@ -55,6 +66,38 @@ export default defineComponent({
 
       const value = target.value === "" ? null : target.value;
       this.$emit("update", value);
+    },
+    handleInput(e: Event) {
+      const target = e.target as HTMLInputElement;
+
+      if (this.inputStep) {
+        const valueNumber = Number(target.value);
+        const decimalCheck =
+          target.value.split(".")[1] && this.decimals
+            ? target.value.split(".")[1].length > this.decimals
+            : false;
+        if ((this.inputStep > valueNumber && valueNumber > 0) || decimalCheck) {
+          /* @ts-ignore */
+          e.target.value = this.oldValue || this.inputStep;
+        }
+        if (this.inputStep && isNaN(valueNumber)) {
+          /* @ts-ignore */
+          e.target.value = 0;
+        }
+        /* @ts-ignore */
+        e.target.value = valueNumber;
+      }
+      if (this.inputType === "number" && this.decimals) {
+        if (target && target.value) {
+          /* @ts-ignore */
+          e.target.value = Number(target.value).toFixed(this.decimals);
+        }
+      }
+      const value = target.value === "" ? null : target.value;
+      if (value) {
+        this.oldValue = value;
+      }
+      this.$emit("input", value);
     }
   }
 });

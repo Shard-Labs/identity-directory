@@ -73,10 +73,18 @@ describe("mutations", () => {
   });
   it("should set network min amount to the state", () => {
     mutations[MutationType.SetNetwork](state, mockData.network);
-    mutations[MutationType.SetNetworkMinAmount](state, 10);
+    mutations[MutationType.SetNetworkMinAmount](state, "10");
     expect(state.network).not.to.be.null;
     if (state.network) {
-      expect(state.network.minAmount).to.equal(10);
+      expect(state.network.minAmount).to.equal("10");
+    }
+  });
+  it("should set network decimals to the state", () => {
+    mutations[MutationType.SetNetwork](state, mockData.network);
+    mutations[MutationType.SetNetworkDecimals](state, 10);
+    expect(state.network).not.to.be.null;
+    if (state.network) {
+      expect(state.network.decimals).to.equal(10);
     }
   });
   it("should set pagination to the state", () => {

@@ -1,5 +1,5 @@
 <template>
-  <closable-card>
+  <closable-card :closed="closed">
     <template v-slot:header>
       <Icon name="basic-info" />
       <h2 class="font-medium text-lg">Basic info</h2>
@@ -14,10 +14,52 @@
           </p>
         </li>
         <li class="pt-2 text-left">
+          <span class="text-sm text-gray-400">Parent Account</span>
+          <br />
+          <a v-if="identity && identity.parent" @click="goToParent">
+            <span class="text-sm font-bold cursor-pointer">
+              {{ identity.displayParent || identity.parent.toHuman() }}
+            </span>
+          </a>
+          <span v-else class="text-sm font-bold break-words">No Parent</span>
+        </li>
+        <li class="pt-2 text-left">
           <span class="text-sm text-gray-400">Balance</span>
           <br />
           <span class="text-sm font-bold">
             {{ (identity && identity.balance) || 0 }}
+          </span>
+          <span class="text-sm">{{ ` ${token}` }}</span>
+        </li>
+        <li class="pt-2 text-left">
+          <span class="text-sm text-gray-400">Free Balance</span>
+          <br />
+          <span class="text-sm font-bold">
+            {{ (identity && identity.freeBalance) || 0 }}
+          </span>
+          <span class="text-sm">{{ ` ${token}` }}</span>
+        </li>
+        <li class="pt-2 text-left">
+          <span class="text-sm text-gray-400">Reserved Balance</span>
+          <br />
+          <span class="text-sm font-bold">
+            {{ (identity && identity.reservedBalance) || 0 }}
+          </span>
+          <span class="text-sm">{{ ` ${token}` }}</span>
+        </li>
+        <li class="pt-2 text-left">
+          <span class="text-sm text-gray-400">Locked Balance</span>
+          <br />
+          <span class="text-sm font-bold">
+            {{ (identity && identity.lockedBalance) || 0 }}
+          </span>
+          <span class="text-sm">{{ ` ${token}` }}</span>
+        </li>
+        <li class="pt-2 text-left">
+          <span class="text-sm text-gray-400">Available Balance</span>
+          <br />
+          <span class="text-sm font-bold">
+            {{ (identity && identity.availableBalance) || 0 }}
           </span>
           <span class="text-sm">{{ ` ${token}` }}</span>
         </li>
@@ -39,40 +81,46 @@
           <span class="text-sm text-gray-400">Website</span>
           <br />
           <a
+            v-if="identity.web"
             target="_blank"
             rel="noopener noreferrer"
-            :href="[web ? web : null]"
+            :href="identity.web"
           >
-            <span class="text-sm font-bold">
-              {{ (identity && identity.web) || "No Info" }}
-            </span>
+            <span class="text-sm font-bold cursor-pointer">{{
+              identity.web
+            }}</span>
           </a>
+          <span v-else class="text-sm font-bold">No Info</span>
         </li>
         <li class="pt-2 text-left">
           <span class="text-sm text-gray-400">Element</span>
           <br />
           <a
+            v-if="identity && identity.riot"
             target="_blank"
             rel="noopener noreferrer"
-            :href="[riot ? riot : null]"
+            :href="`https://matrix.to/#/${identity.riot}`"
           >
-            <span class="text-sm font-bold">
-              {{ (identity && identity.riot) || "No Info" }}
-            </span>
+            <span class="text-sm font-bold cursor-pointer">{{
+              identity.riot
+            }}</span>
           </a>
+          <span v-else class="text-sm font-bold">No Info</span>
         </li>
         <li class="pt-2 text-left">
           <span class="text-sm text-gray-400">Twitter</span>
           <br />
           <a
+            v-if="identity && identity.twitter"
             target="_blank"
             rel="noopener noreferrer"
-            :href="[twitter ? twitter : null]"
+            :href="`https://twitter.com/${identity.twitter}`"
           >
-            <span class="text-sm font-bold">
-              {{ (identity && identity.twitter) || "No Info" }}
+            <span class="text-sm font-bold cursor-pointer">
+              {{ identity.twitter }}
             </span>
           </a>
+          <span v-else class="text-sm font-bold">No Info</span>
         </li>
         <li class="pt-2 text-left text-sm font-normal">
           <span class="text-gray-300">Registar verifications</span>
@@ -109,6 +157,11 @@ export default defineComponent({
     ClosableCard,
     Icon
   },
+  props: {
+    closed: {
+      type: Boolean
+    }
+  },
   computed: {
     ...mapGetters(["identity", "network", "token", "judgement"]),
     address(): string | string[] {
@@ -128,6 +181,14 @@ export default defineComponent({
             "text-pink": true
           };
       }
+    },
+    goToParent() {
+      const { network } = this.$route.params;
+      const address = this.identity.parent.toHuman();
+      this.$router.push({
+        name: "Identity",
+        params: { network, address }
+      });
     }
   }
 });

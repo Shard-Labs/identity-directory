@@ -8,14 +8,15 @@
       >
         <span class="text-lg">Amount</span>
         <input-field
-          inputType="number"
+          inputType="text"
           :name="identity"
           :id="identity"
           containerClasses="w-full bg-transparent border-solid border-pink rounded-full py-3 px-6"
           inputClasses="py-2 font-medium w-full"
-          @update="handleChangeAmount"
-          :step="network.minAmount"
-          :min="0"
+          @input="handleInputAmount"
+          :inputStep="network.minAmount"
+          :decimals="network.decimals"
+          :postfixText="network.token"
         />
         <button
           class="
@@ -49,8 +50,6 @@
         <IdentityCard class="mb-10" @sendToken="handleShowModal" />
         <div class="flex justify-between">
           <InfoCard class="w-1/3" />
-          <Governance class="w-1/3" />
-          <Treasury class="w-1/3" />
         </div>
       </div>
     </main>
@@ -64,8 +63,6 @@ import { ActionTypes } from "@/store/actions";
 
 import IdentityCard from "@/components/Identity/Identity.vue";
 import InfoCard from "@/components/Identity/cards/InfoCard.vue";
-import Treasury from "@/components/Identity/cards/Treasury.vue";
-import Governance from "@/components/Identity/cards/Governance.vue";
 import Modal from "@/components/common/Modal";
 import InputField from "@/components/common/InputField.vue";
 import Loader from "@/components/common/Loader.vue";
@@ -76,8 +73,6 @@ export default defineComponent({
   components: {
     IdentityCard,
     InfoCard,
-    Treasury,
-    Governance,
     Modal,
     Connect,
     InputField,
@@ -87,7 +82,7 @@ export default defineComponent({
     return {
       loading: true,
       showModal: false,
-      amount: 0
+      amount: "0"
     };
   },
   computed: {
@@ -104,6 +99,11 @@ export default defineComponent({
   watch: {
     api() {
       this.fetchIdentity();
+    },
+    $route(to, from) {
+      if (to.params.address !== from.params.address) {
+        this.fetchIdentity();
+      }
     }
   },
   methods: {
@@ -136,6 +136,9 @@ export default defineComponent({
       this.showModal = false;
     },
     handleChangeAmount(amount) {
+      this.amount = Number(amount).toFixed(10);
+    },
+    handleInputAmount(amount) {
       this.amount = amount;
     },
     handleSendTokens() {

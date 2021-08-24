@@ -1,7 +1,10 @@
 <template>
   <div>
     <header class="flex justify-between">
-      <h1 class="font-black text-4xl text-left">Identity hub</h1>
+      <div class="flex justify-between items-center space-x-4 mb-8">
+        <Icon name="logo" class="w-12" />
+        <h1 class="font-black text-4xl text-left">Identity Hub</h1>
+      </div>
       <Connect />
     </header>
     <div class="hero mt-6 p-10">
@@ -37,6 +40,7 @@ import { hexToU8a, isHex } from "@polkadot/util";
 import { mapActions, mapGetters } from "vuex";
 import { ActionTypes } from "@/store/actions";
 
+import Icon from "@/components/common/Icon.vue";
 import InputField from "../components/common/InputField.vue";
 import Identities from "@/components/Identities/index.vue";
 import Connect from "@/components/connect/Connect.vue";
@@ -51,7 +55,8 @@ export default defineComponent({
   components: {
     Identities,
     InputField,
-    Connect
+    Connect,
+    Icon
   },
   methods: {
     ...mapActions({

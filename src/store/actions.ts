@@ -89,16 +89,32 @@ export const actions: ActionTree<State, State> & Actions = {
       commit(MutationType.SetIdentity, null);
       commit(MutationType.SetIdentityLoading, true);
       const { api } = state.network;
-      let identity: any, balances: any;
+      let identity: any, balances: any, decimals: any;
       if (api) {
         identity = await api.derive.accounts.identity(address);
         balances = await api.derive.balances.account(address);
+        decimals = api.registry.chainDecimals;
+        decimals = new BigNumber(decimals).toNumber();
       }
       if (balances) {
-        const { freeBalance, frozenMisc } = balances;
+        const { freeBalance, reservedBalance, frozenMisc } = balances;
+        const base = new BigNumber(10).pow(decimals);
         identity.balance = new BigNumber(freeBalance.toHex())
+          .plus(reservedBalance.toHex())
+          .div(base)
+          .toFixed(2);
+        identity.freeBalance = new BigNumber(freeBalance.toHex())
+          .div(base)
+          .toFixed(2);
+        identity.availableBalance = new BigNumber(freeBalance.toHex())
           .minus(frozenMisc.toHex())
           .multipliedBy(state.network.minAmount)
+          .toFixed(2);
+        identity.reservedBalance = new BigNumber(reservedBalance.toHex())
+          .div(base)
+          .toFixed(2);
+        identity.lockedBalance = new BigNumber(frozenMisc.toHex())
+          .div(base)
           .toFixed(2);
       }
       const judgements: any[] = [];
@@ -183,11 +199,17 @@ export const actions: ActionTree<State, State> & Actions = {
           const { tokenSymbol } = properties;
           if (tokenSymbol && Array.isArray(tokenSymbol) && tokenSymbol.length > 0) {
             commit(MutationType.SetToken, tokenSymbol.shift() as string);
-            if (tokenSymbol[0] === "DOT") {
-              commit(MutationType.SetNetworkMinAmount, 0.0000000001);
-            } else {
-              commit(MutationType.SetNetworkMinAmount, 0.000000000001);
-            }
+            let decimals: any;
+            decimals = api.registry.chainDecimals;
+            decimals = new BigNumber(decimals).toNumber();
+            const minAmount = new BigNumber(1).div(
+              new BigNumber(10).pow(decimals).toString()
+            );
+            commit(
+              MutationType.SetNetworkMinAmount,
+              minAmount.toFixed(decimals)
+            );
+            commit(MutationType.SetNetworkDecimals, decimals);
           }
           if (api && state.wallet) {
             const { address } = state.wallet;
@@ -251,7 +273,13 @@ export const actions: ActionTree<State, State> & Actions = {
     const { network, wallet } = state;
     if (network && network.api) {
       if (wallet) {
-        const transfer = network.api.tx.balances.transfer(address, amount);
+        const planckAmount = new BigNumber(amount).multipliedBy(
+          new BigNumber(10).pow(network.decimals)
+        );
+        const transfer = network.api.tx.balances.transfer(
+          address,
+          planckAmount.toNumber()
+        );
         const injector = await web3FromSource(wallet.meta.source);
         transfer
           .signAndSend(

@@ -8,19 +8,21 @@ services:
   polkadot_node:
     image: parity/polkadot:v0.9.8
     container_name: polkadot_node
-    command: --name "polkadot archive node" --rpc-external --ws-external --pruning archive
+    command: --name "polkadot archive node" --rpc-external --rpc-cors all --ws-external --pruning archive
     volumes:
       - type: bind
         source: /home/ubuntu/node_data/polkadot/
         target: /polkadot/.local/share/polkadot/chains/polkadot
+      
   kusama_node:
     image: parity/polkadot:v0.9.8
     container_name: kusama_node
-    command: --name "kusama archive node" --chain kusama --rpc-external --ws-external --pruning archive
+    command: --name "kusama archive node" --chain kusama --rpc-external --rpc-cors all --ws-external --pruning archive
     volumes:
       - type: bind
         source: /home/ubuntu/node_data/ksmcc3/
         target: /polkadot/.local/share/polkadot/chains/ksmcc3
+    
   # polkadot_indexer:
   #   build:
   #     context: .
@@ -63,7 +65,7 @@ services:
       - '80:80'
       - '443:443'
     environment:
-      DOMAINS: 'identityhub.xyz -> http://identity_app:5000'
+      DOMAINS: 'identityhub.xyz -> http://identity_app:5000, rpc.identityhub.xyz -> http://polkadot_node:9944, kusama-rpc.identityhub.xyz -> http://kusama_node:9944'
       STAGE: 'production'
       FORCE_RENEW: 'false'
     depends_on:

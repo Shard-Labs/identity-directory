@@ -1,6 +1,6 @@
 <template>
-  <card class="bg-white">
-    <div class="h-full w-full">
+  <card class="bg-white" :class="{ 'h-16': !isOpen }">
+    <div class="w-full h-full">
       <header class="flex justify-between items-center px-4 py-4 w-full">
         <div class="flex justify-between space-x-4 items-center">
           <slot name="header" class="text-left"></slot>
@@ -30,6 +30,11 @@ export default defineComponent({
     Card,
     Icon
   },
+  props: {
+    closed: {
+      type: String
+    }
+  },
   data() {
     return {
       isOpen: true
@@ -39,6 +44,11 @@ export default defineComponent({
     closeCard() {
       this.isOpen = !this.isOpen;
     }
-  }
+  },
+  created() {
+    if (this.closed) {
+      this.isOpen = false;
+    }
+  },
 });
 </script>
