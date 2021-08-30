@@ -167,18 +167,9 @@ export const actions: ActionTree<State, State> & Actions = {
     }
     return "";
   },
-  async [ActionTypes.GetIdentityList]({ commit, state, dispatch }) {
+  async [ActionTypes.GetIdentityList]({ commit, state }) {
     const { network } = state;
     if (network) {
-      if (network.custom) {
-        commit(MutationType.SetIdentityListLoading, false);
-        dispatch(ActionTypes.SetNotification, {
-          show: true,
-          message: "Can't display Identities List on custom Node",
-          type: "warning"
-        });
-        return true;
-      }
       commit(MutationType.SetIdentityList, []);
       commit(MutationType.SetIdentityGridList, []);
       commit(MutationType.SetIdentityListLoading, true);
@@ -218,7 +209,21 @@ export const actions: ActionTree<State, State> & Actions = {
         const api = await ApiPromise.create({ provider });
         const { isConnected } = api;
         if (isConnected) {
-          commit(MutationType.SetNetworkConnected, isConnected);
+          let chain = "";
+          if (network.custom) {
+            chain = (await api.rpc.system.chain()).toHuman().toLowerCase();
+            if (!chain) {
+              commit(MutationType.SetIdentityListLoading, false);
+              dispatch(ActionTypes.SetNotification, {
+                show: true,
+                message:
+                  "Can't display Identities List on selected Custom Node",
+                type: "warning"
+              });
+              return true;
+            }
+          }
+          commit(MutationType.SetNetworkConnected, { isConnected, chain });
           commit(MutationType.SetNetworkAPI, api);
           const properties = (await api.rpc.system.properties()).toHuman();
           const { tokenSymbol } = properties;

@@ -44,7 +44,10 @@ export type Mutations = {
   [MutationType.SetNetwork](state: State, item: Network): void;
   [MutationType.SetToken](state: State, token: string): void;
   [MutationType.SetNetworkProvider](state: State, prodiver: string): void;
-  [MutationType.SetNetworkConnected](state: State, connected: boolean): void;
+  [MutationType.SetNetworkConnected](
+    state: State,
+    payload: { isConnected: boolean; chain?: string }
+  ): void;
   [MutationType.SetNetworkMinAmount](state: State, minAmount: string): void;
   [MutationType.SetNetworkDecimals](state: State, decimals: number): void;
   [MutationType.SetNetworkAPI](state: State, api: ApiPromise): void;
@@ -89,12 +92,12 @@ export const mutations: MutationTree<State> & Mutations = {
       state.network.wsProvider = provider;
     }
   },
-  [MutationType.SetNetworkConnected](state, connected) {
+  [MutationType.SetNetworkConnected](state, { isConnected, chain }) {
     if (state.network) {
-      state.network.connected = connected;
-      state.network.url = `${
-        Constants.explorerDomain
-      }/${state.network.title.toLowerCase()}/account?filter[has_identity]=1`;
+      state.network.connected = isConnected;
+      state.network.url = `${Constants.explorerDomain}/${
+        chain || state.network.title.toLowerCase()
+      }/account?filter[has_identity]=1`;
     }
   },
   [MutationType.SetNetworkAPI](state, api) {

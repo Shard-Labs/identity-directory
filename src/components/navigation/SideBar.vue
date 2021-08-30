@@ -71,11 +71,11 @@ export default defineComponent({
       const { title } = this.networkList[index];
       if (title !== "Custom Node") {
         this.connect();
+        this.$router.push({
+          name: "ListWithNetwork",
+          params: { network: title.toLowerCase() }
+        });
       }
-      this.$router.push({
-        name: "ListWithNetwork",
-        params: { network: title.toLowerCase() }
-      });
     },
     handleInput(value) {
       this.setNetworkProvider(value);
