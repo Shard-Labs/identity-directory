@@ -7,10 +7,17 @@
     <template v-slot:body>
       <ul>
         <li class="pt-2 pr-5 text-left">
-          <span class="text-sm text-gray-400">Address</span>
+          <span class="text-sm text-gray-400">Account Id</span>
           <br />
           <p class="text-sm font-bold break-words w-full">
             {{ address }}
+          </p>
+        </li>
+        <li class="pt-2 pr-5 text-left">
+          <span class="text-sm text-gray-400">Address</span>
+          <br />
+          <p class="text-sm font-bold break-words w-full">
+            {{ publicKey }}
           </p>
         </li>
         <li class="pt-2 text-left">
@@ -150,6 +157,8 @@ import { defineComponent } from "vue";
 import { mapGetters } from "vuex";
 import ClosableCard from "@/components/Identity/cards/ClosableCard.vue";
 import Icon from "@/components/common/Icon.vue";
+import { decodeAddress } from "@polkadot/keyring";
+import { u8aToHex } from "@polkadot/util";
 
 export default defineComponent({
   name: "InfoCard",
@@ -166,6 +175,12 @@ export default defineComponent({
     ...mapGetters(["identity", "network", "token", "judgement"]),
     address(): string | string[] {
       return this.$route.params.address;
+    },
+    publicKey(): string {
+      if (typeof this.address === "string") {
+        return u8aToHex(decodeAddress(this.address));
+      }
+      return "";
     }
   },
   methods: {
