@@ -71,18 +71,27 @@ export default defineComponent({
       const target = e.target as HTMLInputElement;
 
       if (this.inputStep) {
-        const valueNumber = Number(target.value);
-        const decimalCheck =
-          target.value.split(".")[1] && this.decimals
-            ? target.value.split(".")[1].length > this.decimals
-            : false;
-        if ((this.inputStep > valueNumber && valueNumber > 0) || decimalCheck) {
-          /* @ts-ignore */
-          e.target.value = this.oldValue || this.inputStep;
-        }
-        if (this.inputStep && isNaN(valueNumber)) {
-          /* @ts-ignore */
-          e.target.value = 0;
+        let valueNumber: string | number = Number(target.value);
+        if (/\d*\.$/.test(target.value)) {
+          valueNumber = target.value;
+        } else {
+          const inputDecimals = target.value.split(".")[1];
+          const decimalCheck =
+            inputDecimals && this.decimals
+              ? inputDecimals.length > this.decimals
+              : false;
+          if (
+            (this.inputStep > valueNumber && valueNumber > 0) ||
+            decimalCheck
+          ) {
+            /* @ts-ignore */
+            e.target.value = this.oldValue || this.inputStep;
+            valueNumber = Number(this.oldValue || this.inputStep);
+          }
+          if (this.inputStep && isNaN(valueNumber)) {
+            /* @ts-ignore */
+            e.target.value = 0;
+          }
         }
         /* @ts-ignore */
         e.target.value = valueNumber;
@@ -93,7 +102,8 @@ export default defineComponent({
           e.target.value = Number(target.value).toFixed(this.decimals);
         }
       }
-      const value = target.value === "" ? null : target.value;
+      /* @ts-ignore */
+      const value = target.value === "" ? null : e.target.value;
       if (value) {
         this.oldValue = value;
       }
