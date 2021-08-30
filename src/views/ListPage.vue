@@ -16,7 +16,7 @@
           :inputType="text"
           :name="identity"
           :id="identity"
-          placeholder="Search identities by address..."
+          placeholder="Search identities by address or account index"
           containerClasses="flex-grow bg-transparent border-solid border-pink rounded-full py-3 px-6"
           inputClasses="py-2 font-medium"
           @update="handleSearch"
@@ -34,8 +34,6 @@
 
 <script lagn="ts">
 import { defineComponent } from "vue";
-import { decodeAddress, encodeAddress } from "@polkadot/keyring";
-import { hexToU8a, isHex } from "@polkadot/util";
 
 import { mapActions, mapGetters } from "vuex";
 import { ActionTypes } from "@/store/actions";
@@ -68,8 +66,10 @@ export default defineComponent({
       event.preventDefault();
       return this.handleSearch(this.address);
     },
-    async handleSearch(address) {
-      this.address = address;
+    async handleSearch(query) {
+      if (!query) {
+        return;
+      }
       if (!this.network) {
         return this.setNotification({
           type: "error",
@@ -77,40 +77,22 @@ export default defineComponent({
           show: true
         });
       }
-      const valid = this.validateAddress(address);
-      if (valid) {
-        const exists = await this.searchIdentity(address);
-        if (exists) {
-          const {
-            params: { network }
-          } = this.$route;
-          return this.$router.push({
-            name: "Identity",
-            params: { address, network }
-          });
-        }
-        return this.setNotification({
-          type: "error",
-          message: "Identity Not Found",
-          show: true
+      const address = await this.searchIdentity(query);
+      if (address) {
+        this.address = address;
+        const {
+          params: { network }
+        } = this.$route;
+        return this.$router.push({
+          name: "Identity",
+          params: { address, network }
         });
       }
       return this.setNotification({
         type: "error",
-        message: "Invalid Address",
+        message: "Identity Not Found",
         show: true
       });
-    },
-    validateAddress(address) {
-      try {
-        encodeAddress(
-          isHex(address) ? hexToU8a(address) : decodeAddress(address)
-        );
-
-        return true;
-      } catch (error) {
-        return false;
-      }
     }
   },
   computed: {

@@ -13,6 +13,21 @@ function calcPaginationState(page: number, sizePerPage: number): string {
   return `${(page - 1) * sizePerPage + 1}-${page * sizePerPage}`;
 }
 
+async function getAddressFromIndex(
+  api: ApiPromise,
+  index: string
+): Promise<any> {
+  try {
+    const accountData = await api.query.indices.accounts(index);
+    const account = accountData.toHuman();
+    if (Array.isArray(account)) {
+      return account[0];
+    }
+  } catch (error) {
+    return "";
+  }
+}
+
 export enum ActionTypes {
   SetWallet = "SET_WALLET",
   GetIdentity = "GET_IDENTITY",
@@ -42,7 +57,7 @@ export type Actions = {
   [ActionTypes.GetIdentity](context: ActionAugments, address: string): void;
   [ActionTypes.SearchIdentity](
     context: ActionAugments,
-    address: string
+    query: string
   ): Promise<boolean>;
   [ActionTypes.GetIdentityList](context: ActionAugments): void;
   [ActionTypes.SetNetwork](context: ActionAugments, network: Network): void;
@@ -128,19 +143,29 @@ export const actions: ActionTree<State, State> & Actions = {
       commit(MutationType.SetIdentityLoading, false);
     }
   },
-  async [ActionTypes.SearchIdentity]({ state }, address) {
+  async [ActionTypes.SearchIdentity]({ state }, query) {
     if (state.network) {
       const { api } = state.network;
       let identity: any;
+      let accountId: any;
       if (api) {
-        identity = await api.derive.accounts.identity(address);
+        accountId = await getAddressFromIndex(api, query);
+        try {
+          if (accountId) {
+            identity = await api.derive.accounts.identity(accountId);
+          } else {
+            identity = await api.derive.accounts.identity(query);
+          }
+        } catch (ex) {
+          return true;
+        }
       }
-      if (identity) {
-        return true;
+      if (!identity) {
+        return "";
       }
-      return false;
+      return accountId || query;
     }
-    return false;
+    return "";
   },
   async [ActionTypes.GetIdentityList]({ commit, state, dispatch }) {
     const { network } = state;
@@ -197,7 +222,11 @@ export const actions: ActionTree<State, State> & Actions = {
           commit(MutationType.SetNetworkAPI, api);
           const properties = (await api.rpc.system.properties()).toHuman();
           const { tokenSymbol } = properties;
-          if (tokenSymbol && Array.isArray(tokenSymbol) && tokenSymbol.length > 0) {
+          if (
+            tokenSymbol &&
+            Array.isArray(tokenSymbol) &&
+            tokenSymbol.length > 0
+          ) {
             commit(MutationType.SetToken, tokenSymbol.shift() as string);
             let decimals: any;
             decimals = api.registry.chainDecimals;
