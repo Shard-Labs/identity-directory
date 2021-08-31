@@ -30,6 +30,7 @@ export type Network = {
   token: string;
   minAmount: string;
   decimals: number;
+  prefix?: number;
 };
 
 export type Notification = {
@@ -76,7 +77,7 @@ export const state: State = {
       custom: false,
       token: "",
       minAmount: "0.0000000001",
-      decimals: 10
+      decimals: 10,
     },
     {
       title: "Kusama",

@@ -223,6 +223,7 @@ export const actions: ActionTree<State, State> & Actions = {
               return true;
             }
           }
+          network.prefix = api.consts.system.ss58Prefix.toNumber()
           commit(MutationType.SetNetworkConnected, { isConnected, chain });
           commit(MutationType.SetNetworkAPI, api);
           const properties = (await api.rpc.system.properties()).toHuman();

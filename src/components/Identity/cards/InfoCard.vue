@@ -7,17 +7,10 @@
     <template v-slot:body>
       <ul>
         <li class="pt-2 pr-5 text-left">
-          <span class="text-sm text-gray-400">Account Id</span>
-          <br />
-          <p class="text-sm font-bold break-words w-full">
-            {{ address }}
-          </p>
-        </li>
-        <li class="pt-2 pr-5 text-left">
           <span class="text-sm text-gray-400">Address</span>
           <br />
           <p class="text-sm font-bold break-words w-full">
-            {{ publicKey }}
+            {{ address }}
           </p>
         </li>
         <li class="pt-2 text-left">
@@ -175,12 +168,6 @@ export default defineComponent({
     ...mapGetters(["identity", "network", "token", "judgement"]),
     address(): string | string[] {
       return this.$route.params.address;
-    },
-    publicKey(): string {
-      if (typeof this.address === "string") {
-        return u8aToHex(decodeAddress(this.address));
-      }
-      return "";
     }
   },
   methods: {
