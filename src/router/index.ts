@@ -12,7 +12,18 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: "",
         name: "List",
-        component: ListPage
+        component: ListPage,
+        beforeEnter: (to, from, next) => {
+          if (from.params.network && !to.params.network) {
+            next({
+              name: "ListWithNetwork",
+              params: {
+                network: from.params.network
+              }
+            });
+          }
+          next();
+        }
       },
       {
         path: "/:network",

@@ -91,7 +91,7 @@ export const state: State = {
       decimals: 12
     },
     {
-      title: "Custom Node",
+      title: "Custom",
       wsProvider: "",
       connected: false,
       url: "",

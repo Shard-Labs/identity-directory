@@ -69,7 +69,7 @@ export default defineComponent({
     async getSelectedDropDownDataIndex(index) {
       this.selectNetwork({ ...this.networkList[index] });
       const { title } = this.networkList[index];
-      if (title !== "Custom Node") {
+      if (title !== "Custom") {
         this.connect();
         this.$router.push({
           name: "ListWithNetwork",
@@ -111,20 +111,6 @@ export default defineComponent({
         }
         this.selectNetwork(networkObject);
         this.connect();
-      }
-    }
-  },
-  watch: {
-    networkParam: function (newNetwork, oldNetwork) {
-      if (newNetwork === oldNetwork) {
-        return;
-      } else if (!newNetwork && oldNetwork) {
-        this.$router.push({
-          name: "ListWithNetwork",
-          params: { network: oldNetwork }
-        });
-      } else {
-        this.networkCheck();
       }
     }
   },
