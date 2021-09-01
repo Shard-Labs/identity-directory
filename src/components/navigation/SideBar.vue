@@ -80,6 +80,10 @@ export default defineComponent({
     handleInput(value) {
       this.setNetworkProvider(value);
       this.connect();
+      this.$router.push({
+        name: "ListWithNetwork",
+        params: { network: "custom" }
+      });
     },
     networkCheck() {
       const { network, networkParam } = this;
