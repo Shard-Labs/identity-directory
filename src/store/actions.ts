@@ -157,7 +157,7 @@ export const actions: ActionTree<State, State> & Actions = {
             identity = await api.derive.accounts.identity(query);
           }
         } catch (ex) {
-          return true;
+          return false;
         }
       }
       if (!identity) {
