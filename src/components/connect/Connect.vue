@@ -9,7 +9,7 @@
           @click="() => selectWallet(account)"
         >
           <span class="font-bold">{{ account.meta.name }}</span> -
-          <span>{{ account.address }}</span>
+          <span>{{ translateAddress(account.address) }}</span>
         </li>
       </ul>
     </Modal>
@@ -52,6 +52,7 @@
 import { defineComponent } from "vue";
 
 import { web3Accounts, web3Enable } from "@polkadot/extension-dapp";
+import { encodeAddress, decodeAddress } from "@polkadot/keyring";
 
 import { mapActions, mapGetters } from "vuex";
 import { ActionTypes } from "@/store/actions";
@@ -74,7 +75,7 @@ export default defineComponent({
     Modal
   },
   computed: {
-    ...mapGetters(["wallet", "myIdentity"])
+    ...mapGetters(["wallet", "myIdentity", "network"])
   },
   methods: {
     ...mapActions({
@@ -107,6 +108,9 @@ export default defineComponent({
     async selectWallet(wallet) {
       this.showModal = false;
       this.setWallet(wallet);
+    },
+    translateAddress(address) {
+      return encodeAddress(decodeAddress(address), this.network.prefix);
     }
   }
 });
