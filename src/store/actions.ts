@@ -13,6 +13,21 @@ function calcPaginationState(page: number, sizePerPage: number): string {
   return `${(page - 1) * sizePerPage + 1}-${page * sizePerPage}`;
 }
 
+async function getAddressFromIndex(
+  api: ApiPromise,
+  index: string
+): Promise<any> {
+  try {
+    const accountData = await api.query.indices.accounts(index);
+    const account = accountData.toHuman();
+    if (Array.isArray(account)) {
+      return account[0];
+    }
+  } catch (error) {
+    return "";
+  }
+}
+
 export enum ActionTypes {
   SetWallet = "SET_WALLET",
   GetIdentity = "GET_IDENTITY",
@@ -42,7 +57,7 @@ export type Actions = {
   [ActionTypes.GetIdentity](context: ActionAugments, address: string): void;
   [ActionTypes.SearchIdentity](
     context: ActionAugments,
-    address: string
+    query: string
   ): Promise<boolean>;
   [ActionTypes.GetIdentityList](context: ActionAugments): void;
   [ActionTypes.SetNetwork](context: ActionAugments, network: Network): void;
@@ -86,16 +101,19 @@ export const actions: ActionTree<State, State> & Actions = {
   },
   async [ActionTypes.GetIdentity]({ commit, state }, address) {
     if (state.network) {
+      // Clearing the state
       commit(MutationType.SetIdentity, null);
       commit(MutationType.SetIdentityLoading, true);
       const { api } = state.network;
       let identity: any, balances: any, decimals: any;
+      // fetching the identity data if there is connection to the chain
       if (api) {
         identity = await api.derive.accounts.identity(address);
         balances = await api.derive.balances.account(address);
         decimals = api.registry.chainDecimals;
         decimals = new BigNumber(decimals).toNumber();
       }
+      // Calculating all the balances for the account
       if (balances) {
         const { freeBalance, reservedBalance, frozenMisc } = balances;
         const base = new BigNumber(10).pow(decimals);
@@ -117,6 +135,7 @@ export const actions: ActionTree<State, State> & Actions = {
           .div(base)
           .toFixed(2);
       }
+      // Cleaning up the judgments array
       const judgements: any[] = [];
       if (identity) {
         identity.judgements.forEach((el: any) => {
@@ -128,32 +147,35 @@ export const actions: ActionTree<State, State> & Actions = {
       commit(MutationType.SetIdentityLoading, false);
     }
   },
-  async [ActionTypes.SearchIdentity]({ state }, address) {
+  async [ActionTypes.SearchIdentity]({ state }, query) {
     if (state.network) {
       const { api } = state.network;
       let identity: any;
+      let accountId: any;
       if (api) {
-        identity = await api.derive.accounts.identity(address);
+        // Getting the address from the input if it's a index
+        accountId = await getAddressFromIndex(api, query);
+        try {
+          if (accountId) {
+            identity = await api.derive.accounts.identity(accountId);
+          } else {
+            identity = await api.derive.accounts.identity(query);
+          }
+        } catch (ex) {
+          return false;
+        }
       }
-      if (identity) {
-        return true;
+      if (!identity) {
+        return "";
       }
-      return false;
+      return accountId || query;
     }
-    return false;
+    return "";
   },
-  async [ActionTypes.GetIdentityList]({ commit, state, dispatch }) {
+  async [ActionTypes.GetIdentityList]({ commit, state }) {
     const { network } = state;
     if (network) {
-      if (network.custom) {
-        commit(MutationType.SetIdentityListLoading, false);
-        dispatch(ActionTypes.SetNotification, {
-          show: true,
-          message: "Can't display Identities List on custom Node",
-          type: "warning"
-        });
-        return true;
-      }
+      // Clearing the list
       commit(MutationType.SetIdentityList, []);
       commit(MutationType.SetIdentityGridList, []);
       commit(MutationType.SetIdentityListLoading, true);
@@ -165,9 +187,11 @@ export const actions: ActionTree<State, State> & Actions = {
         if (!url) {
           return;
         }
+        // Fething the data from the polkascan explorer
         const { data: list } = await HTTPClient.get(
           `${url}&page[number]=${page}&page[size]=${sizePerPage + 3}`
         );
+        // Cleaning up the list and separating the first 3 for the grid
         const identityListGrid = list.slice(0, 3);
         list.splice(0, 3);
         commit(MutationType.SetIdentityListLoading, false);
@@ -185,19 +209,44 @@ export const actions: ActionTree<State, State> & Actions = {
     commit(MutationType.SetNetworkProvider, provider);
   },
   async [ActionTypes.ConnectToNetwork]({ commit, state, dispatch }) {
+    // Resetting the list pagination page
     dispatch(ActionTypes.SetPaginationPage, 1);
     const { network } = state;
     try {
       if (network) {
+        // Connecting to the network
         const provider = new WsProvider(network.wsProvider);
         const api = await ApiPromise.create({ provider });
         const { isConnected } = api;
         if (isConnected) {
-          commit(MutationType.SetNetworkConnected, isConnected);
+          let chain = "";
+          // Check the chain of the custom node
+          if (network.custom) {
+            chain = (await api.rpc.system.chain()).toHuman().toLowerCase();
+            if (!chain) {
+              // Notify user if can't extract the chain info from the custom node
+              commit(MutationType.SetIdentityListLoading, false);
+              dispatch(ActionTypes.SetNotification, {
+                show: true,
+                message:
+                  "Can't display Identities List on selected Custom Node",
+                type: "warning"
+              });
+              return true;
+            }
+          }
+          // Extracting the prefix for the address transform
+          network.prefix = api.consts.system.ss58Prefix.toNumber();
+          commit(MutationType.SetNetworkConnected, { isConnected, chain });
           commit(MutationType.SetNetworkAPI, api);
+          // Extracting the token info from the chain
           const properties = (await api.rpc.system.properties()).toHuman();
           const { tokenSymbol } = properties;
-          if (tokenSymbol && Array.isArray(tokenSymbol) && tokenSymbol.length > 0) {
+          if (
+            tokenSymbol &&
+            Array.isArray(tokenSymbol) &&
+            tokenSymbol.length > 0
+          ) {
             commit(MutationType.SetToken, tokenSymbol.shift() as string);
             let decimals: any;
             decimals = api.registry.chainDecimals;
@@ -211,6 +260,7 @@ export const actions: ActionTree<State, State> & Actions = {
             );
             commit(MutationType.SetNetworkDecimals, decimals);
           }
+          // extracting the data of the connected wallet for the chain
           if (api && state.wallet) {
             const { address } = state.wallet;
             const identity = await api.derive.accounts.identity(address);
@@ -273,13 +323,16 @@ export const actions: ActionTree<State, State> & Actions = {
     const { network, wallet } = state;
     if (network && network.api) {
       if (wallet) {
+        // Preparing planck amount to transfer
         const planckAmount = new BigNumber(amount).multipliedBy(
           new BigNumber(10).pow(network.decimals)
         );
+        // Creating transfer
         const transfer = network.api.tx.balances.transfer(
           address,
           planckAmount.toNumber()
         );
+        // signing the transfer
         const injector = await web3FromSource(wallet.meta.source);
         transfer
           .signAndSend(

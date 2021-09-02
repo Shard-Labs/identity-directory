@@ -13,7 +13,7 @@
           :id="identity"
           containerClasses="w-full bg-transparent border-solid border-pink rounded-full py-3 px-6"
           inputClasses="py-2 font-medium w-full"
-          @input="handleInputAmount"
+          @inputChange="handleInputAmount"
           :inputStep="network.minAmount"
           :decimals="network.decimals"
           :postfixText="network.token"
@@ -134,9 +134,6 @@ export default defineComponent({
     },
     handleCloseModal() {
       this.showModal = false;
-    },
-    handleChangeAmount(amount) {
-      this.amount = Number(amount).toFixed(10);
     },
     handleInputAmount(amount) {
       this.amount = amount;

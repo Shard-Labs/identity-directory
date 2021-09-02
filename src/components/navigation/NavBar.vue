@@ -14,6 +14,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { mapGetters } from "vuex";
+import { encodeAddress, decodeAddress } from "@polkadot/keyring";
 
 import NavLink from "./NavLink.vue";
 import Icon from "@/components/common/Icon.vue";
@@ -29,13 +30,13 @@ export default defineComponent({
   computed: {
     ...mapGetters(["myIdentity", "wallet", "network"]),
     path() {
-      if (
-        this.network &&
-        this.wallet &&
-        this.network.titile !== "Custom Node"
-      ) {
+      if (this.network && this.wallet) {
+        const address = encodeAddress(
+          decodeAddress(this.wallet.address),
+          this.network.prefix
+        );
         /* @ts-ignore */
-        return `/${this.network.title.toLowerCase()}/${this.wallet.address}`;
+        return `/${this.network.title.toLowerCase()}/${address}`;
       }
       return `/`;
     }

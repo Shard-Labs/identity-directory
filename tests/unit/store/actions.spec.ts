@@ -52,7 +52,7 @@ describe("Actions", () => {
     const expectedMutations = [
       {
         type: MutationType.SetNetworkConnected,
-        payload: true
+        payload: { isConnected: true, chain: "" }
       },
       {
         type: MutationType.SetNetworkAPI,

@@ -35,7 +35,7 @@ import Icon from "@/components/common/Icon.vue";
 
 export default defineComponent({
   name: "InputField",
-  data() {
+  data():{ oldValue: string } {
     return {
       oldValue: ""
     };
@@ -69,35 +69,41 @@ export default defineComponent({
     },
     handleInput(e: Event) {
       const target = e.target as HTMLInputElement;
-
+      target.value = target.value.trim();
       if (this.inputStep) {
-        const valueNumber = Number(target.value);
+        const inputDecimals = target.value.split(".")[1];
         const decimalCheck =
-          target.value.split(".")[1] && this.decimals
-            ? target.value.split(".")[1].length > this.decimals
+          inputDecimals && this.decimals
+            ? inputDecimals.length > this.decimals
             : false;
-        if ((this.inputStep > valueNumber && valueNumber > 0) || decimalCheck) {
-          /* @ts-ignore */
-          e.target.value = this.oldValue || this.inputStep;
+        let valueNumber = Number(target.value);
+        if (isNaN(valueNumber) || decimalCheck) {
+          target.value = String(this.oldValue);
         }
-        if (this.inputStep && isNaN(valueNumber)) {
-          /* @ts-ignore */
-          e.target.value = 0;
+        if (/\d*\.$/.test(target.value) || valueNumber === 0) {
+          if (
+            /^00/.test(target.value) ||
+            /\d*\.\.$/.test(target.value) ||
+            /\d*\..*\.$/.test(target.value)
+          ) {
+            target.value = this.oldValue;
+          }
+        } else {
+          if (
+            (this.inputStep > valueNumber && valueNumber > 0) ||
+            decimalCheck
+          ) {
+            target.value = String(this.oldValue);
+          }
         }
-        /* @ts-ignore */
-        e.target.value = valueNumber;
       }
       if (this.inputType === "number" && this.decimals) {
         if (target && target.value) {
-          /* @ts-ignore */
-          e.target.value = Number(target.value).toFixed(this.decimals);
+          target.value = Number(target.value).toFixed(this.decimals);
         }
       }
-      const value = target.value === "" ? null : target.value;
-      if (value) {
-        this.oldValue = value;
-      }
-      this.$emit("input", value);
+      this.oldValue = target.value || this.oldValue;
+      this.$emit("inputChange", target.value);
     }
   }
 });

@@ -54,7 +54,7 @@ describe("mutations", () => {
   });
   it("should connect to a network", () => {
     mutations[MutationType.SetNetwork](state, mockData.network);
-    mutations[MutationType.SetNetworkConnected](state, true);
+    mutations[MutationType.SetNetworkConnected](state, { isConnected: true });
     expect(state.network).not.to.be.null;
     if (state.network) {
       expect(state.network.connected).to.equal(true);

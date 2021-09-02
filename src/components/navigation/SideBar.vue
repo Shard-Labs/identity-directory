@@ -54,6 +54,9 @@ export default defineComponent({
     },
     showCustomInput() {
       return this.network && this.network.custom;
+    },
+    networkParam() {
+      return this.$route.params.network;
     }
   },
   methods: {
@@ -66,47 +69,57 @@ export default defineComponent({
     async getSelectedDropDownDataIndex(index) {
       this.selectNetwork({ ...this.networkList[index] });
       const { title } = this.networkList[index];
-      if (title !== "Custom Node") {
+      if (title !== "Custom") {
         this.connect();
+        this.$router.push({
+          name: "ListWithNetwork",
+          params: { network: title.toLowerCase() }
+        });
       }
-      this.$router.push({
-        name: "ListWithNetwork",
-        params: { network: title.toLowerCase() }
-      });
     },
     handleInput(value) {
       this.setNetworkProvider(value);
       this.connect();
+      this.$router.push({
+        name: "ListWithNetwork",
+        params: { network: "custom" }
+      });
+    },
+    networkCheck() {
+      const { network, networkParam } = this;
+      if (network && network.title.toLowerCase() === networkParam) {
+        return;
+      }
+      if (!network) {
+        this.selectNetwork(this.polkadotNetwork);
+        this.connect();
+        this.$router.push({
+          name: "ListWithNetwork",
+          params: { network: this.polkadotNetwork.title.toLowerCase() }
+        });
+      }
+      if (
+        (networkParam && !network) ||
+        (network && networkParam !== network.title.toLowerCase())
+      ) {
+        const networkObject = this.networkList.find(
+          (el) => el.title.toLowerCase() === networkParam
+        );
+        if (!networkObject) {
+          this.setNotification({
+            type: "error",
+            show: true,
+            message: "Unsuported Network"
+          });
+          return this.$router.push({ name: "List" });
+        }
+        this.selectNetwork(networkObject);
+        this.connect();
+      }
     }
   },
   created() {
-    const { network } = this.$route.params;
-    if (!network) {
-      this.selectNetwork(this.polkadotNetwork);
-      this.connect();
-      this.$router.push({
-        name: "ListWithNetwork",
-        params: { network: this.polkadotNetwork.title.toLowerCase() }
-      });
-    }
-    if (this.network && this.network.title.toLowerCase() === network) {
-      return;
-    }
-    if (network) {
-      const networkObject = this.networkList.find(
-        (el) => el.title.toLowerCase() === network
-      );
-      if (!networkObject) {
-        this.setNotification({
-          type: "error",
-          show: true,
-          message: "Unsuported Network"
-        });
-        return this.$router.push({ name: "List" });
-      }
-      this.selectNetwork(networkObject);
-      this.connect();
-    }
+    this.networkCheck();
   }
 });
 </script>
