@@ -103,7 +103,7 @@ export default defineComponent({
         }
       }
       this.oldValue = target.value || this.oldValue;
-      this.$emit("input", target.value);
+      this.$emit("inputChange", target.value);
     }
   }
 });
