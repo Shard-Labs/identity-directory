@@ -9,6 +9,17 @@ import { ActionContext, ActionTree } from "vuex";
 import { Mutations, MutationType } from "./mutations";
 import { Network, Notification, State } from "./state";
 
+function utf8ToHex(str: string) {
+  const hex = Array.from(str)
+    .map((c) =>
+      c.charCodeAt(0) < 128
+        ? c.charCodeAt(0).toString(16)
+        : encodeURIComponent(c).replace(/%/g, "").toLowerCase()
+    )
+    .join("");
+  return `0x${hex}`;
+}
+
 function calcPaginationState(page: number, sizePerPage: number): string {
   return `${(page - 1) * sizePerPage + 1}-${page * sizePerPage}`;
 }
@@ -26,6 +37,50 @@ async function getAddressFromIndex(
   } catch (error) {
     return "";
   }
+}
+
+async function getAddressFromFields(
+  api: ApiPromise,
+  field: string
+): Promise<any> {
+  let accountID: any;
+  const users = await api.query.identity.identityOf.entries();
+  const user = users.find((user) => {
+    const query = new RegExp(`^${field}$`, "i");
+    const {
+      display: { Raw: display },
+      email: { Raw: email },
+      legal: { Raw: legal },
+      riot: { Raw: riot },
+      twitter: { Raw: twitter },
+      web: { Raw: web }
+      // @ts-ignore
+    } = user[1].toHuman().info;
+    switch (true) {
+      case query.test(display) || utf8ToHex(field) === display:
+        return true;
+      case query.test(email):
+        return true;
+      case query.test(legal):
+        return true;
+      case query.test(riot):
+        return true;
+      case query.test(twitter):
+        return true;
+      case query.test(web):
+        return true;
+      default:
+        return false;
+    }
+  });
+  if (user) {
+    const userIds = user[0].toHuman();
+    if (userIds && Array.isArray(userIds) && userIds.length) {
+      accountID = userIds[0];
+      return accountID;
+    }
+  }
+  return "";
 }
 
 export enum ActionTypes {
@@ -154,7 +209,11 @@ export const actions: ActionTree<State, State> & Actions = {
       let accountId: any;
       if (api) {
         // Getting the address from the input if it's a index
-        accountId = await getAddressFromIndex(api, query);
+        const [fromIndex, fromFields] = await Promise.all([
+          getAddressFromIndex(api, query),
+          getAddressFromFields(api, query)
+        ]);
+        accountId = fromIndex || fromFields;
         try {
           if (accountId) {
             identity = await api.derive.accounts.identity(accountId);
