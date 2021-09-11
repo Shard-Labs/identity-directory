@@ -16,7 +16,7 @@
           :inputType="text"
           :name="identity"
           :id="identity"
-          placeholder="Search identities by address or account index"
+          placeholder="Search identities by address, index, name..."
           containerClasses="flex-grow bg-transparent border-solid border-pink rounded-full py-3 px-6"
           inputClasses="py-2 font-medium"
           @update="handleSearch"
