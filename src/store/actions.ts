@@ -202,8 +202,9 @@ export const actions: ActionTree<State, State> & Actions = {
       commit(MutationType.SetIdentityLoading, false);
     }
   },
-  async [ActionTypes.SearchIdentity]({ state }, query) {
+  async [ActionTypes.SearchIdentity]({ state, commit }, query) {
     if (state.network) {
+      commit(MutationType.SetIdentityListLoading, true);
       const { api } = state.network;
       let identity: any;
       let accountId: any;
@@ -221,9 +222,11 @@ export const actions: ActionTree<State, State> & Actions = {
             identity = await api.derive.accounts.identity(query);
           }
         } catch (ex) {
+          commit(MutationType.SetIdentityListLoading, false);
           return false;
         }
       }
+      commit(MutationType.SetIdentityListLoading, false);
       if (!identity) {
         return "";
       }
