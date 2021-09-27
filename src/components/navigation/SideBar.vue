@@ -90,14 +90,6 @@ export default defineComponent({
       if (network && network.title.toLowerCase() === networkParam) {
         return;
       }
-      if (!network) {
-        this.selectNetwork(this.polkadotNetwork);
-        this.connect();
-        this.$router.push({
-          name: "ListWithNetwork",
-          params: { network: this.polkadotNetwork.title.toLowerCase() }
-        });
-      }
       if (
         (networkParam && !network) ||
         (network && networkParam !== network.title.toLowerCase())
@@ -115,6 +107,14 @@ export default defineComponent({
         }
         this.selectNetwork(networkObject);
         this.connect();
+      }
+      if (!network && !networkParam) {
+        this.selectNetwork(this.polkadotNetwork);
+        this.connect();
+        this.$router.push({
+          name: "ListWithNetwork",
+          params: { network: this.polkadotNetwork.title.toLowerCase() }
+        });
       }
     }
   },
