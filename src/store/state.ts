@@ -31,6 +31,7 @@ export type Network = {
   minAmount: string;
   decimals: number;
   prefix?: number;
+  displayName?: string;
 };
 
 export type Notification = {
@@ -78,6 +79,7 @@ export const state: State = {
       token: "",
       minAmount: "0.0000000001",
       decimals: 10,
+      displayName: "Polkadot"
     },
     {
       title: "Kusama",
@@ -88,7 +90,8 @@ export const state: State = {
       custom: false,
       token: "",
       minAmount: "0.000000000001",
-      decimals: 12
+      decimals: 12,
+      displayName: "Kusama"
     },
     {
       title: "Custom",
@@ -99,7 +102,8 @@ export const state: State = {
       custom: true,
       token: "",
       minAmount: "0.000000000001",
-      decimals: 10
+      decimals: 10,
+      displayName: "",
     }
   ],
   notification: {

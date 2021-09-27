@@ -300,6 +300,14 @@ export const actions: ActionTree<State, State> & Actions = {
           commit(MutationType.SetNetworkAPI, api);
           // Extracting the token info from the chain
           const properties = (await api.rpc.system.properties()).toHuman();
+          if (!network.displayName) {
+            const { specName } = api.consts.system.version.toHuman();
+            const displayName = `${specName}`.toLocaleLowerCase();
+            commit(
+              MutationType.SetNetworkDisplayName,
+              displayName.charAt(0).toUpperCase() + displayName.slice(1)
+            );
+          }
           const { tokenSymbol } = properties;
           if (
             tokenSymbol &&

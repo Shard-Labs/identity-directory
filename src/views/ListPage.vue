@@ -9,7 +9,8 @@
     </header>
     <div class="hero mt-6 p-10">
       <h1 class="font-black text-3xl text-left p-8">
-        Search registered identities on Kusama or Polkadot network
+        Search registered identities on
+        {{ network.displayName || "Kusama or Polkadot" }} network
       </h1>
       <form @submit="handleSubmitSearch">
         <input-field

@@ -20,7 +20,7 @@ export enum MutationType {
   SetNetworkMinAmount = "SET_NETWORK_MIN_AMOUNT",
   SetNetworkDecimals = "SET_NETWORK_DECIMALS",
   SetNetworkAPI = "SET_NETWORK_API",
-  SetNetworkName = "SET_NETWORK_NAME",
+  SetNetworkDisplayName = "SET_NETWORK_DISPLAY_NAME",
   SetNotification = "SET_NOTIFICATION",
   SetPaginationPage = "SET_PAGINATION_PAGE",
   SetPaginationSize = "SET_PAGINATION_SIZE",
@@ -51,6 +51,7 @@ export type Mutations = {
   [MutationType.SetNetworkMinAmount](state: State, minAmount: string): void;
   [MutationType.SetNetworkDecimals](state: State, decimals: number): void;
   [MutationType.SetNetworkAPI](state: State, api: ApiPromise): void;
+  [MutationType.SetNetworkDisplayName](state: State, name:string): void;
   [MutationType.SetNotification](state: State, item: Notification): void;
   [MutationType.SetPaginationPage](state: State, page: number): void;
   [MutationType.SetPaginationSize](state: State, sizePerPage: number): void;
@@ -103,6 +104,11 @@ export const mutations: MutationTree<State> & Mutations = {
   [MutationType.SetNetworkAPI](state, api) {
     if (state.network) {
       state.network.api = api;
+    }
+  },
+  [MutationType.SetNetworkDisplayName](state, name) {
+    if (state.network) {
+      state.network.displayName = name;
     }
   },
   [MutationType.SetNetworkMinAmount](state, minAmount) {
