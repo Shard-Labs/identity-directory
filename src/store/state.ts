@@ -3,9 +3,14 @@ import { DeriveAccountRegistration } from "@polkadot/api-derive/types";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 
 export type IdentityEl = {
-  id: string;
-  type: string;
-  attribute: Record<string, unknown>;
+  address: string;
+  display: string;
+  riot: string;
+  twitter: string;
+  web: string;
+  legal: string;
+  email: string;
+  is_council_member: boolean;
 };
 
 export type Identity = {
@@ -51,7 +56,9 @@ export type State = {
   identity: DeriveAccountRegistration | Identity | null;
   identityLoading: boolean;
   identityListLoading: boolean;
+  searchResults: boolean;
   identityList: IdentityEl[] | [];
+  allIdentities: IdentityEl[] | [];
   identityGridList: IdentityEl[] | [];
   network: Network | null;
   networkList: Network[] | [];
@@ -66,6 +73,8 @@ export const state: State = {
   identityLoading: false,
   identityListLoading: false,
   identityList: [],
+  allIdentities: [],
+  searchResults: false,
   identityGridList: [],
   network: null,
   networkList: [

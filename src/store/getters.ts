@@ -25,6 +25,8 @@ export type Getters = {
   networkList(state: State): Network[];
   notification(state: State): Notification;
   pagination(state: State): Pagination;
+  searchResults(state: State): boolean;
+  totalResults(state: State): number;
 };
 
 export const getters: GetterTree<State, State> & Getters = {
@@ -80,5 +82,11 @@ export const getters: GetterTree<State, State> & Getters = {
   },
   pagination(state) {
     return state.pagination;
+  },
+  searchResults(state) {
+    return state.searchResults;
+  },
+  totalResults(state) {
+    return state.allIdentities.length;
   }
 };
