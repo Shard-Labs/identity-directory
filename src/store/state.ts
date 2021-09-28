@@ -37,6 +37,7 @@ export type Network = {
   decimals: number;
   prefix?: number;
   displayName?: string;
+  genesisHash?: string;
 };
 
 export type Notification = {

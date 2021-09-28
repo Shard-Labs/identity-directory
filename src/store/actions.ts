@@ -383,6 +383,10 @@ export const actions: ActionTree<State, State> & Actions = {
           }
           // Extracting the prefix for the address transform
           network.prefix = api.consts.system.ss58Prefix.toNumber();
+          const genesisHash = (await api.rpc.chain.getBlockHash(0)).toHuman();
+          if (genesisHash) {
+            network.genesisHash = genesisHash.toString();
+          }
           commit(MutationType.SetNetworkConnected, { isConnected, chain });
           commit(MutationType.SetNetworkAPI, api);
           // Extracting the token info from the chain
