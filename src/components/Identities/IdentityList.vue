@@ -134,10 +134,14 @@ export default {
   methods: {
     ...mapActions({
       handleChangePage: ActionTypes.SetPaginationPage,
-      handleChangeSizePerPage: ActionTypes.SetPaginationSize
+      handleChangeSizePerPage: ActionTypes.SetPaginationSize,
+      startLoading: ActionTypes.SetIdentityListLoading
     }),
-    handleChangePageClicked(pageChanger) {
-      this.handleChangePage(this.pagination.page + pageChanger);
+    async handleChangePageClicked(pageChanger) {
+      this.startLoading(true);
+      setTimeout(() => {
+        this.handleChangePage(this.pagination.page + pageChanger);
+      }, 0);
     },
     handleSelectIdentity(address) {
       const { network } = this.$route.params;

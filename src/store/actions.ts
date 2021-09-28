@@ -125,7 +125,8 @@ export enum ActionTypes {
   SetNotification = "SET_NOTIFICATION",
   SetPaginationPage = "SET_PAGINATION_PAGE",
   SetPaginationSize = "SET_PAGINATION_SIZE",
-  SendTokens = "SEND_TOKENS"
+  SendTokens = "SEND_TOKENS",
+  SetIdentityListLoading = "SET_IDENTITY_LIST_LOADING"
 }
 
 type ActionAugments = Omit<ActionContext<State, State>, "commit"> & {
@@ -146,6 +147,10 @@ export type Actions = {
     query: string
   ): Promise<boolean>;
   [ActionTypes.GetIdentityList](context: ActionAugments): void;
+  [ActionTypes.SetIdentityListLoading](
+    context: ActionAugments,
+    show: boolean
+  ): void;
   [ActionTypes.SetNetwork](context: ActionAugments, network: Network): void;
   [ActionTypes.SetNetworkProvider](
     context: ActionAugments,
@@ -288,16 +293,16 @@ export const actions: ActionTree<State, State> & Actions = {
     }
     if (network && api) {
       // Clearing the list
+      commit(MutationType.SetIdentityListLoading, true);
       commit(MutationType.SetIdentityList, []);
       commit(MutationType.SetIdentityGridList, []);
-      commit(MutationType.SetIdentityListLoading, true);
       const { url } = network;
       try {
         if (!url) {
           return;
         }
         let list = [];
-        // Fething the data from the node
+        // Fetching the data from the node
         if (!allIdentities.length) {
           list = await getAllIdentities(api);
           commit(MutationType.SetAllIdentities, list);
@@ -336,12 +341,15 @@ export const actions: ActionTree<State, State> & Actions = {
       identityListGrid = identityList.slice(0, 3);
       identityList.splice(0, 3);
     }
-    commit(MutationType.SetIdentityListLoading, false);
     commit(MutationType.SetIdentityGridList, identityListGrid);
     commit(MutationType.SetIdentityList, identityList);
+    commit(MutationType.SetIdentityListLoading, false);
   },
   async [ActionTypes.SetNetwork]({ commit }, network) {
     commit(MutationType.SetNetwork, network);
+  },
+  async [ActionTypes.SetIdentityListLoading]({ commit }, show) {
+    commit(MutationType.SetIdentityListLoading, show);
   },
   async [ActionTypes.SetNetworkProvider]({ commit }, provider) {
     commit(MutationType.SetNetworkProvider, provider);

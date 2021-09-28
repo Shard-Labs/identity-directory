@@ -44,7 +44,7 @@ export type Mutations = {
   [MutationType.SetIdentityLoading](state: State, loading: boolean): void;
   [MutationType.SetIdentityListLoading](state: State, loading: boolean): void;
   [MutationType.SetIdentityGridList](state: State, list: IdentityEl[]): void;
-  [MutationType.SetIsSearchResults](state: State, search:boolean): void;
+  [MutationType.SetIsSearchResults](state: State, search: boolean): void;
   [MutationType.SetNetwork](state: State, item: Network): void;
   [MutationType.SetToken](state: State, token: string): void;
   [MutationType.SetNetworkProvider](state: State, prodiver: string): void;
