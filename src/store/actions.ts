@@ -252,6 +252,7 @@ export const actions: ActionTree<State, State> & Actions = {
         commit(MutationType.SetIdentityListLoading, false);
         return allIdentities;
       }
+      query = query.trim();
       if (api) {
         // Getting the address from the input if it's a index
         const [fromIndex, fromFields] = await Promise.all([
@@ -467,6 +468,7 @@ export const actions: ActionTree<State, State> & Actions = {
     const { sizePerPage } = state.pagination;
     const { allIdentities } = state;
     if (allIdentities.length < (page - 1) * sizePerPage) {
+      commit(MutationType.SetIdentityListLoading, false);
       return dispatch(ActionTypes.SetNotification, {
         type: "warning",
         show: true,
