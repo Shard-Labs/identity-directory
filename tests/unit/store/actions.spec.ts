@@ -57,6 +57,16 @@ describe("Actions", () => {
   it("should connect to a network", (done) => {
     const expectedMutations = [
       {
+        type: MutationType.SetIdentityListLoading,
+        payload: true
+      },
+      {
+        type: MutationType.SetAllIdentities,
+        options: {
+          checkPayload: false
+        }
+      },
+      {
         type: MutationType.SetNetworkConnected,
         payload: { isConnected: true, chain: "" }
       },
@@ -81,18 +91,22 @@ describe("Actions", () => {
       {
         type: MutationType.SetNetworkDecimals,
         payload: 10
+      },
+      {
+        type: MutationType.SetIdentityListLoading,
+        payload: false
       }
     ];
     const expectedActions = [
-      {
-        type: ActionTypes.SetPaginationPage,
-        payload: 1
-      },
       {
         type: ActionTypes.SetNotification,
         options: {
           checkPayload: false
         }
+      },
+      {
+        type: ActionTypes.SetPaginationPage,
+        payload: 1
       }
     ];
     testAction(
