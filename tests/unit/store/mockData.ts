@@ -29,9 +29,14 @@ export const identity: Identity = {
 };
 
 export const identityEl: IdentityEl = {
-  id: "test-id",
-  type: "test-type",
-  attribute: {}
+  display: "Test Display Name",
+  address: "test address",
+  is_council_member: false,
+  riot: "test",
+  twitter: "test",
+  web: "test",
+  legal: "test",
+  email: "test"
 };
 
 export const identityList: IdentityEl[] = [{ ...identityEl }];
@@ -59,6 +64,19 @@ export const pagination: Pagination = {
   sizePerPage: 0,
   state: "test-state"
 };
+
+export const allIdentities: Identity[] = [
+  {
+    id: "test-id",
+    email: "test-email",
+    name: "test-name",
+    web: "test-web",
+    twitter: "test-twitter",
+    riot: "test-riot",
+    address: "test-address",
+    balance: "test-balance"
+  }
+]
 
 const wsProvider = new WsProvider(network.wsProvider);
 export const api = new ApiPromise({ provider: wsProvider });

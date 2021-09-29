@@ -4,27 +4,23 @@
       v-for="identity in identities"
       :key="identity.id"
       class="flex justify-between items-center mb-10 cursor-pointer"
-      @click="() => handleSelectIdentity(identity.attributes.address)"
+      @click="() => handleSelectIdentity(identity.address)"
     >
       <div class="flex items-center">
         <Avatar
-          :name="identity.attributes.identity_legal"
+          :name="identity.legal"
           innerClass="w-12 h-12 mr-5"
-          :email="
-            identity &&
-            identity.attributes &&
-            identity.attributes.identity_email
-          "
+          :email="identity && identity.email"
         />
-        <div class="font-bold text-lg w-40 text-left">
+        <div class="font-bold text-lg w-80 text-left">
           {{
-            identity.attributes.identity_legal ||
-            identity.attributes.identity_display ||
-            identity.attributes.address.slice(0, 8) + "..."
+            identity.legal ||
+            identity.display ||
+            identity.address.slice(0, 8) + "..."
           }}
         </div>
         <Badge
-          v-if="identity.attributes.is_council_member"
+          v-if="identity.is_council_member"
           label="Council"
           color="yellow-1100"
           prefixIcon="bulb"
@@ -36,7 +32,7 @@
   <div class="flex justify-around items-center">
     <div>
       <p>Viewing:</p>
-      <p>{{ pagination.state }}</p>
+      <p>{{ pagination.state }} of {{ totalResults }}</p>
     </div>
     <div>
       <p>Page:</p>
@@ -133,15 +129,19 @@ export default {
     Badge
   },
   computed: {
-    ...mapGetters(["pagination"])
+    ...mapGetters(["pagination", "totalResults"])
   },
   methods: {
     ...mapActions({
       handleChangePage: ActionTypes.SetPaginationPage,
-      handleChangeSizePerPage: ActionTypes.SetPaginationSize
+      handleChangeSizePerPage: ActionTypes.SetPaginationSize,
+      startLoading: ActionTypes.SetIdentityListLoading
     }),
-    handleChangePageClicked(pageChanger) {
-      this.handleChangePage(this.pagination.page + pageChanger);
+    async handleChangePageClicked(pageChanger) {
+      this.startLoading(true);
+      setTimeout(() => {
+        this.handleChangePage(this.pagination.page + pageChanger);
+      }, 0);
     },
     handleSelectIdentity(address) {
       const { network } = this.$route.params;

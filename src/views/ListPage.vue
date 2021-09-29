@@ -9,7 +9,8 @@
     </header>
     <div class="hero mt-6 p-10">
       <h1 class="font-black text-3xl text-left p-8">
-        Search registered identities on Kusama or Polkadot network
+        Search registered identities on
+        {{ network.displayName || "Kusama or Polkadot" }} network
       </h1>
       <form @submit="handleSubmitSearch">
         <input-field
@@ -64,12 +65,8 @@ export default defineComponent({
     }),
     async handleSubmitSearch(event) {
       event.preventDefault();
-      return this.handleSearch(this.address);
     },
     async handleSearch(query) {
-      if (!query) {
-        return;
-      }
       if (!this.network) {
         return this.setNotification({
           type: "error",
@@ -77,22 +74,24 @@ export default defineComponent({
           show: true
         });
       }
-      const address = await this.searchIdentity(query);
-      if (address) {
-        this.address = address;
+      const result = await this.searchIdentity(query);
+      if (typeof result === "string") {
+        this.address = result;
         const {
           params: { network }
         } = this.$route;
         return this.$router.push({
           name: "Identity",
-          params: { address, network }
+          params: { address: result, network }
         });
       }
-      return this.setNotification({
-        type: "error",
-        message: "Identity Not Found",
-        show: true
-      });
+      if (!Array.isArray(result)) {
+        return this.setNotification({
+          type: "error",
+          message: "Identity Not Found",
+          show: true
+        });
+      }
     }
   },
   computed: {

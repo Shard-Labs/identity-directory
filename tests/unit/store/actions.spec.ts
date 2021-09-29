@@ -4,7 +4,13 @@ import { testAction } from "./testUtils";
 
 import { actions } from "@/store/actions";
 import { MutationType } from "@/store/mutations";
-import { wallet, network, notification, pagination } from "./mockData";
+import {
+  wallet,
+  network,
+  notification,
+  pagination,
+  allIdentities
+} from "./mockData";
 
 describe("Actions", () => {
   it("should set a wallet", (done) => {
@@ -61,6 +67,10 @@ describe("Actions", () => {
         }
       },
       {
+        type: MutationType.SetNetworkDisplayName,
+        payload: "Polkadot"
+      },
+      {
         type: MutationType.SetToken,
         payload: "DOT"
       },
@@ -113,6 +123,10 @@ describe("Actions", () => {
   it("should set pagination page", (done) => {
     const expectedMutations = [
       {
+        type: MutationType.SetIdentityListLoading,
+        payload: true
+      },
+      {
         type: MutationType.SetPaginationPage,
         payload: 1
       },
@@ -123,7 +137,7 @@ describe("Actions", () => {
         }
       }
     ];
-    const expectedActons = [
+    const expectedActions = [
       {
         type: ActionTypes.GetIdentityList,
         options: {
@@ -134,9 +148,9 @@ describe("Actions", () => {
     testAction(
       actions[ActionTypes.SetPaginationPage],
       1,
-      { pagination },
+      { pagination, allIdentities },
       expectedMutations,
-      expectedActons,
+      expectedActions,
       done
     );
   });
@@ -153,7 +167,7 @@ describe("Actions", () => {
         }
       }
     ];
-    const expectedActons = [
+    const expectedActions = [
       {
         type: ActionTypes.GetIdentityList,
         options: {
@@ -164,9 +178,9 @@ describe("Actions", () => {
     testAction(
       actions[ActionTypes.SetPaginationSize],
       10,
-      { pagination },
+      { pagination, allIdentities },
       expectedMutations,
-      expectedActons,
+      expectedActions,
       done
     );
   });

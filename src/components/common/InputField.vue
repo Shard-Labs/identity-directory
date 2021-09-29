@@ -69,7 +69,6 @@ export default defineComponent({
     },
     handleInput(e: Event) {
       const target = e.target as HTMLInputElement;
-      target.value = target.value.trim();
       if (this.inputStep) {
         const inputDecimals = target.value.split(".")[1];
         const decimalCheck =

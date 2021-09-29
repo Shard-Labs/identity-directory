@@ -3,9 +3,14 @@ import { DeriveAccountRegistration } from "@polkadot/api-derive/types";
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 
 export type IdentityEl = {
-  id: string;
-  type: string;
-  attribute: Record<string, unknown>;
+  address: string;
+  display: string;
+  riot: string;
+  twitter: string;
+  web: string;
+  legal: string;
+  email: string;
+  is_council_member: boolean;
 };
 
 export type Identity = {
@@ -31,6 +36,8 @@ export type Network = {
   minAmount: string;
   decimals: number;
   prefix?: number;
+  displayName?: string;
+  genesisHash?: string;
 };
 
 export type Notification = {
@@ -50,7 +57,9 @@ export type State = {
   identity: DeriveAccountRegistration | Identity | null;
   identityLoading: boolean;
   identityListLoading: boolean;
+  searchResults: boolean;
   identityList: IdentityEl[] | [];
+  allIdentities: IdentityEl[] | [];
   identityGridList: IdentityEl[] | [];
   network: Network | null;
   networkList: Network[] | [];
@@ -65,6 +74,8 @@ export const state: State = {
   identityLoading: false,
   identityListLoading: false,
   identityList: [],
+  allIdentities: [],
+  searchResults: false,
   identityGridList: [],
   network: null,
   networkList: [
@@ -78,6 +89,7 @@ export const state: State = {
       token: "",
       minAmount: "0.0000000001",
       decimals: 10,
+      displayName: "Polkadot"
     },
     {
       title: "Kusama",
@@ -88,7 +100,8 @@ export const state: State = {
       custom: false,
       token: "",
       minAmount: "0.000000000001",
-      decimals: 12
+      decimals: 12,
+      displayName: "Kusama"
     },
     {
       title: "Custom",
@@ -99,7 +112,8 @@ export const state: State = {
       custom: true,
       token: "",
       minAmount: "0.000000000001",
-      decimals: 10
+      decimals: 10,
+      displayName: "",
     }
   ],
   notification: {

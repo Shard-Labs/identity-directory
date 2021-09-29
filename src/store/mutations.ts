@@ -9,6 +9,7 @@ export enum MutationType {
   SetWallet = "SET_WALLET",
   SetMyIdentity = "SET_MY_IDENTITY",
   SetIdentity = "SET_IDENTITY",
+  SetAllIdentities = "SET_ALL_IDENTITIES",
   SetIdentityList = "SET_IDENTITY_LIST",
   SetIdentityLoading = "SET_IDENTITY_LOADING",
   SetIdentityListLoading = "SET_IDENTITY_LIST_LOADING",
@@ -20,11 +21,12 @@ export enum MutationType {
   SetNetworkMinAmount = "SET_NETWORK_MIN_AMOUNT",
   SetNetworkDecimals = "SET_NETWORK_DECIMALS",
   SetNetworkAPI = "SET_NETWORK_API",
-  SetNetworkName = "SET_NETWORK_NAME",
+  SetNetworkDisplayName = "SET_NETWORK_DISPLAY_NAME",
   SetNotification = "SET_NOTIFICATION",
   SetPaginationPage = "SET_PAGINATION_PAGE",
   SetPaginationSize = "SET_PAGINATION_SIZE",
-  SetPaginationState = "SET_PAGINATION_STATE"
+  SetPaginationState = "SET_PAGINATION_STATE",
+  SetIsSearchResults = "SET_IS_SEARCH_RESULTS"
 }
 
 export type Mutations = {
@@ -37,10 +39,12 @@ export type Mutations = {
     state: State,
     identity: Identity | DeriveAccountRegistration
   ): void;
+  [MutationType.SetAllIdentities](state: State, list: IdentityEl[]): void;
   [MutationType.SetIdentityList](state: State, list: IdentityEl[]): void;
   [MutationType.SetIdentityLoading](state: State, loading: boolean): void;
   [MutationType.SetIdentityListLoading](state: State, loading: boolean): void;
   [MutationType.SetIdentityGridList](state: State, list: IdentityEl[]): void;
+  [MutationType.SetIsSearchResults](state: State, search: boolean): void;
   [MutationType.SetNetwork](state: State, item: Network): void;
   [MutationType.SetToken](state: State, token: string): void;
   [MutationType.SetNetworkProvider](state: State, prodiver: string): void;
@@ -51,6 +55,7 @@ export type Mutations = {
   [MutationType.SetNetworkMinAmount](state: State, minAmount: string): void;
   [MutationType.SetNetworkDecimals](state: State, decimals: number): void;
   [MutationType.SetNetworkAPI](state: State, api: ApiPromise): void;
+  [MutationType.SetNetworkDisplayName](state: State, name:string): void;
   [MutationType.SetNotification](state: State, item: Notification): void;
   [MutationType.SetPaginationPage](state: State, page: number): void;
   [MutationType.SetPaginationSize](state: State, sizePerPage: number): void;
@@ -67,6 +72,9 @@ export const mutations: MutationTree<State> & Mutations = {
   [MutationType.SetIdentity](state, identity) {
     state.identity = identity;
   },
+  [MutationType.SetAllIdentities](state, identities) {
+    state.allIdentities = identities;
+  },
   [MutationType.SetIdentityList](state, list) {
     state.identityList = list;
   },
@@ -78,6 +86,9 @@ export const mutations: MutationTree<State> & Mutations = {
   },
   [MutationType.SetIdentityGridList](state, list) {
     state.identityGridList = list;
+  },
+  [MutationType.SetIsSearchResults](state, search) {
+    state.searchResults = search;
   },
   [MutationType.SetNetwork](state, network) {
     state.network = network;
@@ -103,6 +114,11 @@ export const mutations: MutationTree<State> & Mutations = {
   [MutationType.SetNetworkAPI](state, api) {
     if (state.network) {
       state.network.api = api;
+    }
+  },
+  [MutationType.SetNetworkDisplayName](state, name) {
+    if (state.network) {
+      state.network.displayName = name;
     }
   },
   [MutationType.SetNetworkMinAmount](state, minAmount) {

@@ -1,6 +1,8 @@
 <template>
   <div class="relative">
-    <Loader v-if="identityListLoading" :show="identityListLoading" />
+    <div v-if="identityListLoading">
+      <Loader :show="identityListLoading" />
+    </div>
     <div v-else>
       <div class="grid grid-cols-3 grid-rows-1 gap-9 mb-8">
         <identity-card
@@ -39,7 +41,7 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters(["identityList", "identityGridList", "identityListLoading"])
-  }
+  },
 });
 </script>
 

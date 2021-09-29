@@ -51,7 +51,11 @@
 <script>
 import { defineComponent } from "vue";
 
-import { web3Accounts, web3Enable } from "@polkadot/extension-dapp";
+import {
+  web3Accounts,
+  web3Enable,
+  web3EnablePromise
+} from "@polkadot/extension-dapp";
 import { encodeAddress, decodeAddress } from "@polkadot/keyring";
 
 import { mapActions, mapGetters } from "vuex";
@@ -93,7 +97,11 @@ export default defineComponent({
       const allAccounts = await web3Accounts();
       if (allAccounts.length) {
         this.showModal = true;
-        this.allAccounts = allAccounts;
+        this.allAccounts = allAccounts.filter(
+          (wallet) =>
+            this.network.genesisHash === wallet.meta.genesisHash ||
+            !wallet.meta.genesisHash
+        );
       } else {
         this.setNotification({
           type: "warning",

@@ -4,22 +4,20 @@
     @click="goToIdentity"
   >
     <Avatar
-      :name="identity.attributes.identity_legal"
+      :name="identity.legal"
       innerClass="md:w-24 md:h-24"
-      :email="
-        identity && identity.attributes && identity.attributes.identity_email
-      "
+      :email="identity && identity.email"
     />
     <div class="mb-6">
       <h2 class="font-extrabold text-2xl">
         {{
-          identity.attributes.identity_legal ||
-          identity.attributes.identity_display ||
-          identity.attributes.address.slice(0, 8) + "..."
+          identity.legal ||
+          identity.display ||
+          identity.address.slice(0, 8) + "..."
         }}
       </h2>
       <p class="text-xs">
-        {{ identity.attributes.identity_email }}
+        {{ identity.email }}
       </p>
     </div>
     <div class="flex justify-center align-center w-full">
@@ -113,17 +111,17 @@ export default {
   },
   computed: {
     web() {
-      return this.identity.attributes.identity_web;
+      return this.identity.web;
     },
     twitter() {
-      const { identity_twitter: twitter } = this.identity.attributes;
+      const { twitter } = this.identity;
       if (twitter) {
         return `https://twitter.com/${twitter}`;
       }
       return null;
     },
     riot() {
-      const { identity_riot: riot } = this.identity.attributes;
+      const { riot } = this.identity;
       if (riot) {
         return `https://matrix.to/#/${riot}`;
       }
@@ -132,7 +130,7 @@ export default {
   },
   methods: {
     goToIdentity() {
-      const { address } = this.identity.attributes;
+      const { address } = this.identity;
       const { network } = this.$route.params;
       this.$router.push({ name: "Identity", params: { address, network } });
     }
