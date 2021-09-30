@@ -76,7 +76,12 @@ async function getAddressFromFields(
 
 async function getAllIdentities(api: ApiPromise) {
   const list = await api.query.identity.identityOf.entries();
-  const members = (await api.query.council.members()).map((el) => el.toHuman());
+  let members: string[] = [];
+  try {
+    members = (await api.query.council.members()).map((el) => el.toHuman());
+  } catch (ex) {
+    members = [];
+  }
   return list.map((identity) => {
     const {
       display: { Raw: display },
@@ -356,8 +361,8 @@ export const actions: ActionTree<State, State> & Actions = {
     commit(MutationType.SetNetworkProvider, provider);
   },
   async [ActionTypes.ConnectToNetwork]({ commit, state, dispatch }) {
+    commit(MutationType.SetIdentityListLoading, true);
     // Resetting the list pagination page
-    dispatch(ActionTypes.SetPaginationPage, 1);
     const { network } = state;
     try {
       if (network) {
@@ -382,6 +387,8 @@ export const actions: ActionTree<State, State> & Actions = {
               return true;
             }
           }
+          const allIdentities = await getAllIdentities(api);
+          commit(MutationType.SetAllIdentities, allIdentities);
           // Extracting the prefix for the address transform
           network.prefix = api.consts.system.ss58Prefix.toNumber();
           const genesisHash = (await api.rpc.chain.getBlockHash(0)).toHuman();
@@ -433,6 +440,8 @@ export const actions: ActionTree<State, State> & Actions = {
             message: "Connected to Network/Node",
             type: "success"
           });
+          dispatch(ActionTypes.SetPaginationPage, 1);
+          commit(MutationType.SetIdentityListLoading, false);
         } else {
           commit(MutationType.SetIdentityListLoading, false);
           dispatch(ActionTypes.SetNotification, {
@@ -450,6 +459,7 @@ export const actions: ActionTree<State, State> & Actions = {
         });
       }
     } catch (ex) {
+      commit(MutationType.SetIdentityListLoading, false);
       dispatch(ActionTypes.SetNotification, {
         show: true,
         message: "Unable To connect to Network/Node",
