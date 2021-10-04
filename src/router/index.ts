@@ -15,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [
         component: ListPage,
         beforeEnter: (to, from, next) => {
           if (from.params.network && !to.params.network) {
-            next({
+            return next({
               name: "ListWithNetwork",
               params: {
                 network: from.params.network

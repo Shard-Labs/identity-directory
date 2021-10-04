@@ -22,6 +22,7 @@
     </div>
     <div class="flex justify-center align-center w-full">
       <a
+        @click="(e) => e.stopPropagation()"
         target="_blank"
         :href="web"
         class="
@@ -44,6 +45,7 @@
         <Icon name="web" />
       </a>
       <a
+        @click="(e) => e.stopPropagation()"
         target="_blank"
         :href="riot"
         class="
@@ -66,6 +68,7 @@
         <Icon name="element" />
       </a>
       <a
+        @click="(e) => e.stopPropagation()"
         target="_blank"
         :href="twitter"
         class="
