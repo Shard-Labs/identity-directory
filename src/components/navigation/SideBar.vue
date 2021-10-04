@@ -8,13 +8,16 @@
       @select="getSelectedDropDownDataIndex"
       prefixIcon="chain"
     />
+    <span v-if="showCustomInput" class="text-xs italic text-pink">
+      *We support Polkadot, Kusama and Westend nodes
+    </span>
     <InputField
       v-if="showCustomInput"
       class="w-full"
       inputType="text"
       name="identity"
       id="identity"
-      placeholder="Custom Node Address"
+      placeholder="Node Websocket Address"
       containerClasses="flex-grow bg-transparent border-solid border-pink rounded-full mb-4"
       inputClasses="py-2 font-medium"
       @update="handleInput"

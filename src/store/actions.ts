@@ -39,7 +39,7 @@ async function getAddressFromFields(
 ): Promise<any> {
   const allIdentities = await getAllIdentities(api);
   const identities = allIdentities.filter((user) => {
-    const query = new RegExp(`^${field}`, "i");
+    const query = new RegExp(`${field}`, "i");
     const {
       display,
       riot,
@@ -144,7 +144,7 @@ type ActionAugments = Omit<ActionContext<State, State>, "commit"> & {
 export type Actions = {
   [ActionTypes.SetWallet](
     context: ActionAugments,
-    wallet: InjectedAccountWithMeta
+    wallet: InjectedAccountWithMeta | null
   ): void;
   [ActionTypes.GetIdentity](context: ActionAugments, address: string): void;
   [ActionTypes.SearchIdentity](
@@ -177,22 +177,25 @@ export type Actions = {
 export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.SetWallet]({ state, commit }, wallet) {
     commit(MutationType.SetWallet, wallet);
-
-    const { address } = wallet;
-    if (state.network) {
-      const { api } = state.network;
-      let identity: any;
-      if (api) {
-        identity = await api.derive.accounts.identity(address);
+    if (wallet) {
+      const { address } = wallet;
+      if (state.network) {
+        const { api } = state.network;
+        let identity: any;
+        if (api) {
+          identity = await api.derive.accounts.identity(address);
+        }
+        const judgements: any[] = [];
+        if (identity) {
+          identity.judgements.forEach((el: any) => {
+            judgements.push(...Object.keys(el[1].toHuman()));
+            identity.judgements = judgements;
+          });
+          commit(MutationType.SetMyIdentity, identity);
+        }
       }
-      const judgements: any[] = [];
-      if (identity) {
-        identity.judgements.forEach((el: any) => {
-          judgements.push(...Object.keys(el[1].toHuman()));
-          identity.judgements = judgements;
-        });
-        commit(MutationType.SetMyIdentity, identity);
-      }
+    } else {
+      commit(MutationType.SetMyIdentity, null);
     }
   },
   async [ActionTypes.GetIdentity]({ commit, state }, address) {
@@ -349,7 +352,6 @@ export const actions: ActionTree<State, State> & Actions = {
     }
     commit(MutationType.SetIdentityGridList, identityListGrid);
     commit(MutationType.SetIdentityList, identityList);
-    commit(MutationType.SetIdentityListLoading, false);
   },
   async [ActionTypes.SetNetwork]({ commit }, network) {
     commit(MutationType.SetNetwork, network);
@@ -368,7 +370,7 @@ export const actions: ActionTree<State, State> & Actions = {
       if (network) {
         // Connecting to the network
         const provider = new WsProvider(network.wsProvider);
-        const api = await ApiPromise.create({ provider });
+        const api = await ApiPromise.create({ provider, throwOnConnect: true });
         const { isConnected } = api;
         if (isConnected) {
           let chain = "";
@@ -426,21 +428,13 @@ export const actions: ActionTree<State, State> & Actions = {
             );
             commit(MutationType.SetNetworkDecimals, decimals);
           }
-          // extracting the data of the connected wallet for the chain
-          if (api && state.wallet) {
-            const { address } = state.wallet;
-            const identity = await api.derive.accounts.identity(address);
-            if (identity && Object.keys(identity).length > 1) {
-              identity.judgements = [];
-              commit(MutationType.SetMyIdentity, identity);
-            }
-          }
+          dispatch(ActionTypes.SetPaginationPage, 1);
           dispatch(ActionTypes.SetNotification, {
             show: true,
             message: "Connected to Network/Node",
             type: "success"
           });
-          dispatch(ActionTypes.SetPaginationPage, 1);
+          dispatch(ActionTypes.SetWallet, null);
           commit(MutationType.SetIdentityListLoading, false);
         } else {
           commit(MutationType.SetIdentityListLoading, false);
@@ -482,7 +476,7 @@ export const actions: ActionTree<State, State> & Actions = {
       return dispatch(ActionTypes.SetNotification, {
         type: "warning",
         show: true,
-        message: `There is no more identities`
+        message: `No more results`
       });
     }
     commit(MutationType.SetIdentityListLoading, true);
@@ -494,6 +488,7 @@ export const actions: ActionTree<State, State> & Actions = {
     commit(MutationType.SetPaginationPage, page);
     commit(MutationType.SetPaginationState, overview);
     dispatch(ActionTypes.GetIdentityList);
+    commit(MutationType.SetIdentityListLoading, false);
   },
   async [ActionTypes.SetPaginationSize](
     { commit, state, dispatch },
@@ -511,6 +506,7 @@ export const actions: ActionTree<State, State> & Actions = {
     commit(MutationType.SetPaginationSize, sizePerPage);
     commit(MutationType.SetPaginationState, overview);
     dispatch(ActionTypes.GetIdentityList);
+    commit(MutationType.SetIdentityListLoading, false);
   },
   async [ActionTypes.SendTokens]({ state, dispatch }, { address, amount }) {
     const { network, wallet } = state;

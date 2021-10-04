@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col justify-center">
-    <nav-link :exact="true" path="/" class="mb-8">
+    <nav-link :exact="true" path="/" class="mb-8" @click="handleClicked">
       <Icon name="identities" iconClass="mr-4" />
       <div class="text-base font-bold">Identity Hub</div>
     </nav-link>
@@ -13,8 +13,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { encodeAddress, decodeAddress } from "@polkadot/keyring";
+
+import { ActionTypes } from "@/store/actions";
 
 import NavLink from "./NavLink.vue";
 import Icon from "@/components/common/Icon.vue";
@@ -39,6 +41,16 @@ export default defineComponent({
         return `/${this.network.title.toLowerCase()}/${address}`;
       }
       return `/`;
+    }
+  },
+  methods: {
+    ...mapActions({ searchIdentity: ActionTypes.SearchIdentity }),
+    handleClicked() {
+      const search = document.getElementById('identitySearch') as HTMLInputElement;
+      if (search) {
+        search.value = "";
+        this.searchIdentity("");
+      }
     }
   }
 });

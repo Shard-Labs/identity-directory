@@ -22,6 +22,8 @@
     </div>
     <div class="flex justify-center align-center w-full">
       <a
+        v-if="web"
+        @click="(e) => e.stopPropagation()"
         target="_blank"
         :href="web"
         class="
@@ -44,6 +46,8 @@
         <Icon name="web" />
       </a>
       <a
+        v-if="riot"
+        @click="(e) => e.stopPropagation()"
         target="_blank"
         :href="riot"
         class="
@@ -66,6 +70,8 @@
         <Icon name="element" />
       </a>
       <a
+        v-if="twitter"
+        @click="(e) => e.stopPropagation()"
         target="_blank"
         :href="twitter"
         class="

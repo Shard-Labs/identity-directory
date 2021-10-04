@@ -10,13 +10,13 @@
     <div class="hero mt-6 p-10">
       <h1 class="font-black text-3xl text-left p-8">
         Search registered identities on
-        {{ network.displayName || "Kusama or Polkadot" }} network
+        {{ network.displayName }} network
       </h1>
       <form @submit="handleSubmitSearch">
         <input-field
           :inputType="text"
           :name="identity"
-          :id="identity"
+          id="identitySearch"
           placeholder="Search identities by address, index, name..."
           containerClasses="flex-grow bg-transparent border-solid border-pink rounded-full py-3 px-6"
           inputClasses="py-2 font-medium"
@@ -98,12 +98,21 @@ export default defineComponent({
     ...mapGetters(["network", "identityList"]),
     api() {
       return this.network?.api;
+    },
+    networkName() {
+      return this.network.displayName;
     }
   },
   watch: {
     api(val) {
       if (val) {
         this.getIdentityList();
+      }
+    },
+    networkName() {
+      const search = document.getElementById("identitySearch");
+      if (search) {
+        search.value = "";
       }
     }
   },

@@ -13,7 +13,7 @@ export enum MutationType {
   SetIdentityList = "SET_IDENTITY_LIST",
   SetIdentityLoading = "SET_IDENTITY_LOADING",
   SetIdentityListLoading = "SET_IDENTITY_LIST_LOADING",
-  SetIdentityGridList = "SET_ISET_IDENTITY_GRID_LIST",
+  SetIdentityGridList = "SET_IDENTITY_GRID_LIST",
   SetNetwork = "SET_NETWORK",
   SetToken = "SET_TOKEN",
   SetNetworkProvider = "SET_NETWORK_PROVIDER",
@@ -30,14 +30,14 @@ export enum MutationType {
 }
 
 export type Mutations = {
-  [MutationType.SetWallet](state: State, wallet: InjectedAccountWithMeta): void;
+  [MutationType.SetWallet](state: State, wallet: InjectedAccountWithMeta | null): void;
   [MutationType.SetIdentity](
     state: State,
     identity: Identity | DeriveAccountRegistration | null
   ): void;
   [MutationType.SetMyIdentity](
     state: State,
-    identity: Identity | DeriveAccountRegistration
+    identity: Identity | DeriveAccountRegistration | null
   ): void;
   [MutationType.SetAllIdentities](state: State, list: IdentityEl[]): void;
   [MutationType.SetIdentityList](state: State, list: IdentityEl[]): void;
