@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { u8aToString } from '@polkadot/util';
+import { u8aToString } from "@polkadot/util";
 import { web3FromSource } from "@polkadot/extension-dapp";
 
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
@@ -8,6 +8,7 @@ import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { ActionContext, ActionTree } from "vuex";
 import { Mutations, MutationType } from "./mutations";
 import { Network, Notification, State } from "./state";
+import { identity } from "tests/unit/store/mockData";
 
 function calcPaginationState(
   page: number,
@@ -38,34 +39,119 @@ async function getAddressFromFields(
   field: string
 ): Promise<any> {
   const allIdentities = await getAllIdentities(api);
-  const identities = allIdentities.filter((user) => {
-    const query = new RegExp(`${field}`, "i");
-    const {
-      display,
-      riot,
-      twitter,
-      web,
-      legal,
-      email
-      // @ts-ignore
-    } = user;
-    switch (true) {
-      case query.test(display):
-        return true;
-      case query.test(email):
-        return true;
-      case query.test(legal):
-        return true;
-      case query.test(riot):
-        return true;
-      case query.test(twitter):
-        return true;
-      case query.test(web):
-        return true;
-      default:
-        return false;
-    }
-  });
+  const query = new RegExp(`${field}`, "i");
+  let identities = allIdentities;
+  if (field) {
+    identities = allIdentities
+      .filter((user) => {
+        const {
+          display,
+          riot,
+          twitter,
+          web,
+          legal,
+          email
+          // @ts-ignore
+        } = user;
+        switch (true) {
+          case query.test(display):
+            return true;
+          case query.test(email):
+            return true;
+          case query.test(legal):
+            return true;
+          case query.test(riot):
+            return true;
+          case query.test(twitter):
+            return true;
+          case query.test(web):
+            return true;
+          default:
+            return false;
+        }
+      })
+      .sort((a, b) => {
+        const legalA = a.legal ? a.legal.toLowerCase() : undefined;
+        const legalB = b.legal ? b.legal.toLowerCase() : undefined;
+        const displayA = a.display ? a.display.toLowerCase() : undefined;
+        const displayB = b.display ? b.display.toLowerCase() : undefined;
+        switch (true) {
+          case query.test(legalA) && query.test(legalB) && legalB > legalA:
+            return -1;
+          case query.test(legalA) && query.test(legalB) && legalA > legalB:
+            return 1;
+          case query.test(legalA) &&
+            !query.test(legalB) &&
+            query.test(displayB) &&
+            displayB > legalA:
+            return -1;
+          case query.test(legalA) &&
+            !query.test(legalB) &&
+            query.test(displayB) &&
+            legalA > displayB:
+            return 1;
+          case query.test(legalB) &&
+            !query.test(legalA) &&
+            query.test(displayA) &&
+            legalB > displayA:
+            return -1;
+          case query.test(legalB) &&
+            !query.test(legalA) &&
+            query.test(displayA) &&
+            displayA > legalB:
+            return 1;
+          case query.test(legalA) &&
+            !query.test(legalB) &&
+            !query.test(displayB):
+            return -1;
+          case query.test(legalB) &&
+            !query.test(legalA) &&
+            !query.test(displayA):
+            return 1;
+          case !query.test(legalA) &&
+            query.test(displayA) &&
+            !query.test(legalB) &&
+            query.test(displayB) &&
+            displayB > displayA:
+            return -1;
+          case !query.test(legalA) &&
+            query.test(displayA) &&
+            !query.test(legalB) &&
+            query.test(displayB) &&
+            displayA > displayB:
+            return 1;
+          case !legalA &&
+            query.test(displayA) &&
+            !legalB &&
+            !query.test(displayB):
+            return -1;
+          case !legalA &&
+            !query.test(displayA) &&
+            !legalB &&
+            query.test(displayB):
+            return 1;
+          case legalA &&
+            !query.test(legalA) &&
+            !query.test(displayA) &&
+            !legalB &&
+            query.test(displayB):
+            return 1;
+          case legalB &&
+            !query.test(legalB) &&
+            !query.test(displayB) &&
+            !legalA &&
+            query.test(displayA):
+            return -1;
+          case (legalB || displayB) > (legalA || displayA):
+            return -1;
+          case (legalA || displayA) > (legalB || displayB):
+            return 1;
+          default:
+            return 0;
+        }
+      });
+  }
+  console.log(identities);
   if (identities.length === 1) {
     return identities[0].address;
   } else if (identities.length > 1) {
