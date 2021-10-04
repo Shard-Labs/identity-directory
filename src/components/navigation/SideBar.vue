@@ -8,7 +8,9 @@
       @select="getSelectedDropDownDataIndex"
       prefixIcon="chain"
     />
-    <span class="text-xs italic text-pink">*We support Polkadot, Kusama and Westend nodes</span>
+    <span v-if="showCustomInput" class="text-xs italic text-pink">
+      *We support Polkadot, Kusama and Westend nodes
+    </span>
     <InputField
       v-if="showCustomInput"
       class="w-full"
