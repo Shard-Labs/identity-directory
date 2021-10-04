@@ -70,7 +70,7 @@
         <Icon name="element" />
       </a>
       <a
-        v-if="twiter"
+        v-if="twitter"
         @click="(e) => e.stopPropagation()"
         target="_blank"
         :href="twitter"

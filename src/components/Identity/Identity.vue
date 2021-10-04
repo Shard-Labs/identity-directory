@@ -38,6 +38,7 @@
         Send Tokens
       </button>
       <a
+        v-if="web"
         target="_blank"
         :href="web"
         class="
@@ -60,6 +61,7 @@
         <Icon name="web" />
       </a>
       <a
+        v-if="riot"
         target="_blank"
         :href="riot"
         class="
@@ -82,6 +84,7 @@
         <Icon name="element" />
       </a>
       <a
+        v-if="twitter"
         target="_blank"
         :href="twitter"
         class="
