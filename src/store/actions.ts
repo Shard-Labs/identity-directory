@@ -71,81 +71,27 @@ async function getAddressFromFields(
         }
       })
       .sort((a, b) => {
-        const legalA = a.legal ? a.legal.toLowerCase() : undefined;
-        const legalB = b.legal ? b.legal.toLowerCase() : undefined;
-        const displayA = a.display ? a.display.toLowerCase() : undefined;
-        const displayB = b.display ? b.display.toLowerCase() : undefined;
+        const nameA =
+          (a.legal && a.legal.toLowerCase()) ||
+          (a.display && a.display.toLowerCase()) ||
+          a.address;
+        const nameB =
+          (b.legal && b.legal.toLowerCase()) ||
+          (b.display && b.display.toLowerCase()) ||
+          b.address;
         switch (true) {
-          case query.test(legalA) && query.test(legalB) && legalB > legalA:
-            return -1;
-          case query.test(legalA) && query.test(legalB) && legalA > legalB:
+          case query.test(nameA) && query.test(nameB) && nameA > nameB:
             return 1;
-          case query.test(legalA) &&
-            !query.test(legalB) &&
-            query.test(displayB) &&
-            displayB > legalA:
+          case query.test(nameA) && query.test(nameB) && nameB > nameA:
             return -1;
-          case query.test(legalA) &&
-            !query.test(legalB) &&
-            query.test(displayB) &&
-            legalA > displayB:
-            return 1;
-          case query.test(legalB) &&
-            !query.test(legalA) &&
-            query.test(displayA) &&
-            legalB > displayA:
+          case query.test(nameA) && !query.test(nameB):
             return -1;
-          case query.test(legalB) &&
-            !query.test(legalA) &&
-            query.test(displayA) &&
-            displayA > legalB:
+          case !query.test(nameA) && query.test(nameB):
             return 1;
-          case query.test(legalA) &&
-            !query.test(legalB) &&
-            !query.test(displayB):
+          case nameA > nameB:
+            return 1;
+          case nameB > nameA:
             return -1;
-          case query.test(legalB) &&
-            !query.test(legalA) &&
-            !query.test(displayA):
-            return 1;
-          case !query.test(legalA) &&
-            query.test(displayA) &&
-            !query.test(legalB) &&
-            query.test(displayB) &&
-            displayB > displayA:
-            return -1;
-          case !query.test(legalA) &&
-            query.test(displayA) &&
-            !query.test(legalB) &&
-            query.test(displayB) &&
-            displayA > displayB:
-            return 1;
-          case !legalA &&
-            query.test(displayA) &&
-            !legalB &&
-            !query.test(displayB):
-            return -1;
-          case !legalA &&
-            !query.test(displayA) &&
-            !legalB &&
-            query.test(displayB):
-            return 1;
-          case legalA &&
-            !query.test(legalA) &&
-            !query.test(displayA) &&
-            !legalB &&
-            query.test(displayB):
-            return 1;
-          case legalB &&
-            !query.test(legalB) &&
-            !query.test(displayB) &&
-            !legalA &&
-            query.test(displayA):
-            return -1;
-          case (legalB || displayB) > (legalA || displayA):
-            return -1;
-          case (legalA || displayA) > (legalB || displayB):
-            return 1;
           default:
             return 0;
         }
