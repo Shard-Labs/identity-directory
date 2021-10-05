@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { u8aToString } from '@polkadot/util';
+import { u8aToString } from "@polkadot/util";
 import { web3FromSource } from "@polkadot/extension-dapp";
 
 import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
@@ -8,6 +8,7 @@ import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { ActionContext, ActionTree } from "vuex";
 import { Mutations, MutationType } from "./mutations";
 import { Network, Notification, State } from "./state";
+import { identity } from "tests/unit/store/mockData";
 
 function calcPaginationState(
   page: number,
@@ -38,34 +39,65 @@ async function getAddressFromFields(
   field: string
 ): Promise<any> {
   const allIdentities = await getAllIdentities(api);
-  const identities = allIdentities.filter((user) => {
-    const query = new RegExp(`${field}`, "i");
-    const {
-      display,
-      riot,
-      twitter,
-      web,
-      legal,
-      email
-      // @ts-ignore
-    } = user;
-    switch (true) {
-      case query.test(display):
-        return true;
-      case query.test(email):
-        return true;
-      case query.test(legal):
-        return true;
-      case query.test(riot):
-        return true;
-      case query.test(twitter):
-        return true;
-      case query.test(web):
-        return true;
-      default:
-        return false;
-    }
-  });
+  const query = new RegExp(`${field}`, "i");
+  let identities = allIdentities;
+  if (field) {
+    identities = allIdentities
+      .filter((user) => {
+        const {
+          display,
+          riot,
+          twitter,
+          web,
+          legal,
+          email
+          // @ts-ignore
+        } = user;
+        switch (true) {
+          case query.test(display):
+            return true;
+          case query.test(email):
+            return true;
+          case query.test(legal):
+            return true;
+          case query.test(riot):
+            return true;
+          case query.test(twitter):
+            return true;
+          case query.test(web):
+            return true;
+          default:
+            return false;
+        }
+      })
+      .sort((a, b) => {
+        const nameA =
+          (a.legal && a.legal.toLowerCase()) ||
+          (a.display && a.display.toLowerCase()) ||
+          a.address;
+        const nameB =
+          (b.legal && b.legal.toLowerCase()) ||
+          (b.display && b.display.toLowerCase()) ||
+          b.address;
+        switch (true) {
+          case query.test(nameA) && query.test(nameB) && nameA > nameB:
+            return 1;
+          case query.test(nameA) && query.test(nameB) && nameB > nameA:
+            return -1;
+          case query.test(nameA) && !query.test(nameB):
+            return -1;
+          case !query.test(nameA) && query.test(nameB):
+            return 1;
+          case nameA > nameB:
+            return 1;
+          case nameB > nameA:
+            return -1;
+          default:
+            return 0;
+        }
+      });
+  }
+  console.log(identities);
   if (identities.length === 1) {
     return identities[0].address;
   } else if (identities.length > 1) {
