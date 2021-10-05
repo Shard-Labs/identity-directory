@@ -71,6 +71,13 @@
           </span>
         </li>
         <li class="pt-2 text-left">
+          <span class="text-sm text-gray-400">Display Name</span>
+          <br />
+          <span class="text-sm font-bold">
+            {{ (identity && identity.display) || "No Info" }}
+          </span>
+        </li>
+        <li class="pt-2 text-left">
           <span class="text-sm text-gray-400">Email address</span>
           <br />
           <span class="text-sm font-bold">
