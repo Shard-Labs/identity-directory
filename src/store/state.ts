@@ -104,6 +104,18 @@ export const state: State = {
       displayName: "Kusama"
     },
     {
+      title: "Westend",
+      wsProvider: "wss://westend-rpc.polkadot.io",
+      connected: false,
+      url: "",
+      api: null,
+      custom: false,
+      token: "",
+      minAmount: "0.000000000001",
+      decimals: 12,
+      displayName: "Westend"
+    },
+    {
       title: "Custom",
       wsProvider: "",
       connected: false,

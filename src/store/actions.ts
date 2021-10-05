@@ -97,7 +97,6 @@ async function getAddressFromFields(
         }
       });
   }
-  console.log(identities);
   if (identities.length === 1) {
     return identities[0].address;
   } else if (identities.length > 1) {
