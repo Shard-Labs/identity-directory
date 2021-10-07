@@ -12,6 +12,9 @@
           <span>{{ translateAddress(account.address) }}</span>
         </li>
       </ul>
+      <span class="text-xs italic text-pink mb-12">
+        *Please make sure extenstion's chain metadata is updated
+      </span>
     </Modal>
     <div
       v-if="wallet"
@@ -83,14 +86,16 @@ export default defineComponent({
   },
   methods: {
     ...mapActions({
-      setWallet: ActionTypes.SetWallet
+      setWallet: ActionTypes.SetWallet,
+      setNotification: ActionTypes.SetNotification
     }),
     async checkWallets() {
       const extensions = await web3Enable("Identity Hub");
+      console.log(extensions);
       if (extensions.length === 0) {
-        this.setNotification({
+        return this.setNotification({
           type: "warning",
-          message: "Extension not Installed!",
+          message: "Please install Polkadot{.js} extension",
           show: true
         });
       }
