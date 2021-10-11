@@ -6,7 +6,7 @@ services:
       dockerfile: docker/Dockerfile.client
     container_name: identity_app
   polkadot_node:
-    image: parity/polkadot:v0.9.8
+    image: parity/polkadot:v0.9.11
     container_name: polkadot_node
     command: --name "polkadot archive node" --rpc-external --rpc-cors all --ws-external --pruning archive
     volumes:
@@ -15,7 +15,7 @@ services:
         target: /polkadot/.local/share/polkadot/chains/polkadot
       
   kusama_node:
-    image: parity/polkadot:v0.9.8
+    image: parity/polkadot:v0.9.11
     container_name: kusama_node
     command: --name "kusama archive node" --chain kusama --rpc-external --rpc-cors all --ws-external --pruning archive
     volumes:
