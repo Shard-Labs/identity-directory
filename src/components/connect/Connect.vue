@@ -12,9 +12,33 @@
           <span>{{ translateAddress(account.address) }}</span>
         </li>
       </ul>
-      <span class="text-xs italic text-pink mb-12">
-        *Please make sure extenstion's chain metadata is updated
-      </span>
+      <div
+        v-if="showUpdateButton"
+        class="mb-2 flex flex-col justify-center items-center"
+      >
+        <button
+          @click="updateMetadata"
+          class="
+            w-36
+            block
+            bg-pink
+            text-white
+            border-solid border-pink
+            rounded-full
+            py-2
+            px-4
+            shadow-pink
+            flex
+            justify-between
+            space-x-2
+          "
+        >
+          <span class="text-sm">Update Metadata</span>
+        </button>
+        <p class="italic text-sm text-pink">
+          *Your extension metadata is out of date
+        </p>
+      </div>
     </Modal>
     <div
       v-if="wallet"
@@ -54,12 +78,10 @@
 <script>
 import { defineComponent } from "vue";
 
-import {
-  web3Accounts,
-  web3Enable,
-  web3EnablePromise
-} from "@polkadot/extension-dapp";
+import { web3Accounts, web3Enable } from "@polkadot/extension-dapp";
 import { encodeAddress, decodeAddress } from "@polkadot/keyring";
+import { base64Encode } from "@polkadot/util-crypto";
+import { getSpecTypes } from "@polkadot/types-known";
 
 import { mapActions, mapGetters } from "vuex";
 import { ActionTypes } from "@/store/actions";
@@ -73,7 +95,9 @@ export default defineComponent({
   data() {
     return {
       showModal: false,
-      allAccounts: []
+      allAccounts: [],
+      showUpdateButton: false,
+      metadata: null
     };
   },
   components: {
@@ -91,13 +115,27 @@ export default defineComponent({
     }),
     async checkWallets() {
       const extensions = await web3Enable("Identity Hub");
-      console.log(extensions);
       if (extensions.length === 0) {
         return this.setNotification({
           type: "warning",
           message: "Please install Polkadot{.js} extension",
           show: true
         });
+      }
+      this.metadata = extensions[0].metadata;
+      const { specVersion } = this.network.api.runtimeVersion.toHuman();
+      const known = await this.metadata.get();
+      const isUpgredable =
+        !known.length ||
+        known.reduce(
+          (acc, el) =>
+            el.genesisHash !== this.network.genesisHash ||
+            el.specVersion <= specVersion ||
+            acc,
+          false
+        );
+      if (isUpgredable) {
+        this.showUpdateButton = true;
       }
       const allAccounts = await web3Accounts();
       if (allAccounts.length) {
@@ -124,6 +162,27 @@ export default defineComponent({
     },
     translateAddress(address) {
       return encodeAddress(decodeAddress(address), this.network.prefix);
+    },
+    updateMetadata() {
+      const { api } = this.network;
+      const chain = api.runtimeChain.toHuman();
+      const { specName, specVersion } = api.runtimeVersion.toHuman();
+      const types = getSpecTypes(api.registry, chain, specName, specVersion);
+      if (this.metadata) {
+        const metaData = {
+          chain,
+          genesisHash: api.genesisHash.toHex(),
+          icon: this.network.name === "polkadot" ? "polkadot" : "substrate",
+          ss58Format: api.registry.chainSS58,
+          specVersion: api.runtimeVersion.specVersion.toNumber(),
+          tokenDecimals: api.registry.chainDecimals[0],
+          tokenSymbol: api.registry.chainTokens[0],
+          types,
+          metaCalls: base64Encode(api.runtimeMetadata.asCallsOnly.toU8a())
+        };
+        this.metadata.provide(metaData);
+        this.showUpdateButton = false;
+      }
     }
   }
 });
