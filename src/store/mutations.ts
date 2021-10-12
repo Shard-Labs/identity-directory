@@ -30,7 +30,10 @@ export enum MutationType {
 }
 
 export type Mutations = {
-  [MutationType.SetWallet](state: State, wallet: InjectedAccountWithMeta | null): void;
+  [MutationType.SetWallet](
+    state: State,
+    wallet: InjectedAccountWithMeta | null
+  ): void;
   [MutationType.SetIdentity](
     state: State,
     identity: Identity | DeriveAccountRegistration | null
@@ -47,7 +50,7 @@ export type Mutations = {
   [MutationType.SetIsSearchResults](state: State, search: boolean): void;
   [MutationType.SetNetwork](state: State, item: Network): void;
   [MutationType.SetToken](state: State, token: string): void;
-  [MutationType.SetNetworkProvider](state: State, prodiver: string): void;
+  [MutationType.SetNetworkProvider](state: State, provider: string): void;
   [MutationType.SetNetworkConnected](
     state: State,
     payload: { isConnected: boolean; chain?: string }
@@ -55,7 +58,7 @@ export type Mutations = {
   [MutationType.SetNetworkMinAmount](state: State, minAmount: string): void;
   [MutationType.SetNetworkDecimals](state: State, decimals: number): void;
   [MutationType.SetNetworkAPI](state: State, api: ApiPromise): void;
-  [MutationType.SetNetworkDisplayName](state: State, name:string): void;
+  [MutationType.SetNetworkDisplayName](state: State, name: string): void;
   [MutationType.SetNotification](state: State, item: Notification): void;
   [MutationType.SetPaginationPage](state: State, page: number): void;
   [MutationType.SetPaginationSize](state: State, sizePerPage: number): void;

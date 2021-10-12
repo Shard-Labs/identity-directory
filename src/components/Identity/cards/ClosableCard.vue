@@ -49,6 +49,6 @@ export default defineComponent({
     if (this.closed) {
       this.isOpen = false;
     }
-  },
+  }
 });
 </script>
