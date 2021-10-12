@@ -8,7 +8,6 @@ import { InjectedAccountWithMeta } from "@polkadot/extension-inject/types";
 import { ActionContext, ActionTree } from "vuex";
 import { Mutations, MutationType } from "./mutations";
 import { Network, Notification, State } from "./state";
-import { identity } from "tests/unit/store/mockData";
 
 function calcPaginationState(
   page: number,
@@ -43,7 +42,7 @@ async function getAddressFromFields(
   let identities = allIdentities;
   if (field) {
     identities = allIdentities
-      .filter((user) => {
+      .filter((user: any) => {
         const {
           display,
           riot,
@@ -70,7 +69,7 @@ async function getAddressFromFields(
             return false;
         }
       })
-      .sort((a, b) => {
+      .sort((a: any, b: any) => {
         const nameA =
           (a.legal && a.legal.toLowerCase()) ||
           (a.display && a.display.toLowerCase()) ||
@@ -109,11 +108,11 @@ async function getAllIdentities(api: ApiPromise) {
   const list = await api.query.identity.identityOf.entries();
   let members: string[] = [];
   try {
-    members = (await api.query.council.members()).map((el) => el.toHuman());
+    members = (await api.query.council.members()).map((el: any) => el.toHuman());
   } catch (ex) {
     members = [];
   }
-  return list.map((identity) => {
+  return list.map((identity: any) => {
     const {
       display: { Raw: display },
       email: { Raw: email },

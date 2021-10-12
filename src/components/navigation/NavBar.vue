@@ -46,7 +46,9 @@ export default defineComponent({
   methods: {
     ...mapActions({ searchIdentity: ActionTypes.SearchIdentity }),
     handleClicked() {
-      const search = document.getElementById('identitySearch') as HTMLInputElement;
+      const search = document.getElementById(
+        "identitySearch"
+      ) as HTMLInputElement;
       if (search) {
         search.value = "";
         this.searchIdentity("");

@@ -157,8 +157,6 @@ import { defineComponent } from "vue";
 import { mapGetters } from "vuex";
 import ClosableCard from "@/components/Identity/cards/ClosableCard.vue";
 import Icon from "@/components/common/Icon.vue";
-import { decodeAddress } from "@polkadot/keyring";
-import { u8aToHex } from "@polkadot/util";
 
 export default defineComponent({
   name: "InfoCard",

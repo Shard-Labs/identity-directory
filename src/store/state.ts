@@ -125,7 +125,7 @@ export const state: State = {
       token: "",
       minAmount: "0.000000000001",
       decimals: 10,
-      displayName: "",
+      displayName: ""
     }
   ],
   notification: {

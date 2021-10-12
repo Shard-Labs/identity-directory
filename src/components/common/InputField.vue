@@ -35,7 +35,7 @@ import Icon from "@/components/common/Icon.vue";
 
 export default defineComponent({
   name: "InputField",
-  data():{ oldValue: string } {
+  data(): { oldValue: string } {
     return {
       oldValue: ""
     };

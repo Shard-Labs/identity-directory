@@ -1,6 +1,5 @@
 <template>
-  <router-link :to="path" v-slot="{ navigate, isActive, isExactActive }"
-  >
+  <router-link :to="path" v-slot="{ navigate, isActive, isExactActive }">
     <div
       class="flex cursor-pointer outline-none p-1 space x-4 items-center"
       :class="exact ? isExactActive : isActive"

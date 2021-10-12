@@ -41,7 +41,7 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters(["identityList", "identityGridList", "identityListLoading"])
-  },
+  }
 });
 </script>
 
