@@ -130,14 +130,14 @@
           <span v-else class="text-sm font-bold">No Info</span>
         </li>
         <li class="pt-2 text-left text-sm font-normal">
-          <span class="text-gray-300">Registar verifications</span>
+          <span class="text-gray-300">Registrar verifications</span>
           <br />
           <div v-if="identity">
             <p
               v-for="(judgement, index) in identity.judgements"
               :key="judgement + index"
             >
-              <span class="text-sm font-bold">Registar {{ index + 1 }}</span>
+              <span class="text-sm font-bold">Registrar {{ index + 1 }}</span>
               determined this identity as
               <span
                 class="text-sm font-bold text-red"
