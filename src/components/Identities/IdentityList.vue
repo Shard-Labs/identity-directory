@@ -14,8 +14,8 @@
         />
         <div class="font-bold text-lg w-80 text-left">
           {{
-            identity.legal ||
             identity.display ||
+            identity.legal ||
             identity.address.slice(0, 8) + "..."
           }}
         </div>
