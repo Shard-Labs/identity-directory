@@ -218,7 +218,7 @@ export const actions: ActionTree<State, State> & Actions = {
         const judgements: any[] = [];
         if (identity) {
           identity.judgements.forEach((el: any) => {
-            judgements.push(...Object.keys(el[1].toHuman()));
+            judgements.push(el[1].toHuman());
             identity.judgements = judgements;
           });
           commit(MutationType.SetMyIdentity, identity);
@@ -268,7 +268,7 @@ export const actions: ActionTree<State, State> & Actions = {
       const judgements: any[] = [];
       if (identity) {
         identity.judgements.forEach((el: any) => {
-          judgements.push(...Object.keys(el[1].toHuman()));
+          judgements.push(el[1].toHuman());
           identity.judgements = judgements;
         });
         commit(MutationType.SetIdentity, identity);
