@@ -123,15 +123,16 @@ export default defineComponent({
         });
       }
       this.metadata = extensions[0].metadata;
-      const { specVersion } = this.network.api.runtimeVersion.toHuman();
+      let { specVersion } = this.network.api.runtimeVersion.toHuman();
+      specVersion = Number(specVersion.split(",").join(""));
       const known = (await this.metadata.get()).filter(
         (el) => el.genesisHash === this.network.genesisHash
       );
       const isUpgredable =
         !known.length ||
         known.reduce(
-          (acc, el) => (el.specVersion <= specVersion ? acc : el.specVersion),
-          specVersion
+          (acc, el) => (el.specVersion <= acc ? acc : el.specVersion),
+          0
         ) < specVersion;
       if (isUpgredable) {
         this.showUpdateButton = true;
